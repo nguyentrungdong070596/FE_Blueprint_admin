@@ -1,73 +1,79 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill'; 
-import { Router } from '@angular/router';
+import { Router } from '@angular/router'; 
 import { DatePipe } from '@angular/common'; 
 
 @Component({
-  selector: 'app-add-vehilce',
+  selector: 'app-add-vehicle',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule],
   templateUrl: './add-vehicle.component.html',
   styleUrls: ['./add-vehicle.component.scss'],
   providers: [DatePipe]
 })
-export class AddVehicleComponent {
+export class AddVehicleComponent implements OnInit {
   @Output() vehicleAdded = new EventEmitter<any>();
   
-  vehicle = {
-    type: '',
-    image: '',
-    name: '',
-    code:'',
-};
+  vehicleForm!: FormGroup; // Tạo FormGroup cho phương tiện
+  isEditMode = false; // Kiểm tra chế độ chỉnh sửa
+  selectedFile: File | null = null;
 
-  isEditMode = false; // Thêm biến này để theo dõi chế độ chỉnh sửa
-
-  constructor(private router: Router, private datePipe: DatePipe) {
+  constructor(private fb: FormBuilder, private router: Router, private datePipe: DatePipe) {
     // Kiểm tra nếu có dữ liệu truyền vào từ router
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state) {
-      this.isEditMode = navigation.extras.state['isEditMode'] || false; // Kiểm tra kiểu dữ liệu
-      const vehilceToEdit = navigation.extras.state['vehilceToEdit']; // Thay đổi ở đây
-      if (vehilceToEdit) {
-        this.vehicle = {
-          type: vehilceToEdit.type,
-          image: vehilceToEdit.image,
-          name: vehilceToEdit.name,
-          code: vehilceToEdit.code,
-        };
+      this.isEditMode = navigation.extras.state['isEditMode'] || false; 
+      const vehicleToEdit = navigation.extras.state['vehicleToEdit']; 
+      if (vehicleToEdit) {
+        this.setFormValues(vehicleToEdit);
       }
     }
   }
 
-  selectedFile: File | null = null;
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm() {
+    this.vehicleForm = this.fb.group({
+      type: ['', Validators.required],
+      image: [''], // Chỉ dùng để lưu tên tệp
+      name: ['', Validators.required],
+      code: ['', Validators.required],
+    });
+  }
+
+  setFormValues(data: any) {
+    this.vehicleForm.patchValue({
+      type: data.type,
+      image: data.image,
+      name: data.name,
+      code: data.code,
+    });
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.vehicle.image = file.name;
+      this.vehicleForm.patchValue({ image: file.name });
     }
   }
+
   onSubmit() {
-    if (this.isEditMode) {
-      // Logic cập nhật
-      this.vehicleAdded.emit(this.vehicle); // Cập nhật hiện tại
-    } else {
-      this.vehicleAdded.emit(this.vehicle); // Thêm mới
+    if (this.vehicleForm.invalid) {
+      this.vehicleForm.markAllAsTouched();
+      return;
     }
+
+    this.vehicleAdded.emit(this.vehicleForm.value); // Gửi dữ liệu phương tiện
     this.resetForm();
   }
 
   resetForm() {
-    this.vehicle = {
-      type: '',
-      image: '',
-      name: '',
-      code:'',
-    };
+    this.vehicleForm.reset();
     this.selectedFile = null;
   }
 
@@ -75,4 +81,3 @@ export class AddVehicleComponent {
     this.router.navigate(['/vehicle']);
   }
 }
-

@@ -6,10 +6,13 @@
     <button type="button" (click)="goBack()" class="btn-back">
         <span class="icon">&lt;</span> Trở lại
     </button>
-    <form (ngSubmit)="onSubmit()">
+    <form [formGroup]="pilotForm">
         <div>
-            <label for="title">Họ và tên:</label>
-            <input type="text" id="title" [(ngModel)]="pilot.name" name="title" required>
+            <label for="name">Họ và tên:</label>
+            <input type="text" id="name" formControlName="name" required>
+            <div *ngIf="pilotForm.controls['name'].invalid && pilotForm.controls['name'].touched" class="error">
+                Tên là bắt buộc
+            </div>
         </div>
         <div>
             <label for="image">Hình ảnh:</label>
@@ -17,7 +20,7 @@
         </div>
         <div>
             <label for="range">Hạng hoa tiêu:</label>
-            <select id="range" [(ngModel)]="pilot.range" name="range" required>
+            <select id="range" formControlName="range" required>
                 <option value="Hoa tiêu ngoại hạng A">Hoa tiêu ngoại hạng A</option>
                 <option value="Hoa tiêu ngoại hạng B">Hoa tiêu ngoại hạng B</option>
                 <option value="Hoa tiêu ngoại hạng C">Hoa tiêu ngoại hạng C</option>
@@ -26,7 +29,13 @@
                 <option value="Hoa tiêu hạng 3">Hoa tiêu hạng 3</option>
                 <option value="Hoa tiêu tập sự">Hoa tiêu tập sự</option>
             </select>
+            <div *ngIf="pilotForm.controls['range'].invalid && pilotForm.controls['range'].touched" class="error">
+                Hạng hoa tiêu là bắt buộc
+            </div>
         </div>
-        <button type="submit">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
+        <!-- Chuyển (ngSubmit) vào nút button -->
+        <button type="button" (click)="onSubmit()" [disabled]="pilotForm.invalid">
+            {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
+        </button>
     </form>
 </div>

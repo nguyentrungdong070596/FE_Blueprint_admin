@@ -6,10 +6,10 @@
     <button type="button" (click)="goBack()" class="btn-back">
         <span class="icon">&lt;</span> Trở lại
     </button>
-    <form (ngSubmit)="onSubmit()">
+    <form [formGroup]="servicesForm">
         <div>
             <label for="title">Tiêu đề:</label>
-            <input type="text" id="title" [(ngModel)]="services.title" name="title" required>
+            <input type="text" id="title" formControlName="title" required>
         </div>
         <div>
             <label for="image">Hình ảnh:</label>
@@ -21,15 +21,17 @@
         </div>
         <div>
             <label for="status">Trạng thái:</label>
-            <select id="status" [(ngModel)]="services.status" name="status" required>
+            <select id="status" formControlName="status" required>
                 <option value="Hiển thị">Hiển thị</option>
                 <option value="Ẩn">Ẩn</option>
             </select>
         </div>
         <div>
             <label for="date">Ngày đăng:</label>
-            <input type="date" id="date" [(ngModel)]="services.date" name="date" required>
+            <input type="date" id="date" formControlName="date" required>
         </div>
-        <button type="submit">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
+        <button type="submit" [disabled]="!servicesForm.valid" (click)="onSubmit()">
+            {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
+        </button>
     </form>
 </div>

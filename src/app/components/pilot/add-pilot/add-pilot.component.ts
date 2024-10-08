@@ -1,70 +1,81 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill'; 
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common'; 
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-pilot',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule],
+  imports: [CommonModule, ReactiveFormsModule, QuillModule],
   templateUrl: './add-pilot.component.html',
   styleUrls: ['./add-pilot.component.scss'],
   providers: [DatePipe]
 })
-export class AddPilotComponent {
+export class AddPilotComponent implements OnInit {
   @Output() pilotAdded = new EventEmitter<any>();
-  
-  pilot = {
-    name: '',
-    image: '',
-    range: '',
-};
+  pilotForm!: FormGroup;
+  isEditMode = false;
+  selectedFile: File | null = null;
 
-  isEditMode = false; // Thêm biến này để theo dõi chế độ chỉnh sửa
-
-  constructor(private router: Router, private datePipe: DatePipe) {
-    // Kiểm tra nếu có dữ liệu truyền vào từ router
+  constructor(private fb: FormBuilder, private router: Router, private datePipe: DatePipe) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state) {
-      this.isEditMode = navigation.extras.state['isEditMode'] || false; // Kiểm tra kiểu dữ liệu
-      const pilotToEdit = navigation.extras.state['pilotToEdit']; // Thay đổi ở đây
+      this.isEditMode = navigation.extras.state['isEditMode'] || false;
+      const pilotToEdit = navigation.extras.state['pilotToEdit'];
       if (pilotToEdit) {
-        this.pilot = {
-          name: pilotToEdit.name,
-          image: pilotToEdit.image,
-          range: pilotToEdit.range,
-        };
+        this.setFormValues(pilotToEdit);
       }
     }
   }
 
-  selectedFile: File | null = null;
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm() {
+    this.pilotForm = this.fb.group({
+      name: ['', Validators.required],
+      image: [''],
+      range: ['', Validators.required],
+    });
+  }
+
+  setFormValues(data: any) {
+    this.pilotForm.patchValue({
+      name: data.name,
+      image: data.image,
+      range: data.range,
+    });
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.pilot.image = file.name;
+      this.pilotForm.patchValue({ image: file.name });
     }
   }
+
   onSubmit() {
+    if (this.pilotForm.invalid) {
+      this.pilotForm.markAllAsTouched();
+      return;
+    }
+
+    const pilotData = this.pilotForm.value;
+
     if (this.isEditMode) {
-      // Logic cập nhật
-      this.pilotAdded.emit(this.pilot); // Cập nhật với tin tức hiện tại
+      this.pilotAdded.emit(pilotData);
     } else {
-      this.pilotAdded.emit(this.pilot); // Thêm mới
+      this.pilotAdded.emit(pilotData);
     }
     this.resetForm();
   }
 
   resetForm() {
-    this.pilot = {
-      name: '',
-      image: '',
-      range: '',
-    };
+    this.pilotForm.reset();
     this.selectedFile = null;
   }
 
@@ -72,6 +83,3 @@ export class AddPilotComponent {
     this.router.navigate(['/pilot']);
   }
 }
-
-
-
