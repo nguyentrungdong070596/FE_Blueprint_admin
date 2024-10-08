@@ -1,0 +1,257 @@
+@import "primeicons/primeicons.css";
+
+body {
+    margin: 0;
+    transition: padding-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho padding */
+}
+
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 15px;
+    background-color: #0196da;
+    transition: all 0.3s ease;
+    color: white;
+    overflow-x: hidden; /* Ẩn nội dung khi sidebar đóng */
+}
+
+.closed-content {
+    display: none;
+}
+
+/* Khi sidebar đóng */
+.sidebar.closed {
+    width: 70px; /* Thu nhỏ chiều rộng của sidebar */
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Nội dung */
+.content {
+    display: flex;
+    justify-content: center; // Căn giữa nội dung
+    align-items: center; // Căn giữa theo chiều dọc
+    min-height: 100vh; // Đảm bảo chiều cao tối thiểu
+    background-color: #f7f7f7; // Màu nền nhẹ nhàng
+  }
+  
+  .add-monnuoc-container {
+    background-color: white; // Màu nền trắng cho form
+    border-radius: 8px; // Bo góc
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // Đổ bóng nhẹ
+    padding: 20px; // Padding cho form
+    width: 400px; // Chiều rộng của form
+    max-width: 100%; // Đảm bảo không vượt quá chiều rộng màn hình
+  
+    h2 {
+      text-align: center; // Căn giữa tiêu đề
+      color: #333; // Màu chữ tiêu đề
+      margin-bottom: 20px; // Khoảng cách dưới tiêu đề
+    }
+  
+    label {
+      font-weight: bold; // Làm đậm chữ
+      margin-bottom: 8px; // Khoảng cách dưới label
+      display: block; // Đặt label thành khối
+      color: #555; // Màu chữ label
+    }
+  
+    input[type="text"],
+    input[type="date"],
+    input[type="file"] {
+      width: 100%; // Chiều rộng đầy đủ
+      padding: 10px; // Padding cho input
+      margin-bottom: 20px; // Khoảng cách dưới mỗi input
+      border: 1px solid #ccc; // Đường viền
+      border-radius: 4px; // Bo góc nhẹ
+      transition: border-color 0.3s; // Hiệu ứng chuyển tiếp
+  
+      &:focus {
+        border-color: #007bff; // Đổi màu đường viền khi focus
+        outline: none; // Tắt outline mặc định
+      }
+    }
+  
+    button {
+      width: 48%; // Chiều rộng nút
+      padding: 10px; // Padding cho nút
+      border: none; // Bỏ đường viền
+      border-radius: 4px; // Bo góc nút
+      cursor: pointer; // Con trỏ khi di chuột vào nút
+  
+      &.btn-success {
+        background-color: #28a745; // Màu nền cho nút lưu
+        color: white; // Màu chữ cho nút lưu
+        margin-right: 4%; // Khoảng cách bên phải nút lưu
+        transition: background-color 0.3s; // Hiệu ứng chuyển tiếp
+  
+        &:hover {
+          background-color: #218838; // Màu nền khi hover
+        }
+      }
+  
+      &.btn-secondary {
+        background-color: #6c757d; // Màu nền cho nút trở lại
+        color: white; // Màu chữ cho nút trở lại
+        transition: background-color 0.3s; // Hiệu ứng chuyển tiếp
+  
+        &:hover {
+          background-color: #5a6268; // Màu nền khi hover
+        }
+      }
+    }
+  }
+  
+
+.sidebar.closed + .content {
+    margin-left: 85px; /* Khi sidebar đóng */
+}
+
+.sidebar.closed .components li a .text {
+    display: none; /* Ẩn văn bản của các item */
+}
+
+.sidebar.closed .components li a .icon {
+    text-align: center;
+    width: 100%; /* Căn giữa icon khi sidebar đóng */
+}
+
+.sidebar.closed .flex-content h3 {
+    display: none; /* Ẩn tiêu đề khi sidebar đóng */
+}
+
+.sidebar.closed .btn-toggle {
+    margin-left: 18px; /* Giữ lại nút toggle gần biên */
+}
+
+/* CSS cho các icon và nội dung */
+.components li a {
+    padding: 10px;
+    text-decoration: none;
+    display: flex; /* Dạng flex để dễ căn chỉnh icon và text */
+    align-items: center;
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.components li a .icon {
+    margin-right: 10px;
+    font-size: 18px; /* Kích thước của icon */
+}
+
+.components li a .text {
+    flex: 1; /* Văn bản sẽ chiếm phần còn lại */
+}
+
+.components li a:hover {
+    background-color: blue;
+    color: #ffffff;
+}
+
+.btn-toggle {
+    width: 25px;
+    height: 25px;
+    padding: 10px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.flex-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+a {
+    cursor: pointer;
+}
+
+.active {
+    background-color: #0196da;
+    color: white;
+    font-weight: bold;
+}
+
+.table {
+    width: calc(100% - 10px); /* Điều chỉnh chiều rộng của bảng để giảm khoảng trắng */
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.table-bordered {
+    border: 1px solid #ddd;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #ddd;
+}
+
+.image-user {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+}
+
+.btn-add {
+    margin: 10px;
+    padding: 8px 16px;
+    background-color: #0196da;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    a {
+        color: white; // Màu chữ trắng
+        text-decoration: none; // Bỏ gạch dưới
+    }
+}
+.pdf-container {
+    width: 100%;
+    height: 100vh; /* Chiều cao 100% của viewport */
+    margin-top: 35px;
+  }
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các nút */
+  
+    .btn {
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      
+      &.btn-primary {
+        background-color: #007bff;
+      }
+      
+      &.btn-danger {
+        background-color: #dc3545;
+      }
+      a {
+        color: white; // Màu chữ trắng
+        text-decoration: none; // Bỏ gạch dưới
+    }
+    }
+  }
+  
+  

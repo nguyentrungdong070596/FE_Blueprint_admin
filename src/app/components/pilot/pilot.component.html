@@ -1,0 +1,39 @@
+<div class="content">
+    <h2>Quản lý danh sách hoa tiêu</h2>
+    <div class="controls">
+        <button (click)="addPilots()" class="btn btn-primary"><a [routerLink]="['/pilot/add']">Thêm mới</a></button>
+    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Họ và tên</th>
+          <th>Hình ảnh</th>
+          <th>Hạng hoa tiêu</th>
+          <th>Điều chỉnh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pilot of pilots; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ pilot.name }}</td>
+          <td>
+            <img [src]="pilot.image" alt="" class="image-user">
+          </td>
+          <td>{{pilot.range}}</td>
+          <td>
+            <button (click)="editPilot(i)" class="btn-edit">
+              <i class="fa-solid fa-edit"></i> Chỉnh sửa
+            </button>
+            <button (click)="deletePilot(i)" class="btn-delete">
+              <i class="fa-solid fa-trash"></i> Xóa
+            </button>
+          </td>          
+        </tr>
+      </tbody>
+    </table><br>
+    <div class="flex-auto">
+        <p-paginator [rows]="rows" [totalRecords]="totalRecords" [first]="first" (onPageChange)="onPageChange($event)"></p-paginator>
+    </div>
+  </div>
+  

@@ -1,1 +1,30 @@
+@import "primeicons/primeicons.css";
+// import Quill styles in styles.scss
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
 /* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+::ng-deep .p-paginator {
+    .p-paginator-button {
+      padding: 0.5rem 1rem; // Tăng kích thước padding
+      font-size: 1.2rem; // Thay đổi kích thước chữ
+      min-width: 3rem; // Đặt chiều rộng tối thiểu
+    }
+  
+    .p-paginator-prev, .p-paginator-next {
+      // Thay đổi kích thước nút trước và sau
+      padding: 0.5rem 1rem; // Tăng kích thước padding
+      font-size: 1.2rem; // Thay đổi kích thước chữ
+    }
+  
+    .p-paginator-page {
+      // Thay đổi kích thước các nút trang
+      padding: 0.5rem 1rem; // Tăng kích thước padding
+      font-size: 1.2rem; // Thay đổi kích thước chữ
+    }
+  }
+  

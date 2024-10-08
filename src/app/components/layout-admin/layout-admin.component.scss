@@ -1,0 +1,42 @@
+.wrapper {
+  display: flex;
+  transition: all 0.3s ease; /* Hiệu ứng mượt mà khi chuyển đổi */
+}
+
+.content-wrapper {
+  flex: 1;
+  margin-left: 250px; /* Kích thước ban đầu của sidebar */
+  transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+}
+
+.content-wrapper.closed {
+  margin-left: 70px; /* Khi sidebar đóng, thay đổi kích thước của phần content */
+}
+
+.content {
+  padding: 20px;
+  transition: transform 0.5s ease; /* Hiệu ứng mượt mà khi đóng/mở */
+}
+
+.sidebar.closed {
+  width: 70px;
+}
+
+app-sidebar {
+  z-index: 1000;
+}
+
+.navbar-content {
+  /* Đảm bảo navbar nằm ở trên */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-wrapper {
+  margin-top: 60px; /* Khoảng cách để tránh navbar */
+}

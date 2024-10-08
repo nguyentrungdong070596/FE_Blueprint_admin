@@ -1,0 +1,31 @@
+<div class="content1">
+    <h1 *ngIf="!isEditMode">Thêm mới phương tiện</h1>
+    <h1 *ngIf="isEditMode">Chỉnh sửa phương tiện</h1>
+</div>
+<div class="content">
+    <button type="button" (click)="goBack()" class="btn-back">
+        <span class="icon">&lt;</span> Trở lại
+    </button>
+    <form (ngSubmit)="onSubmit()">
+        <div>
+            <label for="range">Loại phương tiện:</label>
+            <select id="range" [(ngModel)]="vehicle.type" name="type" required>
+                <option value="Hoa tiêu ngoại hạng A">Xe</option>
+                <option value="Hoa tiêu ngoại hạng B">Cano</option>
+            </select>
+        </div>
+        <div>
+            <label for="image">Hình ảnh:</label>
+            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <div>
+            <label for="title">Tên phương tiện:</label>
+            <input type="text" id="title" [(ngModel)]="vehicle.name" name="name" required>
+        </div>
+        <div>
+            <label for="title">Số hiệu:</label>
+            <input type="text" id="title" [(ngModel)]="vehicle.code" name="code" required>
+        </div>
+        <button type="submit">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
+    </form>
+</div>
