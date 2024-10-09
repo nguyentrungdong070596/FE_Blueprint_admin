@@ -1,167 +1,35 @@
 <div class="content1">
-  <!-- <h1 *ngIf="!isEditMode">Thêm mới tin tức và sự kiện</h1>
-  <h1 *ngIf="isEditMode">Chỉnh sửa tin tức và sự kiện</h1> -->
-  <h1>Thêm mới</h1>
+  <h1 *ngIf="!isEditMode">Thêm mới tin tức và sự kiện</h1>
+  <h1 *ngIf="isEditMode">Chỉnh sửa tin tức và sự kiện</h1>
 </div>
-
 <div class="content">
-  <a href="/news" type="button" class="btn-back" style="text-decoration: none">
+  <button type="button" (click)="goBack()" class="btn-back">
     <span class="icon">&lt;</span> Trở lại
-  </a>
-  <!-- <form #newsForm="ngForm" (ngSubmit)="onSubmit(newsForm)">
-    <div>
-      <label for="title">Tiêu đề:</label>
-      <input
-        type="text"
-        id="title"
-        [(ngModel)]="news.title"
-        name="title"
-        required
-      />
-    </div>
-    <div>
-      <label for="image">Hình ảnh:</label>
-      <input
-        type="file"
-        id="image"
-        (change)="onFileSelected($event)"
-        accept="image/*"
-      />
-    </div>
-    <div>
-      <label for="content">Nội dung:</label>
-      <quill-editor [(ngModel)]="news.content" name="content"></quill-editor>
-    </div>
-    <div>
-      <label for="status">Trạng thái:</label>
-      <select id="status" [(ngModel)]="news.status" name="status" required>
-        <option label="Hiển thị" value="1">Hiển thị</option>
-        <option label="Ẩn" value="0">Ẩn</option>
-      </select>
-    </div>
-    <div>
-      <label for="date">Ngày đăng:</label>
-      <input
-        type="date"
-        id="date"
-        [(ngModel)]="news.date"
-        name="date"
-        required
-      />
-    </div>
-    <button type="submit">{{ isEditMode ? "Cập nhật" : "Lưu" }}</button>
-  </form> -->
-  <form [formGroup]="form">
-    <div>
-      <label
-        for="title"
-        [ngClass]="{
-          'color-form-red':
-            form.get('title')?.invalid &&
-            (form.get('title')?.dirty || form.get('title')?.touched)
-        }"
-        >Tiêu đề</label
-      >
-      <input
-        pInputText
-        id="title"
-        aria-describedby="title-help"
-        formControlName="title"
-        [ngClass]="{
-          '::ng-deep border-form-red':
-            form.get('title')?.invalid &&
-            (form.get('title')?.dirty || form.get('title')?.touched)
-        }"
-      />
-      <small
-        *ngIf="
-          form.get('title')?.invalid &&
-          (form.get('title')?.dirty || form.get('title')?.touched)
-        "
-        id="title-help"
-        [ngClass]="{
-          'color-form-red':
-            form.get('title')?.invalid &&
-            (form.get('title')?.dirty || form.get('title')?.touched)
-        }"
-      >
-        Tiêu đề không được trống.
-      </small>
-    </div>
-    <div>
-      <label
-        for="image"
-        [ngClass]="{
-          'color-form-red':
-            form.get('image')?.invalid &&
-            (form.get('image')?.dirty || form.get('image')?.touched)
-        }"
-        >Hình ảnh</label
-      >
-      <input
-        type="file"
-        id="image"
-        aria-describedby="image-help"
-        formControlName="image"
-        (change)="onFileSelected($event)"
-        />
-    </div>
-    <div>
-      <label
-        for="content"
-        [ngClass]="{
-          'color-form-red':
-            form.get('content')?.invalid &&
-            (form.get('content')?.dirty || form.get('content')?.touched)
-        }"
-        >Nội dung</label
-      >
-      <input
-        pInputText
-        id="content"
-        aria-describedby="content-help"
-        formControlName="content"
-      />
-    </div>
-    <!-- <div>
-      <label
-        for="status"
-        [ngClass]="{
-          'color-form-red':
-            form.get('status')?.invalid &&
-            (form.get('status')?.dirty || form.get('status')?.touched)
-        }"
-        >Trạng thái</label
-      >
-      <select id="status" formControlName="status" required>
-        <option value="true">Hiển thị</option>
-        <option value="false">Ẩn</option>
-      </select>
-    </div> -->
-    <div>
-      <label
-        for="postdate"
-        [ngClass]="{
-          'color-form-red':
-            form.get('postdate')?.invalid &&
-            (form.get('postdate')?.dirty || form.get('postdate')?.touched)
-        }"
-      >
-        Ngày đăng
-      </label>
-      <input
-        type="date"
-        id="postdate"
-        formControlName="postdate"
-        name="postdate"
-      />
-    </div>
-    <p-button
-      type="button"
-      label="Thêm mới"
-      icon="pi pi-save"
-      (click)="onSubmit(form.value)"
-      severity="success"
-    />
+  </button>
+  <form [formGroup]="form" >
+      <div>
+          <label for="title">Tiêu đề:</label>
+          <input type="text" id="title" formControlName="title" required>
+      </div>
+      <div>
+          <label for="image">Hình ảnh:</label>
+          <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
+      </div>
+      <div>
+          <label for="content">Nội dung:</label>
+          <quill-editor formControlName="content"></quill-editor>
+      </div>
+      <div>
+          <label for="status">Trạng thái:</label>
+          <select id="status" formControlName="status" required>
+              <option value="Hiển thị">Hiển thị</option>
+              <option value="Ẩn">Ẩn</option>
+          </select>
+      </div>
+      <div>
+          <label for="date">Ngày đăng:</label>
+          <input type="date" id="date" formControlName="date" required>
+      </div>
+      <button type="submit" (ngSubmit)="onSubmit(form.value)">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
   </form>
 </div>

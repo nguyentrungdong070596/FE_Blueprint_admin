@@ -98,6 +98,7 @@ form {
     font-size: 20px; /* Kích thước chữ */
     display: flex; /* Sử dụng flexbox để căn chỉnh icon và text */
     margin-left: 22px;
+    
     .icon {
         margin-right: 5px; /* Khoảng cách giữa icon và text */
         font-size: 18px; /* Kích thước cho icon */
@@ -117,6 +118,11 @@ form {
 
     form {
         width: calc(100% - 30px); /* Giảm chiều rộng form */
+        padding: 15px; /* Giảm padding cho form */
+    }
+
+    .btn-back {
+        font-size: 18px; /* Giảm kích thước chữ cho nút trở lại */
     }
 }
 
@@ -141,10 +147,12 @@ form {
     .content,
     .content1 {
         margin-left: 5px; /* Giảm khoảng cách cho các màn hình rất nhỏ */
+        padding: 5px; /* Giảm padding cho nội dung */
     }
 
     form {
         padding: 10px; /* Giảm padding cho form */
+        margin: 10px; /* Giảm margin cho form */
     }
 
     .btn-back {

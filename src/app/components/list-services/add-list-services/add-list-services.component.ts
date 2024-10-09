@@ -7,17 +7,17 @@ import { DatePipe } from '@angular/common';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
-  selector: 'app-add-new',
+  selector: 'app-add-list-services',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule, PdfViewerModule],
-  templateUrl: './add-services.component.html',
-  styleUrls: ['./add-services.component.scss'],
+  templateUrl: './add-list-services.component.html',
+  styleUrls: ['./add-list-services.component.scss'],
   providers: [DatePipe]
 })
-export class AddServicesComponent implements OnInit {
-  @Output() servicesAdded = new EventEmitter<any>();
+export class AddListServicesComponent implements OnInit {
+  @Output() listAdded = new EventEmitter<any>();
   
-  servicesForm!: FormGroup; // Đổi tên từ form sang servicesForm
+  listForm!: FormGroup; // Đổi tên từ form sang servicesForm
   isEditMode = false;
   selectedFile: File | null = null;
 
@@ -29,9 +29,9 @@ export class AddServicesComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state) {
       this.isEditMode = navigation.extras.state['isEditMode'] || false;
-      const servicesToEdit = navigation.extras.state['servicesToEdit'];
-      if (servicesToEdit) {
-        this.setFormValues(servicesToEdit);
+      const listToEdit = navigation.extras.state['listToEdit'];
+      if (listToEdit) {
+        this.setFormValues(listToEdit);
       }
     }
   }
@@ -41,24 +41,20 @@ export class AddServicesComponent implements OnInit {
   }
 
   createForm() {
-    this.servicesForm = this.fb.group({
+    this.listForm = this.fb.group({
       title: [null, Validators.required],
       image: [null],
-      info: [null],
-      status: ['Hiển thị', Validators.required],
+      content: [null],
       date: [null, Validators.required],
-      pdfFile: [null],
     });
   }
 
   setFormValues(data: any) {
-    this.servicesForm.patchValue({
-      title: data.name,
+    this.listForm.patchValue({
+      title: data.title,
       image: data.image,
-      info: data.info,
-      status: data.status,
-      date: data.date,
-      pdfFile: data.pdfFile,
+      content: data.content,
+      date: data.date
     });
   }
 
@@ -66,48 +62,64 @@ export class AddServicesComponent implements OnInit {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.servicesForm.patchValue({ image: file.name });
+      this.listForm.patchValue({ image: file.name });
     }
   }
-
-  onPdfSelected(event: any) {
-    const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      this.servicesForm.patchValue({ pdfFile: file });
-    } else {
-      alert('Vui lòng chọn tệp PDF hợp lệ.');
-    }
-  }
-
   onSubmit() {
-    if (this.servicesForm.invalid) {
-      this.servicesForm.markAllAsTouched();
+    if (this.listForm.invalid) {
+      this.listForm.markAllAsTouched();
       return;
     }
 
-    const serviceData = this.servicesForm.value;
+    const serviceData = this.listForm.value;
 
     if (this.isEditMode) {
-      this.servicesAdded.emit(serviceData);
+      this.listAdded.emit(serviceData);
     } else {
-      this.servicesAdded.emit(serviceData);
+      this.listAdded.emit(serviceData);
     }
     this.resetForm();
   }
 
   resetForm() {
-    this.servicesForm.reset({
+    this.listForm.reset({
       title: '',
       image: '',
-      info: '',
-      status: 'Hiển thị',
+      content: '',
       date: '',
-      pdfFile: '',
     });
     this.selectedFile = null;
   }
 
   goBack() {
-    this.router.navigate(['/services']);
+    this.router.navigate(['/list-services']);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

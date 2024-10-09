@@ -1,18 +1,17 @@
 <div class="content">
-    <div class="add-monnuoc-container">
-      <h2>Thêm Mới Mớn Nước</h2>
-      <form (ngSubmit)="onSubmit()" #monnuocForm="ngForm">
-        <div>
-          <label for="date">Ngày:</label>
-          <input type="date" id="date" name="date" required [(ngModel)]="date"> 
-        </div>
-        <div>
-          <label for="file">Tải lên PDF:</label>
-          <input type="file" id="file" name="file" accept=".pdf" (change)="onFileChange($event)" required>
-        </div>
-        <button type="submit" class="btn btn-success">Lưu</button>
-        <button type="button" class="btn btn-secondary" (click)="goBack()">Trở Lại</button>
+  <div class="add-monnuoc-container">
+      <h2>Thêm Mới Môn Nước</h2>
+      <form [formGroup]="monnuocForm">
+          <div>
+              <label for="date">Ngày:</label>
+              <input type="date" id="date" formControlName="date" required>
+          </div>
+          <div>
+              <label for="file">Tải lên PDF:</label>
+              <input type="file" id="file" (change)="onFileChange($event)" accept=".pdf" required>
+          </div>
+          <button type="submit" class="btn btn-success" [disabled]="monnuocForm.invalid" (click)="onSubmit()">Lưu</button>
+          <button type="button" class="btn btn-secondary" (click)="goBack()">Trở Lại</button>
       </form>
-    </div>
   </div>
-  
+</div>

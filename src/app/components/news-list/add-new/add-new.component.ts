@@ -14,24 +14,38 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
   selector: 'app-add-new',
   standalone: true,
   imports: [CommonModule, FormsModule, QuillModule, ReactiveFormsModule, TreeSelectModule, CalendarModule],
+
   templateUrl: './add-new.component.html',
   styleUrls: ['./add-new.component.scss'],
   providers: [DatePipe]
 })
 export class AddNewComponent implements OnInit {
   form!: FormGroup;
+  isEditMode = false;
   news: any = {};
   uploadImage: any;
   preview_upload: any;
   stringurl: any;
   fileToUpload: File | null = null;
+ selectedFile: File | null = null;
+@Output() newsAdded = new EventEmitter<any>();
   // dateValue: Date | undefined;
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private _dataService: DataService,
     private _uploadService: FileUploadService
-  ) { }
+  ) {    const navigation = this.router.getCurrentNavigation();
+    if (navigation && navigation.extras.state) {
+      this.isEditMode = navigation.extras.state['isEditMode'] || false; 
+      const newsToEdit = navigation.extras.state['newsToEdit']; 
+      if (newsToEdit) {
+        this.setFormValues(newsToEdit);
+      }
+    } else {
+      console.error('No file selected');
+    }
+  }
 
   ngOnInit(): void {
     this.createForm();
@@ -44,9 +58,6 @@ export class AddNewComponent implements OnInit {
       status: this.fb.control(null),
       postdate: this.fb.control(null),
     });
-    // if (this.config.data.ID) {
-    //   this.setValueFormEdit(this.config.data);
-    // }
   }
   // setValueFormEdit(data: any) {
   //   var status = this.trangThai.find((x: any) => x.code == data?.status);
@@ -70,11 +81,6 @@ export class AddNewComponent implements OnInit {
             console.error('Error uploading file:', error);
           }
         );
-      }
-    } else {
-      console.error('No file selected');
-    }
-  }
 
   back(): void {
     this.router.navigate(['/news']);
@@ -92,8 +98,32 @@ export class AddNewComponent implements OnInit {
   }
 
   onSubmit(values: any) {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.handleFileInput(values)
+    this.newsAdded.emit(this.form.value); // Gửi dữ liệu tin tức
+    this.resetForm();
   }
+        setFormValues(data: any) {
+    this.form.patchValue({
+      title: data.name,
+      content: data.detail,
+      image: data.image,
+      status: data.status,
+      date: data.date
+    });
+  }
+        resetForm() {
+    this.form.reset({
+      title: '',
+      content: '',
+      image: '',
+      status: 'Hiển thị',
+      date: ''
+    });
+    this.selectedFile = null;
 
   onInsert(values: any) {
     if (this.form.invalid) {
