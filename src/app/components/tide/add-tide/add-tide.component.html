@@ -1,1 +1,16 @@
-<p>add-tide works!</p>
+<div class="content1">
+    <h1 *ngIf="!isEditMode">Thêm mới lịch thủy triều</h1>
+    <h1 *ngIf="isEditMode">Chỉnh sửa lịch thủy triều</h1> <!-- Thêm tiêu đề cho chế độ chỉnh sửa -->
+</div>
+<div class="content">
+    <button type="button" (click)="goBack()" class="btn-back">
+        <span class="icon">&lt;</span> Trở lại
+    </button>
+    <form (ngSubmit)="onSubmit()">
+        <div>
+            <label for="pdf">Tải file PDF:</label> <!-- Thay đổi nhãn từ Hình ảnh thành Tải file PDF -->
+            <input type="file" id="pdf" (change)="onFileSelected($event)" accept="application/pdf"> <!-- Đổi id và accept thành file PDF -->
+        </div>
+        <button type="submit">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button> <!-- Thay đổi text nút dựa trên chế độ -->
+    </form>
+</div>

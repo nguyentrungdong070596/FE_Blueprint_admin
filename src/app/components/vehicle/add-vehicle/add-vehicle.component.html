@@ -6,12 +6,12 @@
     <button type="button" (click)="goBack()" class="btn-back">
         <span class="icon">&lt;</span> Trở lại
     </button>
-    <form (ngSubmit)="onSubmit()">
+    <form [formGroup]="vehicleForm">
         <div>
-            <label for="range">Loại phương tiện:</label>
-            <select id="range" [(ngModel)]="vehicle.type" name="type" required>
-                <option value="Hoa tiêu ngoại hạng A">Xe</option>
-                <option value="Hoa tiêu ngoại hạng B">Cano</option>
+            <label for="type">Loại phương tiện:</label>
+            <select id="type" formControlName="type" required>
+                <option value="Xe">Xe</option>
+                <option value="Cano">Cano</option>
             </select>
         </div>
         <div>
@@ -19,13 +19,13 @@
             <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
         </div>
         <div>
-            <label for="title">Tên phương tiện:</label>
-            <input type="text" id="title" [(ngModel)]="vehicle.name" name="name" required>
+            <label for="name">Tên phương tiện:</label>
+            <input type="text" id="name" formControlName="name" required>
         </div>
         <div>
-            <label for="title">Số hiệu:</label>
-            <input type="text" id="title" [(ngModel)]="vehicle.code" name="code" required>
+            <label for="code">Số hiệu:</label>
+            <input type="text" id="code" formControlName="code" required>
         </div>
-        <button type="submit">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
+        <button type="submit"  (ngSubmit)="onSubmit()">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
     </form>
 </div>

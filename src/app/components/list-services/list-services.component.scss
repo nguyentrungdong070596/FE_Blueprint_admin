@@ -111,6 +111,7 @@ a {
 .table {
     width: calc(100% - 10px); /* Điều chỉnh chiều rộng của bảng để giảm khoảng trắng */
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .table th,
@@ -133,8 +134,8 @@ a {
 }
 
 .image-user {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -147,6 +148,7 @@ a {
     color: white;
     font-weight: bold;
     cursor: pointer;
+
     a {
         color: white; // Màu chữ trắng
         text-decoration: none; // Bỏ gạch dưới
@@ -155,27 +157,56 @@ a {
 
 .btn-edit,
 .btn-delete {
-  border: none;
-  background: none;
-  color: #0196da;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  margin-right: 5px; // Giữa hai nút
-  transition: background-color 0.3s ease;
-  white-space: nowrap;
+    border: none;
+    background: none;
+    color: #0196da;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 5px 10px;
+    margin-right: 5px; // Giữa hai nút
+    transition: background-color 0.3s ease;
 }
 
 .btn-edit:hover,
 .btn-delete:hover {
-  background-color: rgba(255, 255, 255, 0.2); 
+    background-color: rgba(255, 255, 255, 0.2); // Màu nền khi hover
 }
 
 .btn-edit i,
 .btn-delete i {
-  margin-right: 5px; 
+    margin-right: 5px; // Khoảng cách giữa icon và text
 }
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các nút */
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        color: white;
+
+        &.btn-primary {
+            background-color: #007bff;
+        }
+
+        &.btn-danger {
+            background-color: #dc3545;
+        }
+
+        a {
+            color: white; // Màu chữ trắng
+            text-decoration: none; // Bỏ gạch dưới
+        }
+    }
+}
+
 ::ng-deep .p-paginator {
     display: flex; 
     align-items: center; 
@@ -195,14 +226,14 @@ a {
         width: 50px; 
         height: 50px; 
         border-radius: 50%; 
-      
+        
         &:hover {
-          background: lightgray; 
-          color: black; 
+            background: lightgray; 
+            color: black; 
         }
-      }
-      
-      .p-paginator-prev, .p-paginator-next {
+    }
+
+    .p-paginator-prev, .p-paginator-next {
         background: none; 
         border: none;
         color: black; 
@@ -210,9 +241,9 @@ a {
         margin: 0 0.5rem; 
         cursor: pointer; 
         font-size: 1.5rem; 
-      }
-      
-      .p-paginator-page {
+    }
+
+    .p-paginator-page {
         background: none; 
         border: none; 
         color: black; 
@@ -224,18 +255,18 @@ a {
         width: 50px; 
         height: 50px; 
         border-radius: 50%; 
-      
+        
         &:hover {
-          background: lightgray; 
+            background: lightgray; 
         }
-      
+
         &.p-highlight {
-          background: #eff6ff; 
-          color: black; 
+            background: #eff6ff; 
+            color: black; 
         }
-      }
-      
-      .p-paginator-first, .p-paginator-last {
+    }
+
+    .p-paginator-first, .p-paginator-last {
         background: none; 
         border: none;
         color: black; 
@@ -243,11 +274,67 @@ a {
         margin: 0 0.5rem;
         cursor: pointer; 
         font-size: 1.5rem; 
-      
+        
         &:hover {
-          border-radius: 50%; 
+            border-radius: 50%; 
         }
-      }
-    }        
+    }
+}
 
-  
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+        padding: 10px;
+    }
+
+    .content {
+        margin-left: 200px; /* Khi sidebar mở */
+    }
+
+    .sidebar.closed + .content {
+        margin-left: 75px; /* Khi sidebar đóng */
+    }
+
+    .btn-add {
+        width: 100%; /* Đặt nút thêm chiếm 100% chiều rộng */
+    }
+
+    .controls {
+        flex-direction: column; /* Chuyển thành cột */
+        align-items: stretch; /* Căn giữa */
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+        padding: 5px;
+    }
+
+    .content {
+        margin-left: 150px; /* Khi sidebar mở */
+    }
+
+    .btn-add {
+        width: 100%; /* Đặt nút thêm chiếm 100% chiều rộng */
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 100%;
+        position: relative; /* Đặt lại vị trí */
+        height: auto; /* Đặt chiều cao tự động */
+    }
+
+    .content {
+        margin-left: 0; /* Không còn margin khi sidebar mở */
+        padding: 10px; /* Thêm padding cho nội dung */
+    }
+
+    .btn-add {
+        width: 100%; /* Đặt chiều rộng cho form */
+        padding: 10px; /* Giảm padding cho form */
+    }
+}

@@ -1,1 +1,25 @@
-<p>tide works!</p>
+  <div class="content">
+    <div class="date-picker-container"><h2>Quản lý lịch thủy triều</h2>
+      <input type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()" />
+    </div>
+     <div class="controls">
+        <button (click)="addTides()" class="btn btn-primary"><a [routerLink]="['/tide/add']">Thêm mới</a></button>
+    </div> 
+    <div class="calendar-container">
+      <div class="calendar-list">
+        <h2>LỊCH THỦY TRIỀU</h2>
+        <ul>
+          <li *ngFor="let month of months">
+            <div class="month-item">
+              <img src="assets/images/image/calendar.png" alt="Calendar Icon">
+              <span>{{ month.name }}</span>
+              <a [href]="month.downloadLink" target="_blank">
+                <i class="pi pi-download" style="font-size: 1rem;"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    

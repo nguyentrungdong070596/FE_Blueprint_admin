@@ -36,75 +36,74 @@ body {
     align-items: center; // Căn giữa theo chiều dọc
     min-height: 100vh; // Đảm bảo chiều cao tối thiểu
     background-color: #f7f7f7; // Màu nền nhẹ nhàng
-  }
-  
-  .add-monnuoc-container {
+}
+
+.add-monnuoc-container {
     background-color: white; // Màu nền trắng cho form
     border-radius: 8px; // Bo góc
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // Đổ bóng nhẹ
     padding: 20px; // Padding cho form
     width: 400px; // Chiều rộng của form
     max-width: 100%; // Đảm bảo không vượt quá chiều rộng màn hình
-  
+
     h2 {
-      text-align: center; // Căn giữa tiêu đề
-      color: #333; // Màu chữ tiêu đề
-      margin-bottom: 20px; // Khoảng cách dưới tiêu đề
+        text-align: center; // Căn giữa tiêu đề
+        color: #333; // Màu chữ tiêu đề
+        margin-bottom: 20px; // Khoảng cách dưới tiêu đề
     }
-  
+
     label {
-      font-weight: bold; // Làm đậm chữ
-      margin-bottom: 8px; // Khoảng cách dưới label
-      display: block; // Đặt label thành khối
-      color: #555; // Màu chữ label
+        font-weight: bold; // Làm đậm chữ
+        margin-bottom: 8px; // Khoảng cách dưới label
+        display: block; // Đặt label thành khối
+        color: #555; // Màu chữ label
     }
-  
+
     input[type="text"],
     input[type="date"],
     input[type="file"] {
-      width: 100%; // Chiều rộng đầy đủ
-      padding: 10px; // Padding cho input
-      margin-bottom: 20px; // Khoảng cách dưới mỗi input
-      border: 1px solid #ccc; // Đường viền
-      border-radius: 4px; // Bo góc nhẹ
-      transition: border-color 0.3s; // Hiệu ứng chuyển tiếp
-  
-      &:focus {
-        border-color: #007bff; // Đổi màu đường viền khi focus
-        outline: none; // Tắt outline mặc định
-      }
+        width: 100%; // Chiều rộng đầy đủ
+        padding: 10px; // Padding cho input
+        margin-bottom: 20px; // Khoảng cách dưới mỗi input
+        border: 1px solid #ccc; // Đường viền
+        border-radius: 4px; // Bo góc nhẹ
+        transition: border-color 0.3s; // Hiệu ứng chuyển tiếp
+
+        &:focus {
+            border-color: #007bff; // Đổi màu đường viền khi focus
+            outline: none; // Tắt outline mặc định
+        }
     }
-  
+
     button {
-      width: 48%; // Chiều rộng nút
-      padding: 10px; // Padding cho nút
-      border: none; // Bỏ đường viền
-      border-radius: 4px; // Bo góc nút
-      cursor: pointer; // Con trỏ khi di chuột vào nút
-  
-      &.btn-success {
-        background-color: #28a745; // Màu nền cho nút lưu
-        color: white; // Màu chữ cho nút lưu
-        margin-right: 4%; // Khoảng cách bên phải nút lưu
-        transition: background-color 0.3s; // Hiệu ứng chuyển tiếp
-  
-        &:hover {
-          background-color: #218838; // Màu nền khi hover
+        width: 48%; // Chiều rộng nút
+        padding: 10px; // Padding cho nút
+        border: none; // Bỏ đường viền
+        border-radius: 4px; // Bo góc nút
+        cursor: pointer; // Con trỏ khi di chuột vào nút
+
+        &.btn-success {
+            background-color: #28a745; // Màu nền cho nút lưu
+            color: white; // Màu chữ cho nút lưu
+            margin-right: 4%; // Khoảng cách bên phải nút lưu
+            transition: background-color 0.3s; // Hiệu ứng chuyển tiếp
+
+            &:hover {
+                background-color: #218838; // Màu nền khi hover
+            }
         }
-      }
-  
-      &.btn-secondary {
-        background-color: #6c757d; // Màu nền cho nút trở lại
-        color: white; // Màu chữ cho nút trở lại
-        transition: background-color 0.3s; // Hiệu ứng chuyển tiếp
-  
-        &:hover {
-          background-color: #5a6268; // Màu nền khi hover
+
+        &.btn-secondary {
+            background-color: #6c757d; // Màu nền cho nút trở lại
+            color: white; // Màu chữ cho nút trở lại
+            transition: background-color 0.3s; // Hiệu ứng chuyển tiếp
+
+            &:hover {
+                background-color: #5a6268; // Màu nền khi hover
+            }
         }
-      }
     }
-  }
-  
+}
 
 .sidebar.closed + .content {
     margin-left: 85px; /* Khi sidebar đóng */
@@ -222,36 +221,80 @@ a {
         text-decoration: none; // Bỏ gạch dưới
     }
 }
+
 .pdf-container {
     width: 100%;
     height: 100vh; /* Chiều cao 100% của viewport */
     margin-top: 35px;
-  }
-  .controls {
+}
+
+.controls {
     margin-top: 20px;
     display: flex;
     gap: 10px; /* Khoảng cách giữa các nút */
-  
+
     .btn {
-      padding: 10px 20px;
-      font-size: 13px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      
-      &.btn-primary {
-        background-color: #007bff;
-      }
-      
-      &.btn-danger {
-        background-color: #dc3545;
-      }
-      a {
-        color: white; // Màu chữ trắng
-        text-decoration: none; // Bỏ gạch dưới
+        padding: 10px 20px;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        color: white;
+
+        &.btn-primary {
+            background-color: #007bff;
+        }
+
+        &.btn-danger {
+            background-color: #dc3545;
+        }
+
+        a {
+            color: white; // Màu chữ trắng
+            text-decoration: none; // Bỏ gạch dưới
+        }
     }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        padding: 10px;
     }
-  }
-  
-  
+
+    .add-monnuoc-container {
+        width: 90%; // Đặt chiều rộng cho màn hình nhỏ
+        padding: 15px; // Giảm padding cho form
+    }
+
+    .btn-add {
+        width: 100%; // Đặt nút thêm chiếm 100% chiều rộng
+    }
+
+    .flex-content {
+        flex-direction: column; // Chuyển thành cột
+        align-items: flex-start; // Căn trái
+    }
+
+    .controls {
+        flex-direction: column; // Chuyển thành cột
+        align-items: stretch; // Căn giữa
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 100%;
+        position: relative; // Đặt lại vị trí
+    }
+
+    .content {
+        flex-direction: column; // Đặt lại hướng của nội dung
+        align-items: stretch; // Căn giữa
+    }
+
+    .add-monnuoc-container {
+        width: 100%; // Đặt chiều rộng cho form
+    }
+}
