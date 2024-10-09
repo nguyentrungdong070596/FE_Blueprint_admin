@@ -1,0 +1,64 @@
+<form [formGroup]="loginForm">
+  <div class="my-3 surface-ground flex align-items-center justify-content-center min-h-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+      <!-- <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                 -->
+      <div
+        style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+        <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+          <div class="text-center mb-5">
+            <img src="assets/images/logos/logopage.png" alt="Image" height="50" class="mb-3">
+            <div class="text-900 text-3xl font-medium mb-3">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</div>
+            <span class="text-600 font-medium">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</span>
+          </div>
+          <p-messages [showTransitionOptions]="'0ms'" />
+          <div class="w-full">
+            <label for="username" class="block text-900 text-base font-medium mb-2">Tài khoản</label>
+            <input id="username" type="text" placeholder="Tài khoản" pInputText formControlName="username"
+              class="w-full mb-1" style="padding:1rem">
+
+            <label for="password" class="block text-900 text-base font-medium text-base mb-2">Mật khẩu</label>
+            <p-password id="password" class="w-full mb-1" placeholder="Mật khẩu" formControlName="password"
+              [toggleMask]="true" styleClass="mb-1 w-full" inputStyleClass="w-full p-3"></p-password>
+
+            <label for="email1" class="block text-900 text-base font-medium mb-2">Email</label>
+            <input id="email1" type="text" placeholder="Email" pInputText formControlName="email" class="w-full mb-1"
+              style="padding:1rem">
+
+            <label for="firstName" class="block text-900 text-base font-medium mb-2">Họ</label>
+            <input id="firstName" type="text" placeholder="Họ" pInputText formControlName="firstName"
+              class="w-full mb-1" style="padding:1rem">
+
+            <label for="lastName" class="block text-900 text-base font-medium mb-2">Tên</label>
+            <input id="lastName" type="text" placeholder="Tên" pInputText formControlName="lastName" class="w-full mb-1"
+              style="padding:1rem">
+
+            <label for="phone" class="block text-900 text-base font-medium mb-2">Số điện thoại</label>
+            <input id="phone" type="text" placeholder="Số điện thoại" pInputText formControlName="phone"
+              class="w-full mb-1" style="padding:1rem">
+
+            <label for="city" class="block text-900 text-base font-medium mb-2">Thành phố</label>
+            <input id="city" type="text" placeholder="Thành phố" pInputText formControlName="city" class="w-full mb-1"
+              style="padding:1rem">
+
+            <label for="address" class="block text-900 text-base font-medium mb-2">Địa chỉ</label>
+            <input id="address" type="text" placeholder="Địa chỉ" pInputText formControlName="address"
+              class="w-full mb-2" style="padding:1rem">
+            <div class="flex align-items-center justify-content-between mb-2 gap-5 w-full">
+              <div class="flex align-items-center"></div>
+              <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"
+                [routerLink]="[ '/login' ]">Đăng nhập</a>
+            </div>
+            <p-button id="btn-login" label="Đăng ký" [raised]="true" (click)="submitForm()" class="w-full text-xl"
+              (onClick)="load()" [loading]="loading" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- <div bgcolor="#000000" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+  </div>
+</div> -->
