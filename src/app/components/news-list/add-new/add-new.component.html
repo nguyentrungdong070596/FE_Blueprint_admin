@@ -6,7 +6,7 @@
   <button type="button" (click)="goBack()" class="btn-back">
     <span class="icon">&lt;</span> Trở lại
   </button>
-  <form [formGroup]="newsForm" >
+  <form [formGroup]="form" >
       <div>
           <label for="title">Tiêu đề:</label>
           <input type="text" id="title" formControlName="title" required>
@@ -30,6 +30,6 @@
           <label for="date">Ngày đăng:</label>
           <input type="date" id="date" formControlName="date" required>
       </div>
-      <button type="submit" (ngSubmit)="onSubmit()">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
+      <button type="submit" (ngSubmit)="onSubmit(form.value)">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
   </form>
 </div>
