@@ -66,14 +66,17 @@ form {
 }
 
 .content {
-    margin-left: 75px; /* Khi sidebar mở (khoảng cách 5px + 200px) */
-    transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
-    padding: 15px; /* Thêm padding cho nội dung */
+    width: 100%;
+    padding-left: 20px;
+    height: 100vh;
+    // margin-left: 75px; /* Khi sidebar mở (khoảng cách 5px + 200px) */
+    // transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
+    // padding: 15px; /* Thêm padding cho nội dung */
 
-    &.closed {
-        margin-left: calc(65px); /* Khi sidebar đóng (khoảng cách 5px + 60px) */
-        text-align: center;
-    }
+    // &.closed {
+    //     margin-left: calc(65px); /* Khi sidebar đóng (khoảng cách 5px + 60px) */
+    //     text-align: center;
+    // }
 }
 
 .content1 {
