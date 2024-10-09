@@ -1,12 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
+import { BehaviorSubject } from 'rxjs';
 // import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
+  private dataSubject = new BehaviorSubject<any>(null);
+  data$ = this.dataSubject.asObservable();
+
+  setData(data: any) {
+    this.dataSubject.next(data);
+  }
   constructor(private _http: HttpClient) { }
   createrheader() {
     return {
@@ -53,7 +60,7 @@ export class DataService {
   GetNews_Service(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit },
+      params: { limit: value.limit, page: value.page, showHiddenItem: true},
       headers,
     });
   }

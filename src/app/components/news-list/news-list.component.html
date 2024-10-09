@@ -1,42 +1,50 @@
 <div class="content">
-    <h2>Quản lý tin tức và sự kiện</h2>
-    <button type="button" class="btn-add"><a [routerLink]="['/news/add']">Thêm mới</a></button>
-    
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Tiêu đề</th>
-          <th>Nội dung chi tiết</th>
-          <th>Hình ảnh</th>
-          <th>Trạng thái</th>
-          <th>Ngày đăng</th>
-          <th>Điều chỉnh</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let new of news; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ new.name }}</td>
-          <td>{{ new.detail }}</td>
-          <td>
-            <img [src]="new.image" alt="" class="image-user">
-          </td>
-          <td>{{ new.status }}</td>
-          <td>{{ new.date }}</td>
-          <td>
-            <button (click)="editNews(i)" class="btn-edit">
-              <i class="fa-solid fa-edit"></i> Chỉnh sửa
-            </button>
-            <button (click)="deleteNews(i)" class="btn-delete">
-              <i class="fa-solid fa-trash"></i> Xóa
-            </button>
-          </td>          
-        </tr>
-      </tbody>
-    </table><br>
-    <div class="flex-auto">
-    <p-paginator [rows]="rows" [totalRecords]="totalRecords" [first]="first" (onPageChange)="onPageChange($event)"></p-paginator>
-</div>
+  <h2>Quản lý tin tức và sự kiện</h2>
+  <button type="button" class="btn-add">
+    <a [routerLink]="['/news/add']">Thêm mới</a>
+  </button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tiêu đề</th>
+        <th>Nội dung chi tiết</th>
+        <th>Hình ảnh</th>
+        <th>Trạng thái</th>
+        <th>Ngày đăng</th>
+        <th>Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let new of const_data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ new.title }}</td>
+        <td>{{ new.content }}</td>
+        <td>
+          <img [src]="urlAPI +'/'+ new.image" alt="" class="image-user" />
+        </td>
+        <td>{{ new.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
+        <td>{{ new.postdate }}</td>
+        <td>
+          <button (click)="editNews(new)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+          </button>
+          <button (click)="deleteNews(new)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i> Xóa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="flex-auto">
+    <p-paginator
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showFirstLastIcon]="false"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
   </div>
-  
+</div>

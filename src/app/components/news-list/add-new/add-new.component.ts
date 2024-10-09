@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill';
 import { DatePipe } from '@angular/common';
@@ -21,68 +21,135 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
 })
 export class AddNewComponent implements OnInit {
   form!: FormGroup;
-  isEditMode = false;
+  isEditMode = true;
+  EditData: any;
   news: any = {};
   uploadImage: any;
   preview_upload: any;
   stringurl: any;
   fileToUpload: File | null = null;
- selectedFile: File | null = null;
-@Output() newsAdded = new EventEmitter<any>();
-  // dateValue: Date | undefined;
+  selectedFile: File | null = null;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private _dataService: DataService,
-    private _uploadService: FileUploadService
-  ) {    const navigation = this.router.getCurrentNavigation();
-    if (navigation && navigation.extras.state) {
-      this.isEditMode = navigation.extras.state['isEditMode'] || false; 
-      const newsToEdit = navigation.extras.state['newsToEdit']; 
-      if (newsToEdit) {
-        this.setFormValues(newsToEdit);
-      }
-    } else {
-      console.error('No file selected');
-    }
-  }
+    private _uploadService: FileUploadService,
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
-  }
-  createForm() {
-    this.form = this.fb.group({
-      title: this.fb.control(null, [Validators.required]),
-      image: this.fb.control(null),
-      content: this.fb.control(null),
-      status: this.fb.control(null),
-      postdate: this.fb.control(null),
+    this._dataService.data$.subscribe(data => {
+      this.EditData = data;
+      this.setValueFormEdit(data);
     });
   }
-  // setValueFormEdit(data: any) {
-  //   var status = this.trangThai.find((x: any) => x.code == data?.status);
-  //   this.form.controls['code'].setValue(data?.code);
-  //   this.form.controls['name'].setValue(data?.name);
-  //   this.form.controls['status'].setValue(status);
-  // }
 
+  createForm() {
+    this.form = this.fb.group({
+      title: [null, Validators.required],
+      image: [null],
+      content: [null, Validators.required],
+      status: [null, Validators.required],
+      postdate: [null],
+    });
+  }
+
+  setValueFormEdit(data: any) {
+    if (data) {
+      this.form.patchValue({
+        title: data?.title,
+        content: data?.content,
+        status: data?.status,
+        postdate: data?.postdate,
+      });
+    }
+    else {
+      this.isEditMode = false;
+    }
+  }
+
+  // handleFileInput(values: any) {
+  //   // Check if a file has been selected
+  //   if (this.uploadImage && this.uploadImage.length > 0) {
+  //     this.fileToUpload = this.uploadImage[0]; // Access the file directly via index
+  //     if (this.fileToUpload) {
+  //       this._uploadService.postFile(this.fileToUpload).subscribe(
+  //         (data: any) => {
+  //           this.news.image = data.file_save_url;
+  //           // Check url for duplicate image problem.
+  //           if (this.isEditMode) {
+  //             console.log("Edit Mode");
+  //             this.onEdit(values);
+  //           }
+  //           else {
+  //             this.onInsert(values);
+  //           }
+  //           this.goBack();
+  //         },
+  //         (error: any) => {
+  //           console.error('Error uploading file:', error);
+  //         }
+  //       );
+  //     }
+  //   }
+  //   if (this.EditData.image) {
+  //     this.news.image = this.EditData.image;
+  //     if (this.isEditMode) {
+  //       console.log("Edit Mode");
+  //       this.onEdit(values);
+  //     }
+  //     else {
+  //       this.onInsert(values);
+  //     }
+  //     this.goBack();
+  //   }
+  //   else{
+  //     this.news.image = "image";
+  //     if (this.isEditMode) {
+  //       console.log("Edit Mode");
+  //       this.onEdit(values);
+  //     }
+  //     else {
+  //       this.onInsert(values);
+  //     }
+  //     this.goBack();
+  //   }
+  // }
   handleFileInput(values: any) {
-    // Check if a file has been selected
+    const processSave = () => {
+      if (this.isEditMode) {
+        console.log("Edit Mode");
+        this.onEdit(values);
+      } else {
+        this.onInsert(values);
+      }
+      this.goBack();
+    };
+
     if (this.uploadImage && this.uploadImage.length > 0) {
-      this.fileToUpload = this.uploadImage[0]; // Access the file directly via index
+      this.fileToUpload = this.uploadImage[0];
       if (this.fileToUpload) {
         this._uploadService.postFile(this.fileToUpload).subscribe(
           (data: any) => {
             this.news.image = data.file_save_url;
-            this.onInsert(values);
-            this.back();
+            processSave();
           },
           (error: any) => {
             console.error('Error uploading file:', error);
           }
         );
+        return; // Dừng ở đây nếu đã upload ảnh mới
+      }
+    }
 
-  back(): void {
+    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
+    this.news.image = this.EditData.image || "upload/files/default.png";
+    processSave();
+  }
+
+
+  goBack(): void {
     this.router.navigate(['/news']);
   }
 
@@ -93,7 +160,6 @@ export class AddNewComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = e => this.preview_upload = reader.result;
       reader.readAsDataURL(file);
-
     }
   }
 
@@ -103,19 +169,10 @@ export class AddNewComponent implements OnInit {
       return;
     }
     this.handleFileInput(values)
-    this.newsAdded.emit(this.form.value); // Gửi dữ liệu tin tức
     this.resetForm();
   }
-        setFormValues(data: any) {
-    this.form.patchValue({
-      title: data.name,
-      content: data.detail,
-      image: data.image,
-      status: data.status,
-      date: data.date
-    });
-  }
-        resetForm() {
+
+  resetForm() {
     this.form.reset({
       title: '',
       content: '',
@@ -124,68 +181,47 @@ export class AddNewComponent implements OnInit {
       date: ''
     });
     this.selectedFile = null;
+  }
 
   onInsert(values: any) {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    else {
+    this.news.title = values.title;
+    this.news.status = true;
+    this.news.content = values.content;
+    this.news.postdate = values.postdate;
+    this._dataService.post(StringAPI.APINews, this.news)
+      .subscribe(
+        (res) => {
+          console.log('News added successfully:', res);
+        },
+        (error) => {
+          console.error('Error adding news:', error);
+        }
+      );
+
+  }
+
+  onEdit(values: any) {
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
+    if (this.EditData && this.EditData.id && values) {
+      console.log(values);
       this.news.title = values.title;
-      this.news.status = true;
+      this.news.status = values.status;
       this.news.content = values.content;
       this.news.postdate = values.postdate;
 
-      this._dataService.post(StringAPI.APINews, this.news)
+      this._dataService.put(StringAPI.APINews + "/" + this.EditData.id, this.news)
         .subscribe(
           (res) => {
-            console.log('News added successfully:', res);
+            console.log('News update successfully:', res);
           },
           (error) => {
-            console.error('Error adding news:', error);
+            console.error('Error update news:', error);
           }
         );
+
     }
   }
-  // onEdit(values: any, id: any) {
-  //   this.loading = true;
-  //   if (this.form.invalid) {
-  //     this.form.markAllAsTouched();
-  //     this.loading = false;
-  //     this.messageService.add({
-  //       severity: 'error',
-  //       summary: 'Thông báo',
-  //       detail: 'Vui lòng nhập đầy đủ thông tin !!',
-  //     });
-  //     return;
-  //   }
-  //   this.news.name = values.name;
-  //   this.news.code = values.code;
-  //   this.news.status = values.status.code || false;
-  //   this._dataService
-  //     .put(`${StringAPI.APIChucVu}/${id}`, this.news)
-  //     .subscribe(
-  //       (res: any) => {
-
-  //         if (res.success) {
-  //           this.messageService.add({
-  //             severity: 'success',
-  //             summary: 'Thêm mới',
-  //             detail: 'Thêm mới thành công',
-  //           });
-  //           this.ref.close(res || []);
-  //         } else {
-  //           this.messageService.add({
-  //             severity: 'error',
-  //             summary: 'Lỗi',
-  //             detail: res.msg,
-  //           });
-  //         }
-  //         this.loading = false;
-  //       },
-  //       (error) => {
-  //         this.loading = false;
-  //       }
-  //     );
-  // }
 }
