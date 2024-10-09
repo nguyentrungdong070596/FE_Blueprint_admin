@@ -31,7 +31,7 @@ body {
 
 /* Nội dung */
 .content {
-    margin-left: 55px; /* Khi sidebar đóng (giảm từ 250px xuống 75px) */
+    margin-left: 50px; /* Khi sidebar mở */
     transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
     padding: 20px 30px; /* Thêm padding cho nội dung */
 }
@@ -147,41 +147,115 @@ a {
     color: white;
     font-weight: bold;
     cursor: pointer;
+
     a {
         color: white; // Màu chữ trắng
         text-decoration: none; // Bỏ gạch dưới
     }
 }
+
 .pdf-container {
     width: 100%;
     height: 100vh; /* Chiều cao 100% của viewport */
     margin-top: 35px;
-  }
-  .controls {
+}
+
+.controls {
     margin-top: 20px;
     display: flex;
     gap: 10px; /* Khoảng cách giữa các nút */
-  
+
     .btn {
-      padding: 10px 20px;
-      font-size: 13px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      
-      &.btn-primary {
-        background-color: #007bff;
-      }
-      
-      &.btn-danger {
-        background-color: #dc3545;
-      }
-      a {
-        color: white; // Màu chữ trắng
-        text-decoration: none; // Bỏ gạch dưới
+        padding: 10px 20px;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        color: white;
+
+        &.btn-primary {
+            background-color: #007bff;
+        }
+
+        &.btn-danger {
+            background-color: #dc3545;
+        }
+
+        a {
+            color: white; // Màu chữ trắng
+            text-decoration: none; // Bỏ gạch dưới
+        }
     }
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+        padding: 10px;
     }
-  }
-  
-  
+
+    .content {
+        margin-left: 200px; /* Khi sidebar mở */
+    }
+
+    .sidebar.closed + .content {
+        margin-left: 85px; /* Khi sidebar đóng */
+    }
+
+    .add-monnuoc-container {
+        width: 90%; /* Đặt chiều rộng cho màn hình nhỏ */
+        padding: 15px; /* Giảm padding cho form */
+    }
+
+    .btn-add {
+        width: 100%; /* Đặt nút thêm chiếm 100% chiều rộng */
+    }
+
+    .flex-content {
+        flex-direction: column; /* Chuyển thành cột */
+        align-items: flex-start; /* Căn trái */
+    }
+
+    .controls {
+        flex-direction: column; /* Chuyển thành cột */
+        align-items: stretch; /* Căn giữa */
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+        padding: 5px;
+    }
+
+    .content {
+        margin-left: 150px; /* Khi sidebar mở */
+    }
+
+    .add-monnuoc-container {
+        width: 95%; /* Đặt chiều rộng cho màn hình nhỏ hơn */
+    }
+
+    .btn-add {
+        width: 100%; /* Đặt nút thêm chiếm 100% chiều rộng */
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 100%;
+        position: relative; /* Đặt lại vị trí */
+        height: auto; /* Đặt chiều cao tự động */
+    }
+
+    .content {
+        margin-left: 0; /* Không còn margin khi sidebar mở */
+        padding: 10px; /* Thêm padding cho nội dung */
+    }
+
+    .add-monnuoc-container {
+        width: 100%; /* Đặt chiều rộng cho form */
+        padding: 10px; /* Giảm padding cho form */
+    }
+}

@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill'; 
 import { Router } from '@angular/router';
@@ -9,82 +9,101 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 @Component({
   selector: 'app-add-new',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule, PdfViewerModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule, PdfViewerModule],
   templateUrl: './add-services.component.html',
   styleUrls: ['./add-services.component.scss'],
   providers: [DatePipe]
 })
-export class AddServicesComponent {
+export class AddServicesComponent implements OnInit {
   @Output() servicesAdded = new EventEmitter<any>();
   
-  services = {
-    title: '',
-    image: '',
-    info: '',
-    status: 'Hiển thị',
-    date: '',
-    pdfFile: '',  // Đảm bảo có thuộc tính pdfFile
-  };
+  servicesForm!: FormGroup; // Đổi tên từ form sang servicesForm
+  isEditMode = false;
+  selectedFile: File | null = null;
 
-  isEditMode = false; // Thêm biến này để theo dõi chế độ chỉnh sửa
-
-  constructor(private router: Router, private datePipe: DatePipe) {
-    // Kiểm tra nếu có dữ liệu truyền vào từ router
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state) {
-      this.isEditMode = navigation.extras.state['isEditMode'] || false; // Kiểm tra kiểu dữ liệu
-      const servicesToEdit = navigation.extras.state['servicesToEdit']; // Thay đổi ở đây
+      this.isEditMode = navigation.extras.state['isEditMode'] || false;
+      const servicesToEdit = navigation.extras.state['servicesToEdit'];
       if (servicesToEdit) {
-        this.services = {
-          title: servicesToEdit.name,
-          image: servicesToEdit.image,
-          info: servicesToEdit.info,
-          status: servicesToEdit.status,
-          date: servicesToEdit.date,
-          pdfFile: servicesToEdit.pdfFile // Thêm pdfFile nếu có
-        };
+        this.setFormValues(servicesToEdit);
       }
     }
   }
 
-  selectedFile: File | null = null;
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm() {
+    this.servicesForm = this.fb.group({
+      title: [null, Validators.required],
+      image: [null],
+      info: [null],
+      status: ['Hiển thị', Validators.required],
+      date: [null, Validators.required],
+      pdfFile: [null],
+    });
+  }
+
+  setFormValues(data: any) {
+    this.servicesForm.patchValue({
+      title: data.name,
+      image: data.image,
+      info: data.info,
+      status: data.status,
+      date: data.date,
+      pdfFile: data.pdfFile,
+    });
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.services.image = file.name;
+      this.servicesForm.patchValue({ image: file.name });
     }
   }
 
   onPdfSelected(event: any) {
     const file = event.target.files[0];
     if (file && file.type === 'application/pdf') {
-      this.services.pdfFile = file;  // Lưu tệp PDF vào thuộc tính pdfFile
+      this.servicesForm.patchValue({ pdfFile: file });
     } else {
       alert('Vui lòng chọn tệp PDF hợp lệ.');
     }
   }
 
   onSubmit() {
+    if (this.servicesForm.invalid) {
+      this.servicesForm.markAllAsTouched();
+      return;
+    }
+
+    const serviceData = this.servicesForm.value;
+
     if (this.isEditMode) {
-      // Logic cập nhật
-      this.servicesAdded.emit(this.services); // Cập nhật với tin tức hiện tại
+      this.servicesAdded.emit(serviceData);
     } else {
-      this.servicesAdded.emit(this.services); // Thêm mới
+      this.servicesAdded.emit(serviceData);
     }
     this.resetForm();
   }
 
   resetForm() {
-    this.services = {
+    this.servicesForm.reset({
       title: '',
       image: '',
       info: '',
       status: 'Hiển thị',
       date: '',
-      pdfFile: ''  // Đảm bảo có thuộc tính pdfFile
-    };
+      pdfFile: '',
+    });
     this.selectedFile = null;
   }
 

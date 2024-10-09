@@ -57,7 +57,7 @@ export class VehicleComponent {
     this.router.navigate(['/vehicle/add'], { state: { isEditMode: true, vehicleToEdit } });
   }
   deleteVehicle(index: number) {
-    this.vehicles.splice(index, 1); // Xóa user tại index
+    this.vehicles.splice(index, 1);
   }
   
   addVehicles() {

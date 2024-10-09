@@ -1,46 +1,44 @@
-<form [formGroup]="loginForm">
-  <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
-    <div class="flex flex-column align-items-center justify-content-center">
-      <!-- <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                 -->
-      <div
-        style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-        <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-          <div class="text-center mb-5">
-            <img src="assets/images/logos/logopage.png" alt="Image" height="50" class="mb-3">
-            <div class="text-900 text-3xl font-medium mb-3">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</div>
-            <span class="text-600 font-medium">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</span>
-          </div>
-          <p-messages [showTransitionOptions]="'0ms'" />
-          <div class="w-full">
-            <label for="email1" class="block text-900 text-xl font-medium mb-2">Tên đăng nhập</label>
-            <input id="email1" type="text" placeholder="Tài khoản" pInputText formControlName="username"
-              class="w-full mb-5" style="padding:1rem">
-
-            <label for="password1" class="block text-900 text-xl font-medium text-xl mb-2">Mật khẩu</label>
-            <p-password id="password1" class="w-full mb-5" placeholder="Mật khẩu" formControlName="password"
-              [toggleMask]="true" styleClass="mb-5 w-full" inputStyleClass="w-full p-3"></p-password>
-
-            <div class="flex align-items-center justify-content-between mb-5 gap-5 w-full">
-              <div class="flex align-items-center">
-                <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-                <label for="rememberme1">Nhớ mật khẩu</label>
-              </div>
-              <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"
-                [routerLink]="[ '/register' ]">Đăng ký</a>
-              <!-- <a class="font-medium no-underline ml-2 text-right cursor-pointer"
-                  style="color: var(--primary-color)">Quên mật khẩu ?</a> -->
-            </div>
-            <!-- <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" [routerLink]="['/dash']"></button> -->
-            <p-button id="btn-login" label="Đăng nhập" [raised]="true" (click)="submitForm()" class="w-full text-xl" />
+<div class="login-page">
+    <div class="login-container">
+      <img src="assets/images/logos/logopage.png" alt="Logo" />
+      <h2 style="text-align: center;">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</h2>
+      <p class="sub-title" style="color: red; text-align: center;">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</p>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username">Tên đăng nhập</label>
+          <input type="text" id="username" formControlName="username" placeholder="Tài khoản" />
+          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+            <small class="error-text" style="color: red;">Tên đăng nhập là bắt buộc</small>
           </div>
         </div>
-      </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <div class="password-container">
+            <input type="password" id="password" formControlName="password" placeholder="Mật khẩu" (input)="checkPasswordStrength()" />
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+              <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </span>
+          </div>
+          <!-- Thông báo độ mạnh của mật khẩu -->
+          <div class="password-strength" *ngIf="passwordStrengthMessage">
+            <div [ngClass]="passwordStrengthClass">{{ passwordStrengthMessage }}</div>
+          </div>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <small class="error-text" style="color: red;">Mật khẩu phải có ít nhất 8 ký tự</small>
+          </div>
+        </div>
+  
+        <div class="remember-forgot">
+          <div class="remember">
+            <input type="checkbox" id="remember" formControlName="remember" />
+            <label for="remember">Nhớ mật khẩu</label>
+          </div>
+          <div class="forgot">
+            <p>Bạn chưa có tài khoản? <a routerLink="/auth/register">Đăng ký</a></p>
+          </div>
+        </div>
+        <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Đăng nhập</button>
+      </form>
     </div>
   </div>
-</form>
-<p-toast />
-<div bgcolor="#000000" *ngIf="loading">
-  <div id="loader-wrapper">
-    <div id="loader"></div>
-  </div>
-</div>
+  

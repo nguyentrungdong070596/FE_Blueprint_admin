@@ -33,7 +33,6 @@ body {
 .content {
     margin-left: 65px; /* Khi sidebar đóng (giảm từ 250px xuống 75px) */
     transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
-    padding: 20px 20px; /* Thêm padding cho nội dung */
 }
 
 .sidebar.closed + .content {
@@ -108,37 +107,6 @@ a {
     font-weight: bold;
 }
 
-.table {
-    width: calc(100% - 10px); /* Điều chỉnh chiều rộng của bảng để giảm khoảng trắng */
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.table th,
-.table td {
-    padding: 8px;
-    text-align: left;
-}
-
-.table th {
-    background-color: #f2f2f2;
-}
-
-.table-bordered {
-    border: 1px solid #ddd;
-}
-
-.table-bordered th,
-.table-bordered td {
-    border: 1px solid #ddd;
-}
-
-.image-user {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-}
-
 .btn-add {
     margin: 10px;
     padding: 8px 16px;
@@ -153,34 +121,11 @@ a {
         text-decoration: none; // Bỏ gạch dưới
     }
 }
-
-.btn-edit,
-.btn-delete {
-  border: none;
-  background: none;
-  color: #0196da;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  padding: 5px 10px;
-  margin-right: 5px; // Giữa hai nút
-  transition: background-color 0.3s ease;
-}
-
-.btn-edit:hover,
-.btn-delete:hover {
-  background-color: rgba(255, 255, 255, 0.2); // Màu nền khi hover
-}
-
-.btn-edit i,
-.btn-delete i {
-  margin-right: 5px; // Khoảng cách giữa icon và text
-}
 .controls {
     margin-top: 20px;
     display: flex;
     gap: 10px; /* Khoảng cách giữa các nút */
+    margin-left: 120px;
   
     .btn {
       padding: 10px 20px;
@@ -276,3 +221,73 @@ a {
         }
       }
     }     
+.calendar-container {
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Căn giữa theo chiều dọc toàn màn hình
+}
+
+.calendar-list {
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 80%;  // Mở rộng bảng ra 80% của trang
+  max-width: 800px;  // Đặt giới hạn độ rộng tối đa
+  background-color: #fff;  // Đặt màu nền trắng để làm rõ bảng
+  margin-left: 120px;
+  margin-top:20px;
+}
+
+.calendar-list h2 {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.month-item {
+  display: flex;
+  justify-content: space-between; /* Tạo khoảng cách giữa text và icon */
+  width: 100%; /* Đảm bảo phần tử month-item chiếm hết chiều ngang */
+  align-items: center;
+}
+
+.month-item span {
+  flex-grow: 1; /* Đẩy span ra để chiếm khoảng trống giữa */
+}
+
+a {
+  margin-left: auto; /* Đẩy icon download về sát bên phải */
+}
+
+img, i { 
+  width: 24px;  /* Đảm bảo cả hai icon (image và PrimeIcon) có cùng kích thước */
+  height: 24px;
+  margin-right: 10px;  /* Thêm khoảng cách giữa icon và text */
+}
+.date-picker-container {
+  display: flex;
+  justify-content: space-around; /* Căn giữa date picker */
+  margin: 10px 0; /* Khoảng cách trên và dưới */
+}
+
+.date-picker-container input {
+  padding: 10px; /* Padding cho input */
+  font-size: 16px; /* Kích thước font chữ */
+  border: 1px solid #ddd; /* Đường viền */
+  border-radius: 4px; /* Bo góc cho input */
+  width: 200px; /* Độ rộng của input */
+}

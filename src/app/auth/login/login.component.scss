@@ -1,19 +1,180 @@
-:host ::ng-deep .pi-eye,
-:host ::ng-deep .pi-eye-slash {
-  transform: scale(1.6);
-  margin-right: 1rem;
-  color: var(--primary-color) !important;
-}
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #edf2f7; // Màu nền nhạt giống mẫu
 
-#email1 {
-  padding: 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  transition: background-color 0.2s,
-  color 0.2s,
-  border-color 0.2s,
-  box-shadow 0.2s;
-  &:focus-visible {
-    border: 1px solid red;
+  .login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px; // Bo góc cho container
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    
+    // Tạo hiệu ứng viền gradient
+    border-top: 5px solid transparent;
+    border-image: linear-gradient(to right, #3b82f6, transparent);    
+    // Logo
+    img {
+      width: 100px;
+      margin-bottom: 20px;
+      margin-left: 300px;
+    }
+
+    // Tiêu đề chính
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    // Tiêu đề phụ
+    .sub-title {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      
+      // Input form
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 16px;
+        margin-top: 8px;
+        background-color: #f9fafb;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #3b82f6; // Đổi màu viền khi focus
+          background-color: white;
+        }
+      }
+    }
+
+    // Xử lý cho ô mật khẩu có thể hiển thị hoặc ẩn
+    .password-container {
+      position: relative;
+
+      input {
+        padding-right: 40px; // Khoảng trống cho icon mắt
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        
+        i {
+          font-size: 18px;
+          color: #6b7280; // Màu cho icon
+          margin-top: 10px;
+        }
+        
+        &:hover i {
+          color: #3b82f6; // Đổi màu khi hover
+        }
+      }
+    }
+
+    // Độ mạnh của mật khẩu
+    .password-strength {
+      margin-top: 10px;
+      
+      .weak {
+        color: #ef4444; // Màu đỏ cho mật khẩu yếu
+      }
+
+      .medium {
+        color: #f59e0b; // Màu vàng cho mật khẩu trung bình
+      }
+
+      .strong {
+        color: #10b981; // Màu xanh cho mật khẩu mạnh
+      }
+    }
+
+    // Tùy chọn nhớ mật khẩu và quên mật khẩu
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      white-space: nowrap;
+      
+      .remember {
+        display: flex;
+        align-items: flex-start;
+        
+        input {
+          margin-right: 5px;
+        }
+        
+        label {
+          display: block; // Đảm bảo label là block element
+          font-size: 14px;
+          font-weight: 600; // Đậm hơn
+          color: #4b5563; // Màu chữ
+          margin-bottom: 5px; // Khoảng cách giữa label và input
+          text-align: left; // Căn chỉnh bên trái
+        }
+      }
+      
+      .forgot {
+        a {
+          font-size: 14px;
+          color: #3b82f6;
+          text-decoration: none;
+          
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    
+    // Nút đăng nhập
+    .login-btn {
+      background-color: #3b82f6;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      
+      &:hover {
+        background-color: #2563eb; // Hiệu ứng hover
+      }
+    }
+    
+    // Liên kết đăng ký
+    .register-link {
+      margin-top: 15px;
+      
+      a {
+        font-size: 14px;
+        color: #3b82f6;
+        text-decoration: none;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
   }
 }
