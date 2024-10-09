@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { LayoutAdminComponent } from './components/layout-admin/layout-admin.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ListServicesComponent } from './components/list-services/list-services.component';
@@ -15,27 +17,36 @@ import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { AddVehicleComponent } from './components/vehicle/add-vehicle/add-vehicle.component';
 import { TideComponent } from './components/tide/tide.component';
 import { AddTideComponent } from './components/tide/add-tide/add-tide.component';
+import { AuthGuard } from './auth.guard'; // Nhập guard vào đây
+
 export const routes: Routes = [
+  { path: 'auth', 
+    children: [
+        { path: 'login', component: LoginComponent },
+        { path: 'register', component: RegisterComponent }
+    ]
+  },
   { path: '', 
     component: LayoutAdminComponent,
+    canActivate: [AuthGuard], // Áp dụng AuthGuard
     children: [
-        {path: 'dashboard', component: DashboardComponent},
-        {path: 'list-services', component: ListServicesComponent},
-        {path: 'list-services/add', component: AddListServicesComponent},
-        {path: 'news', component: NewsListComponent},
-        {path: 'news/add', component: AddNewComponent},  
-        {path: 'monnuoc', component: MonnuocComponent}, 
-        {path: 'monnuoc/add', component: AddMonnuocComponent}, 
-        {path: 'services', component: ServicesComponent},
-        {path: 'services/add', component: AddServicesComponent},
-        {path:'pilot', component:PilotComponent},
-        {path:'pilot/add', component:AddPilotComponent},
-        {path:'vehicle', component:VehicleComponent},
-        {path:'vehicle/add', component:AddVehicleComponent},
-        {path:'tide', component:TideComponent},
-        {path:'tide/add', component:AddTideComponent},
-        {path: '', redirectTo: '/dashboard', pathMatch: 'full'}
+        { path: 'dashboard', component: DashboardComponent },
+        { path: 'list-services', component: ListServicesComponent },
+        { path: 'list-services/add', component: AddListServicesComponent },
+        { path: 'news', component: NewsListComponent },
+        { path: 'news/add', component: AddNewComponent },  
+        { path: 'monnuoc', component: MonnuocComponent }, 
+        { path: 'monnuoc/add', component: AddMonnuocComponent }, 
+        { path: 'services', component: ServicesComponent },
+        { path: 'services/add', component: AddServicesComponent },
+        { path: 'pilot', component: PilotComponent },
+        { path: 'pilot/add', component: AddPilotComponent },
+        { path: 'vehicle', component: VehicleComponent },
+        { path: 'vehicle/add', component: AddVehicleComponent },
+        { path: 'tide', component: TideComponent },
+        { path: 'tide/add', component: AddTideComponent },
+        { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]
-   },
-   {path: '**', redirectTo: '/dashboard'}
+  },
+  { path: '**', redirectTo: '/auth/login' } // Chuyển hướng về trang đăng nhập nếu không tìm thấy đường dẫn
 ];
