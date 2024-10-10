@@ -48,10 +48,10 @@ export class DataService {
       headers,
     });
   }
-  GetProducts_Service(uri: string, value: any) {
+  GetDichvu_Service(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit },
+      params: { limit: value.limit, page: value.page, showHiddenItem: true},
       headers,
     });
   }

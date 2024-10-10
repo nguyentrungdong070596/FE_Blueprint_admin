@@ -40,8 +40,10 @@ export class AddNewComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this._dataService.data$.subscribe(data => {
+
       this.EditData = data;
       this.setValueFormEdit(data);
+
     });
   }
 
@@ -68,54 +70,6 @@ export class AddNewComponent implements OnInit {
       this.isEditMode = false;
     }
   }
-
-  // handleFileInput(values: any) {
-  //   // Check if a file has been selected
-  //   if (this.uploadImage && this.uploadImage.length > 0) {
-  //     this.fileToUpload = this.uploadImage[0]; // Access the file directly via index
-  //     if (this.fileToUpload) {
-  //       this._uploadService.postFile(this.fileToUpload).subscribe(
-  //         (data: any) => {
-  //           this.news.image = data.file_save_url;
-  //           // Check url for duplicate image problem.
-  //           if (this.isEditMode) {
-  //             console.log("Edit Mode");
-  //             this.onEdit(values);
-  //           }
-  //           else {
-  //             this.onInsert(values);
-  //           }
-  //           this.goBack();
-  //         },
-  //         (error: any) => {
-  //           console.error('Error uploading file:', error);
-  //         }
-  //       );
-  //     }
-  //   }
-  //   if (this.EditData.image) {
-  //     this.news.image = this.EditData.image;
-  //     if (this.isEditMode) {
-  //       console.log("Edit Mode");
-  //       this.onEdit(values);
-  //     }
-  //     else {
-  //       this.onInsert(values);
-  //     }
-  //     this.goBack();
-  //   }
-  //   else{
-  //     this.news.image = "image";
-  //     if (this.isEditMode) {
-  //       console.log("Edit Mode");
-  //       this.onEdit(values);
-  //     }
-  //     else {
-  //       this.onInsert(values);
-  //     }
-  //     this.goBack();
-  //   }
-  // }
   handleFileInput(values: any) {
     const processSave = () => {
       if (this.isEditMode) {

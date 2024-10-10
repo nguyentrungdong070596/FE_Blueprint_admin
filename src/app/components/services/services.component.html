@@ -1,43 +1,54 @@
 <div class="content">
-    <h2>Quản lý giá dịch vụ</h2>
-    <div class="controls">
-        <button (click)="addService()" class="btn btn-primary"><a [routerLink]="['/services/add']">Thêm mới</a></button>
-    </div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Tiêu đề</th>
-          <th>Hình ảnh</th>
-          <th>Thông tin</th>
-          <th>Trạng thái</th>
-          <th>Ngày đăng</th>
-          <th>Điều chỉnh</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let service of services; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ service.title }}</td>
-          <td>
-            <img [src]="service.image" alt="" class="image-user">
-          </td>
-          <td>{{ service.info }}</td>
-          <td>{{ service.status }}</td>
-          <td>{{ service.date }}</td>
-          <td>
-            <button (click)="editServices(i)" class="btn-edit">
-              <i class="fa-solid fa-edit"></i> Chỉnh sửa
-            </button>
-            <button (click)="deleteServices(i)" class="btn-delete">
-              <i class="fa-solid fa-trash"></i> Xóa
-            </button>
-          </td>          
-        </tr>
-      </tbody>
-    </table><br>
-    <div class="flex-auto">
-        <p-paginator [rows]="rows" [totalRecords]="totalRecords" [first]="first" (onPageChange)="onPageChange($event)"></p-paginator>
-    </div>
+  <h2>Quản lý giá dịch vụ</h2>
+  <div class="controls">
+    <button class="btn btn-primary">
+      <a [routerLink]="['/services/add']" (click)="onAdd()">Thêm mới</a>
+    </button>
   </div>
-  
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tiêu đề</th>
+        <th>Hình ảnh</th>
+        <th>Giá</th>
+        <th>Trạng thái</th>
+        <th>Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of const_data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ service.title }}</td>
+        <td>
+          <img [src]="urlAPI + '/' + service.image" alt="" class="image-user" />
+        </td>
+        <td>
+          <a [href]="urlAPI + '/' + service.pdfdata" download>
+            Chi tiết
+          </a>
+        </td>
+        
+        <td>{{ service.status ? "Hiển thị" : "Ẩn" }}</td>
+        <td>
+          <button (click)="editItem(service)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+          </button>
+          <button (click)="deleteItem(service)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i> Xóa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="flex-auto">
+    <p-paginator
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showFirstLastIcon]="false"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+  </div>
+</div>

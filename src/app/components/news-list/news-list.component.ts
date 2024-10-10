@@ -54,7 +54,7 @@ export class NewsListComponent implements OnInit {
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
-    this.getNewsEventsItems(this.first, 1);
+    this.getNewsEventsItems(this.first, this.rows);
   }
 
   editNews(item: any) {
@@ -78,13 +78,16 @@ export class NewsListComponent implements OnInit {
     this._dataService.delete(StringAPI.APINews + "/" + id)
       .subscribe(
         (res) => {
-          this.router.navigate(['/news']);
           console.log('News delete successfully:', res);
+          window.location.reload();
         },
         (error) => {
           console.error('Error delete news:', error);
         }
       );
+  }
+  onAdd(): void{
+    this._dataService.setData(null);
   }
 
 

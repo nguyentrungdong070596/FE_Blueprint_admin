@@ -1,37 +1,50 @@
 <div class="content1">
-    <h1 *ngIf="!isEditMode">Thêm mới giá dịch vụ</h1>
-    <h1 *ngIf="isEditMode">Chỉnh sửa giá dịch vụ</h1>
+  <h1 *ngIf="!isEditMode">Thêm mới giá dịch vụ</h1>
+  <h1 *ngIf="isEditMode">Chỉnh sửa giá dịch vụ</h1>
 </div>
 <div class="content">
-    <button type="button" (click)="goBack()" class="btn-back">
-        <span class="icon">&lt;</span> Trở lại
-    </button>
-    <form [formGroup]="servicesForm">
-        <div>
-            <label for="title">Tiêu đề:</label>
-            <input type="text" id="title" formControlName="title" required>
-        </div>
-        <div>
-            <label for="image">Hình ảnh:</label>
-            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
-        </div>
-        <div>
-            <label for="pdf">Tải lên PDF:</label>
-            <input type="file" id="pdf" (change)="onPdfSelected($event)" accept=".pdf" required>
-        </div>
-        <div>
-            <label for="status">Trạng thái:</label>
-            <select id="status" formControlName="status" required>
-                <option value="Hiển thị">Hiển thị</option>
-                <option value="Ẩn">Ẩn</option>
-            </select>
-        </div>
-        <div>
-            <label for="date">Ngày đăng:</label>
-            <input type="date" id="date" formControlName="date" required>
-        </div>
-        <button type="submit" [disabled]="!servicesForm.valid" (click)="onSubmit()">
-            {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
-        </button>
-    </form>
+  <button type="button" (click)="goBack()" class="btn-back">
+    <span class="icon">&lt;</span> Trở lại
+  </button>
+  <form [formGroup]="form">
+    <div>
+      <label for="title">Tiêu đề:</label>
+      <input type="text" id="title" formControlName="title" required />
+    </div>
+    <div>
+      <label for="image">Hình ảnh:</label>
+      <input
+        type="file"
+        id="image"
+        accept="image/*"
+        formControlName="image"
+        (change)="onFileSelected($event)"
+        />
+    </div>
+    <div>
+      <label for="pdf">Tải lên PDF:</label>
+      <input
+        type="file"
+        id="pdfdata"
+        (change)="onPdfSelected($event)"
+        accept=".pdf"
+        formControlName="pdfdata"
+        required
+      />
+    </div>
+    <div>
+      <label for="status">Trạng thái:</label>
+      <select id="status" formControlName="status" required>
+        <option [ngValue]="true">Hiển thị</option>
+        <option [ngValue]="false">Ẩn</option>
+      </select>
+    </div>
+    <p-button
+      type="button"
+      (click)="onSubmit(form.value)"
+      pButton
+      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+      severity="success"
+    />
+  </form>
 </div>

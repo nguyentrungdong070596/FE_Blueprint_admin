@@ -3,7 +3,7 @@ export const StringAPI = {
     //Home
     APICarousel: '/home/carousel',
     APIIntroduction: '/home/introduction',
-    APIProduct: '/home/product',
+    APIDichvu: '/home/dichvu',
     APINews: '/home/news',
 
     //Navigator
