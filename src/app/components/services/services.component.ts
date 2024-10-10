@@ -1,68 +1,90 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { QuillModule } from 'ngx-quill'; 
+import { QuillModule } from 'ngx-quill';
 import { PaginatorModule } from 'primeng/paginator';
+import { StringAPI } from '../../shared/stringAPI/string_api';
+import { DataService } from '../../core/services/data.service';
+import { environment } from '../../../environment/environment';
 
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule,PaginatorModule], 
+  imports: [CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
 export class ServicesComponent {
-  services = [
-    { title: 'Niêm Yết Giá Dịch Vụ Lai Dắt Tại Cảng Biển Áp Dụng Từ Tháng 7 Năm 2024',image: 'https://www.vungtauship.com/datafiles/thumb_1720083978_z5337032327439_95e7855e69703a8c5dbe5e7de9f81011.jpg?v=1720083978',info :'https://tinyurl.com/6kjw9j75', status: "Hiển thị", date: "22/09/2024", edit: 'Thêm Xóa' },
-    { title: 'Niêm Yết Giá Dịch Vụ Lai Dắt Tại Cảng Biển Áp Dụng Từ Tháng 7 Năm 2024',image: 'https://www.vungtauship.com/datafiles/thumb_1719835312_5.jpg?v=1719835312',info :'https://tinyurl.com/mshw4xxm', status: "Hiển thị", date: "22/09/2024", edit: 'Thêm Xóa' },
-  ];
+  urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
   totalRecords: number = 120;
   rows: number = 5;
-  first: number = 0; 
+  first: number = 0;
+  limit: number = 0;
 
-  showAddServices = false;
+  constructor(private router: Router, private _dataService: DataService) { }
+  ngOnInit(): void {
+    this.getDichvuItems(this.limit, this.rows);
+  }
+  getDichvuItems(first: number, rows: number): void {
+    this.item.limit = rows;
+    this.item.page = (first / rows) + 1;
+    this._dataService.GetDichvu_Service(`${StringAPI.APIDichvu}`, this.item).subscribe(res => {
+      this.setDichvuItems(res || []);
+    });
+  }
+  setDichvuItems(values: any): void {
+    if (values.success && values.data) {
+      this.const_data = values.data.map((service: any) => ({
+        id: service.id,
+        title: service.title,
+        pdfdata: service.pdfdata,
+        status: service.status,
+        image: service.image
+      }));
+      this.totalRecords = values.totalRecords;
+    }
+  }
 
-  constructor(private router: Router) {}
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
-    this.loadData(this.first, this.rows);
-  }
-  loadData(first: number, rows: number) {
-    this.item.limit = rows;
-    this.item.page = (first / rows) + 1;
-    }
-
-  toggleAddServices() {
-    this.showAddServices = !this.showAddServices;
+    this.getDichvuItems(this.first, this.rows);
   }
 
-  addServices(newServices: any) {
-    const newItem = {
-      title: newServices.title,
-      image: newServices.image,
-      info : newServices.info,
-      status: newServices.status,
-      date: new Date().toLocaleDateString(), // Ngày đăng hiện tại
-      edit: 'Chỉnh sửa Xóa' // Cung cấp giá trị cho thuộc tính edit
+  editItem(item: any) {
+    const sendItem = {
+      id: item.id,
+      title: item.title,
+      pdfdata: item.pdfdata,
+      image: item.image,
+      status: item.status,
     };
-    this.services.push(newItem);
-    this.showAddServices = false;
+    this._dataService.setData(sendItem);
+    this.router.navigate(['/services/add'])
+  }
+  deleteItem(item: any) {
+    this.OnDelete(item.id);
+    console.log(item);
   }
 
-  editServices(index: number) {
-    const servicesToEdit = this.services[index];
-    this.router.navigate(['/services/add'], { state: { isEditMode: true, servicesToEdit } });
+  OnDelete(id: any) {
+    
+    this._dataService.delete(StringAPI.APIDichvu + "/" + id)
+      .subscribe(
+        (res) => {
+          console.log('service delete successfully:', res);
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Error delete service:', error);
+        }
+      );
   }
-  deleteServices(index: number) {
-    this.services.splice(index, 1); // Xóa user tại index
-  }
-  
-  addService() {
-    console.log('Thêm mới được nhấn');
+  onAdd(): void{
+    this._dataService.setData(null);
   }
 }
