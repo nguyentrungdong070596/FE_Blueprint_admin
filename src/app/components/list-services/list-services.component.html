@@ -1,41 +1,49 @@
 <div class="content">
-    <h2>Quản lý danh sách các dịch vụ</h2>
-    <div class="controls">
-        <button (click)="addLists()" class="btn btn-primary"><a [routerLink]="['/list-services/add']">Thêm mới</a></button>
-    </div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Tiêu đề</th>
-          <th>Hình ảnh</th>
-          <th>Nội dung</th>
-          <th>Ngày đăng</th>
-          <th>Điều chỉnh</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let list of list; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ list.title }}</td>
-          <td>
-            <img [src]="list.image" alt="" class="image-user">
-          </td>
-          <td>{{list.content}}</td>
-          <td>{{ list.date }}</td>
-          <td>
-            <button (click)="editList(i)" class="btn-edit">
-              <i class="fa-solid fa-edit"></i> Chỉnh sửa
-            </button>
-            <button (click)="deleteList(i)" class="btn-delete">
-              <i class="fa-solid fa-trash"></i> Xóa
-            </button>
-          </td>          
-        </tr>
-      </tbody>
-    </table><br>
-    <div class="flex-auto">
-        <p-paginator [rows]="rows" [totalRecords]="totalRecords" [first]="first" (onPageChange)="onPageChange($event)"></p-paginator>
-    </div>
+  <h2>Quản lý danh sách các dịch vụ</h2>
+  <div class="controls">
+    <button (click)="onAdd()" class="btn btn-primary">
+      <a [routerLink]="['/list-services/add']">Thêm mới</a>
+    </button>
   </div>
-  
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tiêu đề</th>
+        <th>Hình ảnh</th>
+        <th>Nội dung</th>
+        <th>Trạng thái</th>
+        <th>Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let list of const_data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ list.title }}</td>
+        <td>
+          <img [src]="urlAPI + '/' + list.image" alt="" class="image-user" />
+        </td>
+        <td>{{ list.content }}</td>
+        <td>{{ list.status }}</td>
+        <td>
+          <button (click)="editItem(list)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+          </button>
+          <button (click)="deleteItem(list)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i> Xóa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="flex-auto">
+    <p-paginator
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showFirstLastIcon]="false"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+  </div>
+</div>

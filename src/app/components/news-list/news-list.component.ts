@@ -32,7 +32,7 @@ export class NewsListComponent implements OnInit {
   getNewsEventsItems(first: number, rows: number): void {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
-    this._dataService.GetNews_Service(`${StringAPI.APINews}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APINews}`, this.item).subscribe(res => {
       this.setNewsEventsItems(res || []);
     });
   }

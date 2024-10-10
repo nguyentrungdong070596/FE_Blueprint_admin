@@ -27,13 +27,29 @@ export class DataService {
   }
 
 
-  GetAllNavigator(uri: string, value: any) {
+  GetItem(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit, page: value.page },
+      params: { limit: value.limit, page: value.page, showHiddenItem: true },
       headers,
     });
   }
+
+  // GetDichvu_Service(uri: string, value: any) {
+  //   const headers = this.createrheader();
+  //   return this._http.get(environment.apiUrl + uri, {
+  //     params: { limit: value.limit, page: value.page, showHiddenItem: true},
+  //     headers,
+  //   });
+  // }
+  // News and Service
+  // GetNews_Service(uri: string, value: any) {
+  //   const headers = this.createrheader();
+  //   return this._http.get(environment.apiUrl + uri, {
+  //     params: { limit: value.limit, page: value.page, showHiddenItem: true },
+  //     headers,
+  //   });
+  // }
   GetCarousel(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
@@ -48,22 +64,9 @@ export class DataService {
       headers,
     });
   }
-  GetDichvu_Service(uri: string, value: any) {
-    const headers = this.createrheader();
-    return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit, page: value.page, showHiddenItem: true},
-      headers,
-    });
-  }
 
-  // News and Service
-  GetNews_Service(uri: string, value: any) {
-    const headers = this.createrheader();
-    return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit, page: value.page, showHiddenItem: true},
-      headers,
-    });
-  }
+
+
   GetManeuveringDraft_Service(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {

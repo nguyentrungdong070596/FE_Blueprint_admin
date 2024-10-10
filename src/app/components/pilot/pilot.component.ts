@@ -4,6 +4,9 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill'; 
 import { PaginatorModule } from 'primeng/paginator';
+import { StringAPI } from '../../shared/stringAPI/string_api';
+import { DataService } from '../../core/services/data.service';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-pilot',
@@ -13,54 +16,75 @@ import { PaginatorModule } from 'primeng/paginator';
   styleUrls: ['./pilot.component.scss']
 })
 export class PilotComponent {
-  pilots = [
-    { name: 'Vũ Ngọc An',image: 'https://vungtaupilot.com/datafiles/setone/thumb_1488776372_IMG_8052.JPG',range :'Hoa tiêu ngoại hạng', edit: 'Chỉnh sửa Xóa' },
-    { name: 'Phạm Trung Tín',image: 'https://vungtaupilot.com/datafiles/setone/thumb_1488776057_IMG_8020.JPG',range :'Hoa tiêu ngoại hạng', edit: 'Chỉnh sửa Xóa' },
-  ];
+  urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
   totalRecords: number = 120;
   rows: number = 5;
-  first: number = 0; 
+  first: number = 0;
+  limit: number = 0;
 
-  showAddPilot = false;
+  constructor(private router: Router, private _dataService: DataService) { }
+  ngOnInit(): void {
+    this.getPilotItems(this.limit, this.rows);
+  }
+  getPilotItems(first: number, rows: number): void {
+    this.item.limit = rows;
+    this.item.page = (first / rows) + 1;
+    this._dataService.GetItem(`${StringAPI.APIHoaTieu}`, this.item).subscribe(res => {
+      this.setPilotItems(res || []);
+    });
+  }
+  setPilotItems(values: any): void {
+    if (values.success && values.data) {
+      this.const_data = values.data.map((pilot: any) => ({
+        id: pilot.id,
+        name: pilot.name,
+        rank: pilot.rank,
+        image: pilot.image,
 
-  constructor(private router: Router) {}
+      }));
+      this.totalRecords = values.totalRecords;
+    }
+  }
+
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
-    this.loadData(this.first, this.rows);
-  }
-  loadData(first: number, rows: number) {
-    this.item.limit = rows;
-    this.item.page = (first / rows) + 1;
-    }
-
-  toggleAddPilot() {
-    this.showAddPilot = !this.showAddPilot;
+    this.getPilotItems(this.first, this.rows);
   }
 
-  addPilot(newPilot: any) {
-    const newItem = {
-      name: newPilot.name,
-      image: newPilot.image,
-      range : newPilot.range,
-      edit: 'Chỉnh sửa Xóa' // Cung cấp giá trị cho thuộc tính edit
+  editPilot(item: any) {
+    // console.log(item);
+    const sendItem = {
+      id: item.id,
+      name: item.name,
+      rank: item.rank,
+      image: item.image,
+      status: item.status,
     };
-    this.pilots.push(newItem);
-    this.showAddPilot = false;
+    this._dataService.setData(sendItem);
+    this.router.navigate(['/pilot/add'])
+  }
+  deleteNews(item: any) {
+    this.OnDelete(item.id);
   }
 
-  editPilot(index: number) {
-    const pilotToEdit = this.pilots[index];
-    this.router.navigate(['/pilot/add'], { state: { isEditMode: true, pilotToEdit } });
+  OnDelete(id: any) {
+    this._dataService.delete(StringAPI.APIHoaTieu + "/" + id)
+      .subscribe(
+        (res) => {
+          console.log('News delete successfully:', res);
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Error delete news:', error);
+        }
+      );
   }
-  deletePilot(index: number) {
-    this.pilots.splice(index, 1); // Xóa user tại index
+  onAdd(): void{
+    this._dataService.setData(null);
   }
-  
-  addPilots() {
-    console.log('Thêm mới được nhấn');
-  }
+
 }
 

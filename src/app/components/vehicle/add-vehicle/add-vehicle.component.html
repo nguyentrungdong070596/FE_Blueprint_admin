@@ -1,31 +1,55 @@
 <div class="content1">
-    <h1 *ngIf="!isEditMode">Thêm mới phương tiện</h1>
-    <h1 *ngIf="isEditMode">Chỉnh sửa phương tiện</h1>
+  <h1 *ngIf="!isEditMode">Thêm mới phương tiện</h1>
+  <h1 *ngIf="isEditMode">Chỉnh sửa phương tiện</h1>
 </div>
 <div class="content">
-    <button type="button" (click)="goBack()" class="btn-back">
-        <span class="icon">&lt;</span> Trở lại
-    </button>
-    <form [formGroup]="vehicleForm">
-        <div>
-            <label for="type">Loại phương tiện:</label>
-            <select id="type" formControlName="type" required>
-                <option value="Xe">Xe</option>
-                <option value="Cano">Cano</option>
-            </select>
-        </div>
-        <div>
-            <label for="image">Hình ảnh:</label>
-            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
-        </div>
-        <div>
-            <label for="name">Tên phương tiện:</label>
-            <input type="text" id="name" formControlName="name" required>
-        </div>
-        <div>
-            <label for="code">Số hiệu:</label>
-            <input type="text" id="code" formControlName="code" required>
-        </div>
-        <button type="submit"  (ngSubmit)="onSubmit()">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
-    </form>
+  <button type="button" (click)="goBack()" class="btn-back">
+    <span class="icon">&lt;</span> Trở lại
+  </button>
+  <form [formGroup]="form">
+    <div>
+      <label for="name">Tên phương tiện:</label>
+      <input type="text" id="name" formControlName="name" required />
+    </div>
+    <div>
+      <label for="image">Hình ảnh:</label>
+      <input
+        type="file"
+        id="image"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+        formControlName="image"
+      />
+    </div>
+    <div>
+      <label
+        for="status"
+        [ngClass]="{
+          'color-form-red':
+            form.get('status')?.invalid &&
+            (form.get('status')?.dirty || form.get('status')?.touched)
+        }"
+        >Trạng thái</label
+      >
+      <select id="status" formControlName="status" required>
+        <option [ngValue]="true">Hiển thị</option>
+        <option [ngValue]="false">Ẩn</option>
+      </select>
+      <small
+        *ngIf="
+          form.get('status')?.invalid &&
+          (form.get('status')?.dirty || form.get('status')?.touched)
+        "
+        [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+        >Vui lòng chọn trạng thái.</small
+      >
+    </div>
+    <!-- <button type="submit"  (ngSubmit)="onSubmit()">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button> -->
+    <p-button
+      type="button"
+      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+      (click)="onSubmit(form.value)"
+      severity="success"
+    />
+  </form>
 </div>

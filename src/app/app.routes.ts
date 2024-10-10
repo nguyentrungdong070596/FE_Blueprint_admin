@@ -20,12 +20,12 @@ import { AddTideComponent } from './components/tide/add-tide/add-tide.component'
 import { AuthGuard } from './auth.guard'; // Nhập guard vào đây
 
 export const routes: Routes = [
-  { path: 'auth', 
-    children: [
-        { path: 'login', component: LoginComponent },
-        { path: 'register', component: RegisterComponent }
-    ]
-  },
+  // { path: 'auth', 
+  //   children: [
+  //       { path: 'login', component: LoginComponent },
+  //       { path: 'register', component: RegisterComponent }
+  //   ]
+  // },
   { path: '', 
     component: LayoutAdminComponent,
     canActivate: [AuthGuard], // Áp dụng AuthGuard

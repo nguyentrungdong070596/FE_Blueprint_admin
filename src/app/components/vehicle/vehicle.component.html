@@ -1,41 +1,47 @@
 <div class="content">
-    <h2>Quản lý danh sách phương tiện</h2>
-    <div class="controls">
-        <button (click)="addVehicles()" class="btn btn-primary"><a [routerLink]="['/vehicle/add']">Thêm mới</a></button>
-    </div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Loại phương tiện</th>
-          <th>Hình ảnh</th>
-          <th>Tên phương tiện</th>
-          <th>Số hiệu</th>
-          <th>Điều chỉnh</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let vehicle of vehicles; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ vehicle.type }}</td>
-          <td>
-            <img [src]="vehicle.image" alt="" class="image-user">
-          </td>
-          <td>{{vehicle.name}}</td>
-          <td>{{vehicle.code}}</td>
-          <td>
-            <button (click)="editVehicle(i)" class="btn-edit">
-              <i class="fa-solid fa-edit"></i> Chỉnh sửa
-            </button>
-            <button (click)="deleteVehicle(i)" class="btn-delete">
-              <i class="fa-solid fa-trash"></i> Xóa
-            </button>
-          </td>          
-        </tr>
-      </tbody>
-    </table><br>
-    <div class="flex-auto">
-        <p-paginator [rows]="rows" [totalRecords]="totalRecords" [first]="first" (onPageChange)="onPageChange($event)"></p-paginator>
-    </div>
+  <h2>Quản lý danh sách phương tiện</h2>
+  <div class="controls">
+    <button (click)="onAdd()" class="btn btn-primary">
+      <a [routerLink]="['/vehicle/add']">Thêm mới</a>
+    </button>
   </div>
-  
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên phương tiện</th>
+        <th>Hình ảnh</th>
+        <th>Trạng thái</th>
+        <th>Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vehicle of const_data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ vehicle.name }}</td>
+        <td>
+          <img [src]="urlAPI + '/' + vehicle.image" alt="" class="image-user" />
+        </td>
+        <td>{{ vehicle.status ? "Hiển thị" : "Ẩn" }}</td>
+        <td>
+          <button (click)="editItem(vehicle)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+          </button>
+          <button (click)="deleteItem(vehicle)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i> Xóa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="flex-auto">
+    <p-paginator
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showFirstLastIcon]="false"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+  </div>
+</div>

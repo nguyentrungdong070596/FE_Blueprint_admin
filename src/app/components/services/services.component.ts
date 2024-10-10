@@ -32,7 +32,7 @@ export class ServicesComponent {
   getDichvuItems(first: number, rows: number): void {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
-    this._dataService.GetDichvu_Service(`${StringAPI.APIDichvu}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APIServicePrice}`, this.item).subscribe(res => {
       this.setDichvuItems(res || []);
     });
   }
@@ -73,7 +73,7 @@ export class ServicesComponent {
 
   OnDelete(id: any) {
     
-    this._dataService.delete(StringAPI.APIDichvu + "/" + id)
+    this._dataService.delete(StringAPI.APIServicePrice + "/" + id)
       .subscribe(
         (res) => {
           console.log('service delete successfully:', res);

@@ -1,28 +1,35 @@
 <div class="content1">
-    <h1 *ngIf="!isEditMode">Thêm mới các dịch vụ</h1>
-    <h1 *ngIf="isEditMode">Chỉnh sửa dịch vụ</h1>
+  <h1 *ngIf="!isEditMode">Thêm mới các dịch vụ</h1>
+  <h1 *ngIf="isEditMode">Chỉnh sửa dịch vụ</h1>
 </div>
 <div class="content">
-    <button type="button" (click)="goBack()" class="btn-back">
-        <span class="icon">&lt;</span> Trở lại
-    </button>
-    <form [formGroup]="listForm">
-        <div>
-            <label for="title">Tiêu đề:</label>
-            <input type="text" id="title" formControlName="title" required>
-        </div>
-        <div>
-            <label for="image">Hình ảnh:</label>
-            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
-        </div>
-        <div>
-            <label for="content">Nội dung:</label>
-            <quill-editor formControlName="content"></quill-editor>
-        </div>
-        <div>
-            <label for="date">Ngày đăng:</label>
-            <input type="date" id="date" formControlName="date" required>
-        </div>
-        <button type="submit" class="btn btn-success" [disabled]="listForm.invalid"  (ngSubmit)="onSubmit()">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
-    </form>
+  <button type="button" (click)="goBack()" class="btn-back">
+    <span class="icon">&lt;</span> Trở lại
+  </button>
+  <form [formGroup]="form">
+    <div>
+      <label for="title">Tiêu đề:</label>
+      <input type="text" id="title" formControlName="title" required />
+    </div>
+    <div>
+      <label for="image">Hình ảnh:</label>
+      <input
+        type="file"
+        id="image"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+      />
+    </div>
+    <div>
+      <label for="content">Nội dung:</label>
+      <quill-editor formControlName="content"></quill-editor>
+    </div>
+    <!-- <button type="submit" class="btn btn-success" [disabled]="form.invalid"  (ngSubmit)="onSubmit(form.valid)">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button> -->
+    <p-button
+      type="button"
+      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+      (click)="onSubmit(form.value)"
+      severity="success"
+    />
+  </form>
 </div>

@@ -123,18 +123,6 @@ export class AddNewComponent implements OnInit {
       return;
     }
     this.handleFileInput(values)
-    this.resetForm();
-  }
-
-  resetForm() {
-    this.form.reset({
-      title: '',
-      content: '',
-      image: '',
-      status: 'Hiển thị',
-      date: ''
-    });
-    this.selectedFile = null;
   }
 
   onInsert(values: any) {

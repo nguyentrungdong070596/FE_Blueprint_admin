@@ -4,6 +4,9 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill'; 
 import { PaginatorModule } from 'primeng/paginator';
+import { StringAPI } from '../../shared/stringAPI/string_api';
+import { DataService } from '../../core/services/data.service';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-vehicle',
@@ -13,55 +16,74 @@ import { PaginatorModule } from 'primeng/paginator';
   styleUrls: ['./vehicle.component.scss']
 })
 export class VehicleComponent {
-  vehicles = [
-    { type: 'Xe',image: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2020/6/2/809568/Toyota-Fortuner-2020.png',name :'Toyota Fortuner',code:'72A-474.58', edit: 'Chỉnh sửa Xóa' },
-    { type: 'Cano',image:'https://i-tour.vn/FileStorage/Article/Thumbnail/CANO.jpg',name :'ĐÒ BIỂN SẠCH',code:'ĐÒ BS', edit: 'Chỉnh sửa Xóa' },
-  ];
+  urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
   totalRecords: number = 120;
   rows: number = 5;
-  first: number = 0; 
+  first: number = 0;
+  limit: number = 0;
 
-  showAddVehicle = false;
+  constructor(private router: Router, private _dataService: DataService) { }
+  ngOnInit(): void {
+    this.getPilotItems(this.limit, this.rows);
+  }
+  getPilotItems(first: number, rows: number): void {
+    this.item.limit = rows;
+    this.item.page = (first / rows) + 1;
+    this._dataService.GetItem(`${StringAPI.APIShip}`, this.item).subscribe(res => {
+      this.setPilotItems(res || []);
+    });
+  }
+  setPilotItems(values: any): void {
+    if (values.success && values.data) {
+      this.const_data = values.data.map((ship: any) => ({
+        id: ship.id,
+        name: ship.name,
+        image: ship.image,
+        status: ship.status,
 
-  constructor(private router: Router) {}
+      }));
+      this.totalRecords = values.totalRecords;
+    }
+  }
+
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
-    this.loadData(this.first, this.rows);
-  }
-  loadData(first: number, rows: number) {
-    this.item.limit = rows;
-    this.item.page = (first / rows) + 1;
-    }
-
-  toggleAddVehicle() {
-    this.showAddVehicle = !this.showAddVehicle;
+    this.getPilotItems(this.first, this.rows);
   }
 
-  addVehicle(newVehicle: any) {
-    const newItem = {
-      type: newVehicle.type,
-      image: newVehicle.image,
-      name : newVehicle.name,
-      code : newVehicle.code,
-      edit: 'Chỉnh sửa Xóa' // Cung cấp giá trị cho thuộc tính edit
+  editItem(item: any) {
+    // console.log(item);
+    const sendItem = {
+      id: item.id,
+      name: item.name,
+      image: item.image,
+      status: item.status,
     };
-    this.vehicles.push(newItem);
-    this.showAddVehicle = false;
+    this._dataService.setData(sendItem);
+    this.router.navigate(['/vehicle/add'])
+  }
+  deleteItem(item: any) {
+    console.log(item);
+    this.OnDelete(item.id);
   }
 
-  editVehicle(index: number) {
-    const vehicleToEdit = this.vehicles[index];
-    this.router.navigate(['/vehicle/add'], { state: { isEditMode: true, vehicleToEdit } });
+  OnDelete(id: any) {
+    this._dataService.delete(StringAPI.APIShip + "/" + id)
+      .subscribe(
+        (res) => {
+          console.log('Ship delete successfully:', res);
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Error delete Ship:', error);
+        }
+      );
   }
-  deleteVehicle(index: number) {
-    this.vehicles.splice(index, 1);
-  }
-  
-  addVehicles() {
-    console.log('Thêm mới được nhấn');
+  onAdd(): void{
+    this._dataService.setData(null);
   }
 }
 

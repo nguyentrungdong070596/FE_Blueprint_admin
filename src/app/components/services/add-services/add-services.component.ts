@@ -146,7 +146,7 @@ export class AddServicesComponent implements OnInit {
   onInsert(values: any) {
     this.item.title = values.title;
     this.item.status = true;
-    this._dataService.post(StringAPI.APIDichvu, this.item)
+    this._dataService.post(StringAPI.APIServicePrice, this.item)
       .subscribe(
         (res) => {
           console.log('News added successfully:', res);
@@ -167,7 +167,7 @@ export class AddServicesComponent implements OnInit {
       console.log(values);
       this.item.title = values.title;
       this.item.status = values.status;
-      this._dataService.put(StringAPI.APIDichvu + "/" + this.EditData.id, this.item)
+      this._dataService.put(StringAPI.APIServicePrice + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
             console.log('News update successfully:', res);

@@ -1,41 +1,81 @@
 <div class="content1">
-    <h1 *ngIf="!isEditMode">Thêm mới hoa tiêu</h1>
-    <h1 *ngIf="isEditMode">Chỉnh sửa hoa tiêu</h1>
+  <h1 *ngIf="!isEditMode">Thêm mới hoa tiêu</h1>
+  <h1 *ngIf="isEditMode">Chỉnh sửa hoa tiêu</h1>
 </div>
 <div class="content">
-    <button type="button" (click)="goBack()" class="btn-back">
-        <span class="icon">&lt;</span> Trở lại
-    </button>
-    <form [formGroup]="pilotForm">
-        <div>
-            <label for="name">Họ và tên:</label>
-            <input type="text" id="name" formControlName="name" required>
-            <div *ngIf="pilotForm.controls['name'].invalid && pilotForm.controls['name'].touched" class="error">
-                Tên là bắt buộc
-            </div>
-        </div>
-        <div>
-            <label for="image">Hình ảnh:</label>
-            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
-        </div>
-        <div>
-            <label for="range">Hạng hoa tiêu:</label>
-            <select id="range" formControlName="range" required>
-                <option value="Hoa tiêu ngoại hạng A">Hoa tiêu ngoại hạng A</option>
-                <option value="Hoa tiêu ngoại hạng B">Hoa tiêu ngoại hạng B</option>
-                <option value="Hoa tiêu ngoại hạng C">Hoa tiêu ngoại hạng C</option>
-                <option value="Hoa tiêu hạng 1">Hoa tiêu hạng 1</option>
-                <option value="Hoa tiêu hạng 2">Hoa tiêu hạng 2</option>
-                <option value="Hoa tiêu hạng 3">Hoa tiêu hạng 3</option>
-                <option value="Hoa tiêu tập sự">Hoa tiêu tập sự</option>
-            </select>
-            <div *ngIf="pilotForm.controls['range'].invalid && pilotForm.controls['range'].touched" class="error">
-                Hạng hoa tiêu là bắt buộc
-            </div>
-        </div>
-        <!-- Chuyển (ngSubmit) vào nút button -->
-        <button type="button" (click)="onSubmit()" [disabled]="pilotForm.invalid">
+  <button type="button" (click)="goBack()" class="btn-back">
+    <span class="icon">&lt;</span> Trở lại
+  </button>
+  <form [formGroup]="form">
+    <div>
+      <label for="name">Họ và tên:</label>
+      <input type="text" id="name" formControlName="name" required />
+      <div
+        *ngIf="form.controls['name'].invalid && form.controls['name'].touched"
+        class="error"
+      >
+        Tên là bắt buộc
+      </div>
+    </div>
+    <div>
+      <label for="image">Hình ảnh:</label>
+      <input
+        type="file"
+        id="image"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+      />
+    </div>
+    <div>
+      <label for="rank">Hạng hoa tiêu:</label>
+      <select id="rank" formControlName="rank" required>
+        <option value="Hoa tiêu ngoại hạng A">Hoa tiêu ngoại hạng A</option>
+        <option value="Hoa tiêu ngoại hạng B">Hoa tiêu ngoại hạng B</option>
+        <option value="Hoa tiêu ngoại hạng C">Hoa tiêu ngoại hạng C</option>
+        <option value="Hoa tiêu hạng 1">Hoa tiêu hạng 1</option>
+        <option value="Hoa tiêu hạng 2">Hoa tiêu hạng 2</option>
+        <option value="Hoa tiêu hạng 3">Hoa tiêu hạng 3</option>
+        <option value="Hoa tiêu tập sự">Hoa tiêu tập sự</option>
+      </select>
+      <div
+        *ngIf="form.controls['rank'].invalid && form.controls['rank'].touched"
+        class="error"
+      >
+        Hạng hoa tiêu là bắt buộc
+      </div>
+    </div>
+    <div>
+      <label
+        for="status"
+        [ngClass]="{
+          'color-form-red':
+            form.get('status')?.invalid &&
+            (form.get('status')?.dirty || form.get('status')?.touched)
+        }"
+        >Trạng thái</label
+      >
+      <select id="status" formControlName="status" required>
+        <option [ngValue]="true">Hiển thị</option>
+        <option [ngValue]="false">Ẩn</option>
+      </select>
+      <small
+        *ngIf="
+          form.get('status')?.invalid &&
+          (form.get('status')?.dirty || form.get('status')?.touched)
+        "
+        [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+        >Vui lòng chọn trạng thái.</small
+      >
+    </div>
+    <!-- Chuyển (ngSubmit) vào nút button -->
+    <!-- <button type="button" (click)="onSubmit(form.value)" [disabled]="form.invalid">
             {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
-        </button>
-    </form>
+        </button> -->
+    <p-button
+      type="button"
+      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+      (click)="onSubmit(form.value)"
+      severity="success"
+    />
+  </form>
 </div>
