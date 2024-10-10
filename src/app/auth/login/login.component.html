@@ -1,0 +1,44 @@
+<div class="login-page">
+    <div class="login-container">
+      <img src="assets/images/logos/logopage.png" alt="Logo" />
+      <h2 style="text-align: center;">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</h2>
+      <p class="sub-title" style="color: red; text-align: center;">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</p>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username">Tên đăng nhập</label>
+          <input type="text" id="username" formControlName="username" placeholder="Tài khoản" />
+          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+            <small class="error-text" style="color: red;">Tên đăng nhập là bắt buộc</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <div class="password-container">
+            <input type="password" id="password" formControlName="password" placeholder="Mật khẩu" (input)="checkPasswordStrength()" />
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+              <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </span>
+          </div>
+          <!-- Thông báo độ mạnh của mật khẩu -->
+          <div class="password-strength" *ngIf="passwordStrengthMessage">
+            <div [ngClass]="passwordStrengthClass">{{ passwordStrengthMessage }}</div>
+          </div>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <small class="error-text" style="color: red;">Mật khẩu phải có ít nhất 8 ký tự</small>
+          </div>
+        </div>
+  
+        <div class="remember-forgot">
+          <div class="remember">
+            <input type="checkbox" id="remember" formControlName="remember" />
+            <label for="remember">Nhớ mật khẩu</label>
+          </div>
+          <div class="forgot">
+            <p>Bạn chưa có tài khoản? <a routerLink="/auth/register">Đăng ký</a></p>
+          </div>
+        </div>
+        <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Đăng nhập</button>
+      </form>
+    </div>
+  </div>
+  

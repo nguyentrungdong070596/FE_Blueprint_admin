@@ -1,6 +1,54 @@
+
 .layout-topbar {
-    margin-bottom: 2.5rem;
+    position: relative; /* Đặt vị trí cho layout-topbar */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+  
+  .flex-content {
+    display: flex; /* Sắp xếp các phần tử con theo hàng ngang */
+    align-items: center; /* Canh giữa theo trục dọc */
+    margin-left: auto;
+    margin-right: 40px;
+    white-space: nowrap;
+  
+    p-image {
+      margin-right: 10px; /* Khoảng cách giữa hình ảnh và chữ */
+      cursor: pointer; /* Con trỏ cho thấy đây là một tùy chọn có thể nhấp */
+    }
+  
+    h5 {
+      margin: 0; /* Loại bỏ khoảng cách mặc định của h5 */
+    }
+  }
+  
+  /* Thiết lập cho màn hình trung bình (tablet) */
+  @media only screen and (min-width: 601px) and (max-width: 1024px) {
+    h5 {
+      margin-right: 20px;
+    }
+  }
+  
+  /* Thiết lập cho màn hình lớn (desktop) */
+  @media only screen and (min-width: 1025px) {
+    h5 {
+      margin-right: 20px;
+    }
+  }
+  .logout-menu {
+    position: absolute; /* Đặt menu ở vị trí tuyệt đối */
+    top: 100%; /* Xuất hiện ngay bên dưới hình ảnh */
+    background-color: white; /* Màu nền cho menu */
+    border: 1px solid #ccc; /* Viền cho menu */
+    z-index: 1000; /* Đảm bảo menu xuất hiện phía trên các phần tử khác */
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    
+    .logout-option {
+      cursor: pointer; /* Con trỏ cho thấy đây là một tùy chọn có thể nhấp */
+      &:hover {
+        color: red; /* Thay đổi màu khi hover */
+      }
+    }
+  }
