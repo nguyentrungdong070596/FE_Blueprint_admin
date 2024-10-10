@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Đảm bảo đã import ở đây
+import { environment } from '../../../environment/environment';
+import { DataService } from '../../core/services/data.service';
+import { StringAPI } from '../../shared/stringAPI/string_api';
 
 @Component({
   selector: 'app-tide',
@@ -12,41 +15,73 @@ import { FormsModule } from '@angular/forms'; // Đảm bảo đã import ở đ
   styleUrls: ['./tide.component.scss'] // Chỉnh sửa từ 'styleUrl' thành 'styleUrls'
 })
 export class TideComponent {
-  selectedMonth: string = '';
-  months = [
-    { name: 'Lịch tháng 1-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file1.pdf' },
-    { name: 'Lịch tháng 2-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file2.pdf' },
-    { name: 'Lịch tháng 3-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file3.pdf' },
-    { name: 'Lịch tháng 4-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file4.pdf' },
-    { name: 'Lịch tháng 5-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file5.pdf' },
-    { name: 'Lịch tháng 6-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file6.pdf' },
-    { name: 'Lịch tháng 7-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file7.pdf' },
-    { name: 'Lịch tháng 8-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file8.pdf' },
-    { name: 'Lịch tháng 9-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file9.pdf' },
-    { name: 'Lịch tháng 10-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file10.pdf' },
-    { name: 'Lịch tháng 11-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file11.pdf' },
-    { name: 'Lịch tháng 12-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file12.pdf' },
-  ];
+  urlAPI = environment.apiUrl;
+  item: any = {};
+  const_data: any = [];
+  totalRecords: number = 120;
+  rows: number = 5;
+  first: number = 0;
+  limit: number = 0;
 
-  onMonthChange() {
-    // Xử lý khi người dùng chọn tháng mới
-    console.log('Tháng được chọn:', this.selectedMonth);
+  constructor(private router: Router, private _dataService: DataService) { }
+  ngOnInit(): void {
+    this.getItems(this.limit, this.rows);
+  }
+  getItems(first: number, rows: number): void {
+    this.item.limit = rows;
+    this.item.page = (first / rows) + 1;
+    this._dataService.GetItem(`${StringAPI.APITide}`, this.item).subscribe(res => {
+      this.setItems(res || []);
+    });
+  }
+  setItems(values: any): void {
+    console.log(values);
+    if (values.success && values.data) {
+      this.const_data = values.data.map((item: any) => ({
+        id: item.id,
+        pdfuri: item.pdfuri,
+        status: item.status,
+        postdate: item.postdate,
+      }));
+      this.totalRecords = values.totalRecords;
+    }
   }
 
-  addTides() {
-    console.log('Thêm mới được nhấn');
-    // Chuyển hướng tới trang thêm mới
-    // Chúng ta có thể sử dụng Router để chuyển hướng nếu cần
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getItems(this.first, this.rows);
   }
 
-  editTides(index: number) {
-    console.log(`Chỉnh sửa tháng: ${index + 1}`);
-    // Logic để chỉnh sửa tháng
+  editItem(item: any) {
+    const sendItem = {
+      id: item.id,
+      pdfuri: item.pdfuri,
+      status: item.status,
+      postdate: item.postdate,
+    };
+    this._dataService.setData(sendItem);
+    this.router.navigate(['/tide/add'])
+  }
+  deleteItem(item: any) {
+    this.OnDelete(item.id);
+    console.log(item);
   }
 
-  deleteTides(index: number) {
-    console.log(`Xóa tháng: ${index + 1}`);
-    // Xác nhận và xóa tháng từ mảng
-    this.months.splice(index, 1);
+  OnDelete(id: any) {
+    
+    this._dataService.delete(StringAPI.APITide + "/" + id)
+      .subscribe(
+        (res) => {
+          console.log('delete successfully:', res);
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Error delete service:', error);
+        }
+      );
+  }
+  onAdd(): void{
+    this._dataService.setData(null);
   }
 }

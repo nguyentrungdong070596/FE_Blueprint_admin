@@ -1,76 +1,149 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; 
+import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { QuillModule } from 'ngx-quill'; 
+import { QuillModule } from 'ngx-quill';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common'; 
-import { ReactiveFormsModule } from '@angular/forms'; 
-import { ButtonModule } from 'primeng/button'; 
+import { DatePipe } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { StringAPI } from '../../../shared/stringAPI/string_api';
+import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
+import { DataService } from '../../../core/services/data.service';
 
 
 
 @Component({
   selector: 'app-add-tide',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule,ReactiveFormsModule,ButtonModule],
+  imports: [CommonModule, FormsModule, QuillModule, ReactiveFormsModule, ButtonModule],
   templateUrl: './add-tide.component.html',
   styleUrls: ['./add-tide.component.scss'],
   providers: [DatePipe]
 })
 export class AddTideComponent implements OnInit {
-  @Output() tideAdded = new EventEmitter<any>();
-  
-  tideForm!: FormGroup; // Khai báo formGroup
-  isEditMode = false; // Biến để theo dõi chế độ chỉnh sửa
-  selectedFile: File | null = null; // Lưu trữ file đã chọn
+  form!: FormGroup;
+  isEditMode = true;
+  EditData: any;
+  item: any = {};
+  selectedPdfFile: any;
+  preview_upload: any;
+  stringurl: any;
+  selectedFile: File | null = null;
 
-  constructor(private router: Router, private datePipe: DatePipe, private fb: FormBuilder) {
-    this.tideForm = this.fb.group({ // Khởi tạo formGroup
-      pdf: ['', Validators.required], // Thêm validator cho trường pdf
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private _dataService: DataService,
+    private _uploadService: FileUploadService,
+  ) { }
+
+  ngOnInit(): void {
+    this.createForm();
+    this._dataService.data$.subscribe(data => {
+
+      this.EditData = data;
+      this.setValueFormEdit(data);
+
     });
   }
 
-  ngOnInit() {
-    // Kiểm tra nếu có dữ liệu truyền vào từ router
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation && navigation.extras.state) {
-      this.isEditMode = navigation.extras.state['isEditMode'] || false; // Kiểm tra chế độ chỉnh sửa
-      const tideToEdit = navigation.extras.state['tideToEdit']; // Đổi thành tideToEdit
-      if (tideToEdit) {
-        // Nếu ở chế độ chỉnh sửa, thiết lập các trường trong form
-        this.tideForm.patchValue({
-          pdf: tideToEdit.pdf // Thêm trường pdf vào form
-        });
+  createForm() {
+    this.form = this.fb.group({
+      pdfurl: [null, Validators.required],
+      status: [null, Validators.required],
+      postdate: [null, Validators.required],
+    });
+  }
+
+  setValueFormEdit(data: any) {
+    if (data) {
+      this.form.patchValue({
+        status: data?.status,
+        pdfurl: data?.pdfurl,
+        postdate: data?.postdate
+
+        // call view image in here
+      });
+    }
+    else {
+      this.isEditMode = false;
+    }
+  }
+  handleFileInput(values: any) {
+    const processSave = () => {
+      if (this.isEditMode) {
+        this.onEdit(values);
+      } else {
+        this.onInsert(values);
       }
+      this.goBack();
+    };
+
+    if (this.selectedPdfFile) {
+      this._uploadService.postFile(this.selectedPdfFile).subscribe((data: any) => {
+        this.item.Dataurl = data.file_save_url;
+        processSave();
+      });
+    }
+    else {
+      this.item.pdfurl = this.EditData?.pdfurl;
+    }
+    processSave();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/tide']);
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    // Kiểm tra xem người dùng có chọn tệp hay không
+    if (input.files && input.files.length > 0) {
+      this.selectedPdfFile = input.files[0];  // Lấy tệp PDF đầu tiên từ danh sách tệp
     }
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file; // Lưu trữ file đã chọn
-      if (file.type === 'application/pdf') {
-        this.tideForm.patchValue({ pdf: file.name }); // Cập nhật tên file PDF vào form
-      }
+  onSubmit(values: any) {
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
+    this.handleFileInput(values)
+  }
+
+  onInsert(values: any) {
+    this.item.status = true;
+    this.item.PostDate = values.postdate;
+    this._dataService.post(StringAPI.APITide, this.item)
+      .subscribe(
+        (res) => {
+          console.log('News added successfully:', res);
+        },
+        (error) => {
+          console.error('Error adding news:', error);
+        }
+      );
+
+  }
+
+  onEdit(values: any) {
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
+    if (this.EditData && this.EditData.id && values) {
+      this.item.status = values.status;
+      this.item.PostDate = values.postdate;
+
+      this._dataService.put(StringAPI.APITide + "/" + this.EditData.id, this.item)
+        .subscribe(
+          (res) => {
+            console.log('News update successfully:', res);
+          },
+          (error) => {
+            console.error('Error update news:', error);
+          }
+        );
     }
-  }
-
-  onSubmit() {
-    if (this.isEditMode) {
-      // Logic cập nhật
-      this.tideAdded.emit({ ...this.tideForm.value, isEditMode: true }); // Cập nhật hiện tại
-    } else {
-      this.tideAdded.emit({ ...this.tideForm.value, isEditMode: false }); // Thêm mới
-    }
-    this.resetForm(); // Đặt lại form sau khi gửi
-  }
-
-  resetForm() {
-    this.selectedFile = null; // Đặt lại file đã chọn
-    this.tideForm.reset(); // Đặt lại form
-  }
-
-  goBack() {
-    this.router.navigate(['/tide']); // Quay lại trang danh sách
   }
 }

@@ -2,7 +2,7 @@
     <h2>Giờ điều động và mớn nước</h2>
     
     <div class="controls">
-      <button (click)="addNew()" class="btn btn-primary">
+      <button (click)="onAdd()" class="btn btn-primary">
         <a [routerLink]="['/monnuoc/add']">Thêm mới</a>
       </button>
     </div>
@@ -13,22 +13,24 @@
           <th>STT</th>
           <th>Tài liệu</th>
           <th>Trạng thái</th>
+          <th>Ngày cập nhật</th>
           <th>Điều chỉnh</th>
         </tr>
       </thead>
       <tbody>
         <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
-        <tr *ngFor="let water of waters; let i = index">
+        <tr *ngFor="let water of const_data; let i = index">
           <td>{{ i + 1 }}</td>
           <td>
-            <a href="assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-10.pdf" target="_blank">Xem PDF</a>
+            <a href="{{water.dataurl}}" download="file.pdf" target="_blank">Tải xuống PDF</a>
           </td>
-          <td>{{ water.status }}</td>
+          <td>{{ water.status ? "Hiển thị" : "Ẩn" }}</td>
+          <td>{{ water.postdate }}</td>
           <td>
-            <button (click)="editMonNuoc(i)" class="btn-edit">
+            <button (click)="editItem(water)" class="btn-edit">
               <i class="fa-solid fa-edit"></i> Chỉnh sửa
             </button>
-            <button (click)="deleteMonNuoc(i)" class="btn-delete">
+            <button (click)="deleteItem(water)" class="btn-delete">
               <i class="fa-solid fa-trash"></i> Xóa
             </button>
           </td>

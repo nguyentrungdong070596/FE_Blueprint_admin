@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { StringAPI } from '../../shared/stringAPI/string_api';
+import { DataService } from '../../core/services/data.service';
+import { environment } from '../../../environment/environment';
 
 
 
@@ -13,64 +16,73 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./monnuoc.component.scss']
 })
 export class MonnuocComponent {
-  zoomLevel = 1.0;
-  page = 1;  // Trang hiện tại
-  totalPages = 0;  // Tổng số trang trong PDF
+  urlAPI = environment.apiUrl;
+  item: any = {};
+  const_data: any = [];
+  totalRecords: number = 120;
+  rows: number = 5;
+  first: number = 0;
+  limit: number = 0;
 
-  waters = [
-    {
-      file: 'assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-10.pdf',
-      status: 'Hiển thị',
-    },
-    {
-      file: 'assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-11.pdf',
-      status: 'Ẩn',
-    }
-  ];
-
-  increaseZoom() {
-    this.zoomLevel += 0.1;
+  constructor(private router: Router, private _dataService: DataService) { }
+  ngOnInit(): void {
+    this.getItems(this.limit, this.rows);
   }
-
-  decreaseZoom() {
-    if (this.zoomLevel > 0.1) {
-      this.zoomLevel -= 0.1;
-    }
+  getItems(first: number, rows: number): void {
+    this.item.limit = rows;
+    this.item.page = (first / rows) + 1;
+    this._dataService.GetItem(`${StringAPI.APIManeuveringDraft}`, this.item).subscribe(res => {
+      this.setItems(res || []);
+    });
   }
-
-  prevPage() {
-    if (this.page > 1) {
-      this.page--;
-    }
-  }
-
-  nextPage() {
-    if (this.page < this.totalPages) {
-      this.page++;
+  setItems(values: any): void {
+    console.log(values);
+    if (values.success && values.data) {
+      this.const_data = values.data.map((item: any) => ({
+        id: item.id,
+        dataurl: item.dataurl,
+        status: item.status,
+        postdate: item.postdate,
+      }));
+      this.totalRecords = values.totalRecords;
     }
   }
 
-  onPdfLoad(pdf: any) {
-    this.totalPages = pdf.numPages;  // Lấy tổng số trang khi PDF được tải
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getItems(this.first, this.rows);
   }
 
-  addNew() {
-    console.log('Thêm mới được nhấn');
+  editItem(item: any) {
+    const sendItem = {
+      id: item.id,
+      dataurl: item.dataurl,
+      status: item.status,
+      postdate: item.postdate,
+    };
+    this._dataService.setData(sendItem);
+    this.router.navigate(['/monnuoc/add'])
+  }
+  deleteItem(item: any) {
+    this.OnDelete(item.id);
+    console.log(item);
   }
 
-  delete() {
-    console.log('Xóa được nhấn');
+  OnDelete(id: any) {
+    
+    this._dataService.delete(StringAPI.APIManeuveringDraft + "/" + id)
+      .subscribe(
+        (res) => {
+          console.log('delete successfully:', res);
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Error delete service:', error);
+        }
+      );
   }
-
-  editMonNuoc(index: number) {
-    console.log('Chỉnh sửa tài liệu số', index);
-  }
-
-  deleteMonNuoc(index: number) {
-    console.log('Xóa tài liệu số', index);
-  }
-
-  save() {
-    console.log('Lưu được nhấn');
+  onAdd(): void{
+    this._dataService.setData(null);
   }
 }
