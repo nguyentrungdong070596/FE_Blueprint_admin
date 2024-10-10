@@ -38,19 +38,6 @@ form {
         border-radius: 4px; // Bo tròn góc
         box-sizing: border-box; // Bao gồm padding và border trong chiều rộng
     }
-
-    button {
-        background-color: #007bff; // Màu nền cho nút
-        color: white; // Màu chữ
-        padding: 10px 15px; // Đệm trong cho nút
-        border: none; // Không có đường viền
-        border-radius: 4px; // Bo tròn góc
-        cursor: pointer; // Con trỏ khi hover
-
-        &:hover {
-            background-color: #0056b3; // Màu nền khi hover
-        }
-    }
 }
 
 .sidebar {
@@ -151,3 +138,24 @@ form {
         font-size: 12px; /* Giảm kích thước chữ thêm một lần nữa */
     }
 }
+:host ::ng-deep .btn-save {
+    background-color: #007ad9; // Màu nền xanh
+    color: white; // Màu chữ trắng
+    border: none; // Bỏ viền
+    border-radius: 5px; // Bo tròn góc
+    padding: 10px 20px; // Khoảng cách bên trong
+    font-size: 16px; // Kích thước chữ
+    cursor: pointer; // Con trỏ chuột khi di chuột vào nút
+    transition: background-color 0.3s; // Hiệu ứng chuyển màu
+
+    &:hover {
+      background-color: #005bb5; // Màu nền khi di chuột vào
+    }
+
+    &:disabled {
+      background-color: #cccccc; // Màu nền khi nút bị vô hiệu hóa
+      cursor: not-allowed; // Con trỏ chuột không cho phép
+    }
+}
+
+  

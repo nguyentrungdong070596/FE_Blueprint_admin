@@ -1,17 +1,26 @@
 <div class="content">
-  <div class="add-monnuoc-container">
-      <h2>Thêm Mới Môn Nước</h2>
-      <form [formGroup]="monnuocForm">
-          <div>
-              <label for="date">Ngày:</label>
-              <input type="date" id="date" formControlName="date" required>
-          </div>
-          <div>
-              <label for="file">Tải lên PDF:</label>
-              <input type="file" id="file" (change)="onFileChange($event)" accept=".pdf" required>
-          </div>
-          <button type="submit" class="btn btn-success" [disabled]="monnuocForm.invalid" (click)="onSubmit()">Lưu</button>
-          <button type="button" class="btn btn-secondary" (click)="goBack()">Trở Lại</button>
-      </form>
+    <div class="add-monnuoc-container">
+        <h2>Thêm Mới Môn Nước</h2>
+        <form [formGroup]="monnuocForm">
+            <div class="form-group">
+                <input type="date" id="date" formControlName="date" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="file">Tải lên PDF:</label>
+                <input type="file" id="file" (change)="onFileChange($event)" accept=".pdf" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="status">Trạng thái:</label>
+                <select id="status" formControlName="status" class="form-control">
+                    <option value="hiện thị">Hiện thị</option>
+                    <option value="không hiện thị">Ẩn</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success" [disabled]="monnuocForm.invalid" (click)="onSubmit()">Lưu</button>
+                <button type="button" class="btn btn-secondary" (click)="goBack()">Trở Lại</button>
+            </div>
+        </form>
+    </div>
   </div>
-</div>
+  
