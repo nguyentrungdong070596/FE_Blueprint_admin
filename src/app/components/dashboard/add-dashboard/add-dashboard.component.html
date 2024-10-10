@@ -1,0 +1,16 @@
+<div class="content">
+    <div class="add-dashboard-container">
+        <h2 *ngIf="!isEditMode">Thêm Mới Hình ảnh</h2>
+        <h2 *ngIf="isEditMode">Chỉnh Sửa Hình ảnh</h2>
+        <form [formGroup]="dashboardForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="file">Tải lên hình ảnh:</label>
+                <input type="file" id="file" (change)="onFileChange($event)" accept="image/*" required class="form-control">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success" [disabled]="dashboardForm.invalid">Lưu</button>
+                <button type="button" class="btn btn-secondary" (click)="goBack()">Trở Lại</button>
+            </div>
+        </form>
+    </div>
+</div>

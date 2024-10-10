@@ -1,26 +1,267 @@
-.d-flex {
-    display: flex;
+@import "primeicons/primeicons.css";
+
+body {
+  margin: 0;
+  transition: padding-left 0.3s ease;
 }
 
-/* Sidebar sẽ luôn cố định ở bên trái */
 .sidebar {
-    width: 250px;
-    transition: all 0.3s ease;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: 15px;
+  background-color: #0196da;
+  transition: all 0.3s ease;
+  color: white;
+  overflow-x: hidden;
+}
+
+.closed-content {
+  display: none;
 }
 
 .sidebar.closed {
-    width: 70px; /* Khi sidebar đóng, chiều rộng giảm xuống nhưng không ảnh hưởng đến nội dung */
-    justify-content: center;
-    align-items: center;
+  width: 70px;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* Phần nội dung chính sẽ chiếm phần còn lại của màn hình */
-.main-content {
-    flex-grow: 1; /* Phần này đảm bảo nội dung chính chiếm toàn bộ không gian còn lại */
-    transition: margin-left 0.3s ease;
-    margin-left: 250px; /* Ban đầu nội dung sẽ có khoảng cách với sidebar */
+.content {
+  margin-left: 20px;
+  transition: margin-left 0.3s ease;
+  padding: 20px 30px;
 }
 
-.sidebar.closed ~ .main-content {
-    margin-left: 70px; /* Khi sidebar đóng, nội dung di chuyển gần hơn */
+.sidebar.closed + .content {
+  margin-left: 85px;
+}
+
+.sidebar.closed .components li a .text {
+  display: none;
+}
+
+.sidebar.closed .components li a .icon {
+  text-align: center;
+  width: 100%;
+}
+
+.sidebar.closed .flex-content h3 {
+  display: none;
+}
+
+.sidebar.closed .btn-toggle {
+  margin-left: 18px;
+}
+
+.components li a {
+  padding: 10px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.components li a .icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.components li a .text {
+  flex: 1;
+}
+
+.components li a:hover {
+  background-color: blue;
+  color: #ffffff;
+}
+
+.btn-toggle {
+  width: 25px;
+  height: 25px;
+  padding: 10px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.flex-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+a {
+  cursor: pointer;
+}
+
+.active {
+  background-color: #0196da;
+  color: white;
+  font-weight: bold;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.table-bordered {
+  border: 1px solid #ddd;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #ddd;
+}
+
+.image-user {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.btn-add {
+  margin: 10px;
+  padding: 8px 16px;
+  background-color: #0196da;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.pdf-container {
+  width: 100%;
+  height: 100vh;
+  margin-top: 35px;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+
+    &.btn-primary {
+      background-color: #007bff;
+      margin-bottom: 10px;
+    }
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+    padding: 10px;
+  }
+
+  .content {
+    margin-left: 200px;
+  }
+
+  .sidebar.closed + .content {
+    margin-left: 85px;
+  }
+
+  .add-monnuoc-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .btn-add {
+    width: 100%;
+  }
+
+  .flex-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 150px;
+    padding: 5px;
+  }
+
+  .content {
+    margin-left: 150px;
+  }
+
+  .add-monnuoc-container {
+    width: 95%;
+  }
+
+  .btn-add {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .add-monnuoc-container {
+    width: 100%;
+    padding: 10px;
+  }
+}
+.btn-edit,
+.btn-delete {
+  border: none;
+  background: none;
+  color: #0196da;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 5px 10px;
+  margin-right: 5px; // Giữa hai nút
+  transition: background-color 0.3s ease;
 }

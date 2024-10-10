@@ -1,17 +1,39 @@
 <div class="content">
     <h2>Giờ điều động và mớn nước</h2>
-<div class="controls">
-    <button (click)="addNew()" class="btn btn-primary"><a [routerLink]="['/monnuoc/add']">Thêm mới</a></button>
-    <button (click)="delete()" class="btn btn-danger">Xóa</button>
-</div>
-<div class="pdf-container">
-    <iframe 
-    src="assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-10.pdf" 
-    width="100%" 
-    height="100%" 
-    style="border: none;">
-  </iframe>
+    
+    <div class="controls">
+      <button (click)="addNew()" class="btn btn-primary">
+        <a [routerLink]="['/monnuoc/add']">Thêm mới</a>
+      </button>
+    </div>
+    <!-- Bảng dữ liệu -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tài liệu</th>
+          <th>Trạng thái</th>
+          <th>Điều chỉnh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
+        <tr *ngFor="let water of waters; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <a href="assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-10.pdf" target="_blank">Xem PDF</a>
+          </td>
+          <td>{{ water.status }}</td>
+          <td>
+            <button (click)="editMonNuoc(i)" class="btn-edit">
+              <i class="fa-solid fa-edit"></i> Chỉnh sửa
+            </button>
+            <button (click)="deleteMonNuoc(i)" class="btn-delete">
+              <i class="fa-solid fa-trash"></i> Xóa
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>  
-
   

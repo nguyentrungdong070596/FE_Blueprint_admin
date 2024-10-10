@@ -7,38 +7,46 @@ import { FormsModule } from '@angular/forms'; // Đảm bảo đã import ở đ
 @Component({
   selector: 'app-tide',
   standalone: true,
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './tide.component.html',
-  styleUrl: './tide.component.scss'
+  styleUrls: ['./tide.component.scss'] // Chỉnh sửa từ 'styleUrl' thành 'styleUrls'
 })
 export class TideComponent {
-  selectedMonth: string='';
+  selectedMonth: string = '';
   months = [
-    { name: 'Lịch tháng 1-2017', downloadLink: '/assets/images/tide/file1.pdf' },
-    { name: 'Lịch tháng 2-2017', downloadLink: '/assets/images/tide/file2.pdf' },
-    { name: 'Lịch tháng 3-2017', downloadLink: '/assets/images/tide/file3.pdf' },
-    { name: 'Lịch tháng 4-2017', downloadLink: '/assets/images/tide/file4.pdf' },
-    { name: 'Lịch tháng 5-2017', downloadLink: '/assets/images/tide/file5.pdf' },
-    { name: 'Lịch tháng 6-2017', downloadLink: '/assets/images/tide/file6.pdf' },
-    { name: 'Lịch tháng 7-2017', downloadLink: '/assets/images/tide/file7.pdf'  },
-    { name: 'Lịch tháng 8-2017', downloadLink: '/assets/images/tide/file8.pdf'  },
-    { name: 'Lịch tháng 9-2017', downloadLink: '/assets/images/tide/file9.pdf'  },
-    { name: 'Lịch tháng 10-2017', downloadLink: '/assets/images/tide/file10.pdf'  },
-    { name: 'Lịch tháng 11-2017', downloadLink: '/assets/images/tide/file11.pdf'  },
-    { name: 'Lịch tháng 12-2017', downloadLink: '/assets/images/tide/file12.pdf'  },
+    { name: 'Lịch tháng 1-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file1.pdf' },
+    { name: 'Lịch tháng 2-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file2.pdf' },
+    { name: 'Lịch tháng 3-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file3.pdf' },
+    { name: 'Lịch tháng 4-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file4.pdf' },
+    { name: 'Lịch tháng 5-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file5.pdf' },
+    { name: 'Lịch tháng 6-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file6.pdf' },
+    { name: 'Lịch tháng 7-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file7.pdf' },
+    { name: 'Lịch tháng 8-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file8.pdf' },
+    { name: 'Lịch tháng 9-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file9.pdf' },
+    { name: 'Lịch tháng 10-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file10.pdf' },
+    { name: 'Lịch tháng 11-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file11.pdf' },
+    { name: 'Lịch tháng 12-2017', status: 'Hiện', downloadLink: '/assets/images/tide/file12.pdf' },
   ];
+
   onMonthChange() {
     // Xử lý khi người dùng chọn tháng mới
     console.log('Tháng được chọn:', this.selectedMonth);
-    // Có thể thêm logic để lọc dữ liệu dựa trên tháng được chọn
   }
-  addTide(newTide: any) {
-    const newItem = {
-      name: newTide.name,
-    };
-  }
+
   addTides() {
     console.log('Thêm mới được nhấn');
+    // Chuyển hướng tới trang thêm mới
+    // Chúng ta có thể sử dụng Router để chuyển hướng nếu cần
+  }
+
+  editTides(index: number) {
+    console.log(`Chỉnh sửa tháng: ${index + 1}`);
+    // Logic để chỉnh sửa tháng
+  }
+
+  deleteTides(index: number) {
+    console.log(`Xóa tháng: ${index + 1}`);
+    // Xác nhận và xóa tháng từ mảng
+    this.months.splice(index, 1);
   }
 }
-

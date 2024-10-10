@@ -1,261 +1,267 @@
 @import "primeicons/primeicons.css";
 
 body {
-    margin: 0;
-    transition: padding-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho padding */
+  margin: 0;
+  transition: padding-left 0.3s ease;
 }
 
 .sidebar {
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    padding: 15px;
-    background-color: #0196da;
-    transition: all 0.3s ease;
-    color: white;
-    overflow-x: hidden; /* Ẩn nội dung khi sidebar đóng */
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: 15px;
+  background-color: #0196da;
+  transition: all 0.3s ease;
+  color: white;
+  overflow-x: hidden;
 }
 
 .closed-content {
-    display: none;
+  display: none;
 }
 
-/* Khi sidebar đóng */
 .sidebar.closed {
-    width: 70px; /* Thu nhỏ chiều rộng của sidebar */
-    padding: 0;
-    overflow: hidden;
+  width: 70px;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* Nội dung */
 .content {
-    margin-left: 50px; /* Khi sidebar mở */
-    transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
-    padding: 20px 30px; /* Thêm padding cho nội dung */
+  margin-left: 20px;
+  transition: margin-left 0.3s ease;
+  padding: 20px 30px;
 }
 
 .sidebar.closed + .content {
-    margin-left: 85px; /* Khi sidebar đóng */
+  margin-left: 85px;
 }
 
 .sidebar.closed .components li a .text {
-    display: none; /* Ẩn văn bản của các item */
+  display: none;
 }
 
 .sidebar.closed .components li a .icon {
-    text-align: center;
-    width: 100%; /* Căn giữa icon khi sidebar đóng */
+  text-align: center;
+  width: 100%;
 }
 
 .sidebar.closed .flex-content h3 {
-    display: none; /* Ẩn tiêu đề khi sidebar đóng */
+  display: none;
 }
 
 .sidebar.closed .btn-toggle {
-    margin-left: 18px; /* Giữ lại nút toggle gần biên */
+  margin-left: 18px;
 }
 
-/* CSS cho các icon và nội dung */
 .components li a {
-    padding: 10px;
-    text-decoration: none;
-    display: flex; /* Dạng flex để dễ căn chỉnh icon và text */
-    align-items: center;
-    color: #ffffff;
-    transition: background-color 0.3s ease;
+  padding: 10px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
 }
 
 .components li a .icon {
-    margin-right: 10px;
-    font-size: 18px; /* Kích thước của icon */
+  margin-right: 10px;
+  font-size: 18px;
 }
 
 .components li a .text {
-    flex: 1; /* Văn bản sẽ chiếm phần còn lại */
+  flex: 1;
 }
 
 .components li a:hover {
-    background-color: blue;
-    color: #ffffff;
+  background-color: blue;
+  color: #ffffff;
 }
 
 .btn-toggle {
-    width: 25px;
-    height: 25px;
-    padding: 10px 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    cursor: pointer;
+  width: 25px;
+  height: 25px;
+  padding: 10px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
 }
 
 .flex-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .active {
-    background-color: #0196da;
-    color: white;
-    font-weight: bold;
+  background-color: #0196da;
+  color: white;
+  font-weight: bold;
 }
 
 .table {
-    width: calc(100% - 10px); /* Điều chỉnh chiều rộng của bảng để giảm khoảng trắng */
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .table th,
 .table td {
-    padding: 8px;
-    text-align: left;
+  padding: 8px;
+  text-align: left;
 }
 
 .table th {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .table-bordered {
-    border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .table-bordered th,
 .table-bordered td {
-    border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .image-user {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
 }
 
 .btn-add {
-    margin: 10px;
-    padding: 8px 16px;
-    background-color: #0196da;
-    border-radius: 5px;
-    border: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+  margin: 10px;
+  padding: 8px 16px;
+  background-color: #0196da;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 
-    a {
-        color: white; // Màu chữ trắng
-        text-decoration: none; // Bỏ gạch dưới
-    }
+  a {
+    color: white;
+    text-decoration: none;
+  }
 }
 
 .pdf-container {
-    width: 100%;
-    height: 100vh; /* Chiều cao 100% của viewport */
-    margin-top: 35px;
+  width: 100%;
+  height: 100vh;
+  margin-top: 35px;
 }
 
 .controls {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px; /* Khoảng cách giữa các nút */
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
 
-    .btn {
-        padding: 10px 20px;
-        font-size: 13px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        color: white;
+  .btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
 
-        &.btn-primary {
-            background-color: #007bff;
-        }
-
-        &.btn-danger {
-            background-color: #dc3545;
-        }
-
-        a {
-            color: white; // Màu chữ trắng
-            text-decoration: none; // Bỏ gạch dưới
-        }
+    &.btn-primary {
+      background-color: #007bff;
+      margin-bottom: 10px;
     }
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
 }
 
 /* Responsive Styles */
 @media (max-width: 1024px) {
-    .sidebar {
-        width: 200px;
-        padding: 10px;
-    }
+  .sidebar {
+    width: 200px;
+    padding: 10px;
+  }
 
-    .content {
-        margin-left: 200px; /* Khi sidebar mở */
-    }
+  .content {
+    margin-left: 200px;
+  }
 
-    .sidebar.closed + .content {
-        margin-left: 85px; /* Khi sidebar đóng */
-    }
+  .sidebar.closed + .content {
+    margin-left: 85px;
+  }
 
-    .add-monnuoc-container {
-        width: 90%; /* Đặt chiều rộng cho màn hình nhỏ */
-        padding: 15px; /* Giảm padding cho form */
-    }
+  .add-monnuoc-container {
+    width: 90%;
+    padding: 15px;
+  }
 
-    .btn-add {
-        width: 100%; /* Đặt nút thêm chiếm 100% chiều rộng */
-    }
+  .btn-add {
+    width: 100%;
+  }
 
-    .flex-content {
-        flex-direction: column; /* Chuyển thành cột */
-        align-items: flex-start; /* Căn trái */
-    }
+  .flex-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .controls {
-        flex-direction: column; /* Chuyển thành cột */
-        align-items: stretch; /* Căn giữa */
-    }
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 150px;
-        padding: 5px;
-    }
+  .sidebar {
+    width: 150px;
+    padding: 5px;
+  }
 
-    .content {
-        margin-left: 150px; /* Khi sidebar mở */
-    }
+  .content {
+    margin-left: 150px;
+  }
 
-    .add-monnuoc-container {
-        width: 95%; /* Đặt chiều rộng cho màn hình nhỏ hơn */
-    }
+  .add-monnuoc-container {
+    width: 95%;
+  }
 
-    .btn-add {
-        width: 100%; /* Đặt nút thêm chiếm 100% chiều rộng */
-    }
+  .btn-add {
+    width: 100%;
+  }
 }
 
 @media (max-width: 576px) {
-    .sidebar {
-        width: 100%;
-        position: relative; /* Đặt lại vị trí */
-        height: auto; /* Đặt chiều cao tự động */
-    }
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
 
-    .content {
-        margin-left: 0; /* Không còn margin khi sidebar mở */
-        padding: 10px; /* Thêm padding cho nội dung */
-    }
+  .content {
+    margin-left: 0;
+    padding: 10px;
+  }
 
-    .add-monnuoc-container {
-        width: 100%; /* Đặt chiều rộng cho form */
-        padding: 10px; /* Giảm padding cho form */
-    }
+  .add-monnuoc-container {
+    width: 100%;
+    padding: 10px;
+  }
+}
+.btn-edit,
+.btn-delete {
+  border: none;
+  background: none;
+  color: #0196da;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 5px 10px;
+  margin-right: 5px; // Giữa hai nút
+  transition: background-color 0.3s ease;
 }

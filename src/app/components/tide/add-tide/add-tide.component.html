@@ -1,16 +1,28 @@
 <div class="content1">
     <h1 *ngIf="!isEditMode">Thêm mới lịch thủy triều</h1>
-    <h1 *ngIf="isEditMode">Chỉnh sửa lịch thủy triều</h1> <!-- Thêm tiêu đề cho chế độ chỉnh sửa -->
+    <h1 *ngIf="isEditMode">Chỉnh sửa lịch thủy triều</h1>
 </div>
 <div class="content">
     <button type="button" (click)="goBack()" class="btn-back">
         <span class="icon">&lt;</span> Trở lại
     </button>
-    <form (ngSubmit)="onSubmit()">
+    <form [formGroup]="tideForm" (ngSubmit)="onSubmit()">
         <div>
-            <label for="pdf">Tải file PDF:</label> <!-- Thay đổi nhãn từ Hình ảnh thành Tải file PDF -->
-            <input type="file" id="pdf" (change)="onFileSelected($event)" accept="application/pdf"> <!-- Đổi id và accept thành file PDF -->
+            <label for="pdf">Tải file PDF:</label>
+            <input type="file" id="pdf" (change)="onFileSelected($event)" accept="application/pdf">
         </div>
-        <button type="submit">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button> <!-- Thay đổi text nút dựa trên chế độ -->
+        <p-button 
+        label="Lưu" 
+        *ngIf="!isEditMode" 
+        type="submit"
+        [disabled]="tideForm.invalid"
+        class="btn-save">
+     </p-button>
+        <p-button 
+            label="Cập nhật" 
+            *ngIf="isEditMode" 
+            type="submit"
+            [disabled]="tideForm.invalid">
+        </p-button>
     </form>
 </div>

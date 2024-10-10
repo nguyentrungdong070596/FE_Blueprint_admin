@@ -1,46 +1,46 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill'; 
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common'; 
+import { ReactiveFormsModule } from '@angular/forms'; 
+import { ButtonModule } from 'primeng/button'; 
+
+
 
 @Component({
   selector: 'app-add-tide',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule],
+  imports: [CommonModule, FormsModule, QuillModule,ReactiveFormsModule,ButtonModule],
   templateUrl: './add-tide.component.html',
   styleUrls: ['./add-tide.component.scss'],
   providers: [DatePipe]
 })
-export class AddTideComponent {
+export class AddTideComponent implements OnInit {
   @Output() tideAdded = new EventEmitter<any>();
   
-  tide = {
-    type: '',
-    name: '',
-    code: '',
-    image: '',
-    pdf: '' // Thêm trường pdf để lưu thông tin file PDF
-  };
-
+  tideForm!: FormGroup; // Khai báo formGroup
   isEditMode = false; // Biến để theo dõi chế độ chỉnh sửa
   selectedFile: File | null = null; // Lưu trữ file đã chọn
 
-  constructor(private router: Router, private datePipe: DatePipe) {
+  constructor(private router: Router, private datePipe: DatePipe, private fb: FormBuilder) {
+    this.tideForm = this.fb.group({ // Khởi tạo formGroup
+      pdf: ['', Validators.required], // Thêm validator cho trường pdf
+    });
+  }
+
+  ngOnInit() {
     // Kiểm tra nếu có dữ liệu truyền vào từ router
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state) {
       this.isEditMode = navigation.extras.state['isEditMode'] || false; // Kiểm tra chế độ chỉnh sửa
       const tideToEdit = navigation.extras.state['tideToEdit']; // Đổi thành tideToEdit
       if (tideToEdit) {
-        this.tide = {
-          type: tideToEdit.type,
-          name: tideToEdit.name,
-          code: tideToEdit.code,
-          image: tideToEdit.image,
-          pdf: tideToEdit.pdf // Thêm trường pdf
-        };
+        // Nếu ở chế độ chỉnh sửa, thiết lập các trường trong form
+        this.tideForm.patchValue({
+          pdf: tideToEdit.pdf // Thêm trường pdf vào form
+        });
       }
     }
   }
@@ -50,9 +50,7 @@ export class AddTideComponent {
     if (file) {
       this.selectedFile = file; // Lưu trữ file đã chọn
       if (file.type === 'application/pdf') {
-        this.tide.pdf = file.name; // Lưu tên file PDF
-      } else {
-        this.tide.image = file.name; // Lưu tên file hình ảnh nếu không phải PDF
+        this.tideForm.patchValue({ pdf: file.name }); // Cập nhật tên file PDF vào form
       }
     }
   }
@@ -60,16 +58,16 @@ export class AddTideComponent {
   onSubmit() {
     if (this.isEditMode) {
       // Logic cập nhật
-      this.tideAdded.emit(this.tide); // Cập nhật hiện tại
+      this.tideAdded.emit({ ...this.tideForm.value, isEditMode: true }); // Cập nhật hiện tại
     } else {
-      this.tideAdded.emit(this.tide); // Thêm mới
+      this.tideAdded.emit({ ...this.tideForm.value, isEditMode: false }); // Thêm mới
     }
     this.resetForm(); // Đặt lại form sau khi gửi
   }
 
   resetForm() {
     this.selectedFile = null; // Đặt lại file đã chọn
-    this.tide = { type: '', name: '', code: '', image: '', pdf: '' }; // Đặt lại thông tin tide
+    this.tideForm.reset(); // Đặt lại form
   }
 
   goBack() {

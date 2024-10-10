@@ -1,25 +1,37 @@
-  <div class="content">
-    <div class="date-picker-container"><h2>Quản lý lịch thủy triều</h2>
-      <input type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()" />
-    </div>
-     <div class="controls">
-        <button (click)="addTides()" class="btn btn-primary"><a [routerLink]="['/tide/add']">Thêm mới</a></button>
-    </div> 
-    <div class="calendar-container">
-      <div class="calendar-list">
-        <h2>LỊCH THỦY TRIỀU</h2>
-        <ul>
-          <li *ngFor="let month of months">
-            <div class="month-item">
-              <img src="assets/images/image/calendar.png" alt="Calendar Icon">
-              <span>{{ month.name }}</span>
-              <a [href]="month.downloadLink" target="_blank">
-                <i class="pi pi-download" style="font-size: 1rem;"></i>
-              </a>
-            </div>
-          </li>
-        </ul>
+<div class="content">
+  <div class="add-dashboard-container">
+      <h2>Quản lý lịch thủy triều</h2>
+      <div class="controls">
+          <button class="btn btn-primary" (click)="addTides()">
+              <a [routerLink]="['/tide/add']" class="link-button">Thêm mới</a>
+          </button>
       </div>
-    </div>
+          <table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>STT</th>
+                      <th>Lịch thủy triều</th>
+                      <th>Trạng thái</th>
+                      <th>Điều chỉnh</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let month of months; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        <a href="assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-10.pdf" target="_blank">Xem PDF</a>
+                      </td>
+                      <td>{{ month.status }}</td>
+                      <td>
+                          <button (click)="editTides(i)" class="btn btn-edit">
+                              <i class="fa-solid fa-edit"></i>Chỉnh sửa
+                          </button>
+                          <button (click)="deleteTides(i)" class="btn btn-delete">
+                              <i class="fa-solid fa-trash"></i>Xóa
+                          </button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
   </div>
-    

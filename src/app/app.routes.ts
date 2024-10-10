@@ -3,6 +3,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LayoutAdminComponent } from './components/layout-admin/layout-admin.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AddDashboardComponent } from './components/dashboard/add-dashboard/add-dashboard.component';
 import { ListServicesComponent } from './components/list-services/list-services.component';
 import { AddListServicesComponent } from './components/list-services/add-list-services/add-list-services.component';
 import { NewsListComponent } from './components/news-list/news-list.component';
@@ -31,6 +32,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Áp dụng AuthGuard
     children: [
         { path: 'dashboard', component: DashboardComponent },
+        {path: 'dashboard/add', component:AddDashboardComponent},
         { path: 'list-services', component: ListServicesComponent },
         { path: 'list-services/add', component: AddListServicesComponent },
         { path: 'news', component: NewsListComponent },

@@ -1,15 +1,37 @@
-<div class="d-flex">
-    <!-- Sidebar -->
-    <!-- Main Content -->
-    <div class="main-content container mt-5">
-        <h1>Quản lý danh mục</h1>        
-        <!-- PrimeNG Circular Carousel -->
-        <p-carousel [value]="images" [circular]="true" [autoplayInterval]="3000">
-            <ng-template pTemplate="item" let-image>
-                <div class="carousel-item">
-                    <img [src]="image" alt="Image" style="width:100%">
-                </div>
-            </ng-template>
-        </p-carousel>
+<div class="content">
+    <h2>Giờ điều động và mớn nước</h2>
+    
+    <div class="controls">
+      <button (click)="addNew()" class="btn btn-primary">
+        <a [routerLink]="['/dashboard/add']">Thêm mới</a>
+      </button>
     </div>
-</div>
+    <!-- Bảng dữ liệu -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Hình ảnh</th>
+          <th>Điều chỉnh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
+        <tr *ngFor="let image of images; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <img [src]="image.url" alt="Hình ảnh" style="width: 100px; height: auto;">
+          </td>
+          <td>
+            <button (click)="editImage(i)" class="btn-edit">
+              <i class="fa-solid fa-edit"></i> Chỉnh sửa
+            </button>
+            <button (click)="deleteImage(i)" class="btn-delete">
+              <i class="fa-solid fa-trash"></i> Xóa
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
