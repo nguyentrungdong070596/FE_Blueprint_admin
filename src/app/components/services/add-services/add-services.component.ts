@@ -71,53 +71,38 @@ export class AddServicesComponent implements OnInit {
       this.selectedPdfFile = input.files[0];  // Lấy tệp PDF đầu tiên từ danh sách tệp
     }
   }
-  handleFileInput(values: any) {
-    console.log("Đã bấm");
-    let isSetValue = false;
-    const processSave = () => {
-      if (this.isEditMode) {
-        console.log("Edit");
-        this.onEdit(values);
-      } else {
-        this.onInsert(values);
-      }
-      this.goBack();
-    };
-
+  async handleFileInput() {
     // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
     this.item.image = this.EditData?.image || "upload/files/default.png";
-    this.item.pdfdata = this.EditData?.pdfdata;
+    
 
-    // Nếu có file PDF, upload sau khi upload ảnh
-    if (this.selectedPdfFile) {
-      this._uploadService.postFile(this.selectedPdfFile).subscribe(
-        (data: any) => {
-          this.item.pdfdata = data.file_save_url;
-          processSave();
-        },
-        (error: any) => {
-          console.error('Error uploading PDF file:', error);
-        }
-      );
-    }
-
-    if (this.uploadImage && this.uploadImage.length > 0) {
-      this.fileToUpload = this.uploadImage[0];
-      if (this.fileToUpload) {
-        this._uploadService.postFile(this.fileToUpload).subscribe(
-          (data: any) => {
-            this.item.image = data.file_save_url;
-            processSave();
-          },
-          (error: any) => {
-            console.error('Error uploading image file:', error);
-          }
-        );
+    try {
+      // Nếu có file PDF, upload sau khi upload ảnh
+      if (this.selectedPdfFile) {
+        const pdfUploadResponse = await this._uploadService.postFile(this.selectedPdfFile).toPromise();
+        console.log(pdfUploadResponse);
+        // this.item.pdfdata = pdfUploadResponse.file_save_url;
       }
-    }
-    processSave();
-  }
+      else{
+        this.item.pdfdata = this.EditData?.pdfdata;
+      }
 
+      // Nếu có file hình ảnh
+      if (this.uploadImage && this.uploadImage.length > 0) {
+        this.fileToUpload = this.uploadImage[0];
+        if (this.fileToUpload) {
+          const imageUploadResponse = await this._uploadService.postFile(this.fileToUpload).toPromise();
+          console.log(imageUploadResponse);
+          // this.item.image = imageUploadResponse.file_save_url;
+        }
+      }
+      else{
+        this.item.image = this.EditData?.image || "upload/files/default.png";
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  }
 
 
   goBack(): void {
@@ -134,28 +119,34 @@ export class AddServicesComponent implements OnInit {
     // }
   }
 
-  onSubmit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
-    // console.log(values);
-    this.handleFileInput(values)
+  async onSubmit(values: any) {
+    await this.handleFileInput();
+  
+    if (this.isEditMode) {
+      this.onEdit(values);
+    } else {
+      this.onInsert(values);
+    }
+  
+    this.goBack();
   }
 
   onInsert(values: any) {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.item.title = values.title;
     this.item.status = true;
     this._dataService.post(StringAPI.APIServicePrice, this.item)
       .subscribe(
         (res) => {
-          console.log('News added successfully:', res);
+          console.log('added successfully:', res);
         },
         (error) => {
-          console.error('Error adding news:', error);
+          console.error('Error adding:', error);
         }
       );
-
   }
 
   onEdit(values: any) {
@@ -170,10 +161,10 @@ export class AddServicesComponent implements OnInit {
       this._dataService.put(StringAPI.APIServicePrice + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('News update successfully:', res);
+            console.log('update successfully:', res);
           },
           (error) => {
-            console.error('Error update news:', error);
+            console.error('Error update:', error);
           }
         );
 
