@@ -7,10 +7,43 @@
     <span class="icon">&lt;</span> Trở lại
   </button>
   <form [formGroup]="form">
+    <!-- Tiêu đề -->
     <div>
-      <label for="title">Tiêu đề:</label>
-      <input type="text" id="title" formControlName="title" required />
+      <label
+        for="title"
+        required
+        [ngClass]="{
+          'color-form-red':
+            form.get('title')?.invalid &&
+            (form.get('title')?.dirty || form.get('title')?.touched)
+        }"
+        >Tiêu đề</label
+      >
+      <input
+        pInputText
+        type="text"
+        id="title"
+        required
+        aria-describedby="title-help"
+        formControlName="title"
+        [ngClass]="{
+          'border-form-red':
+            form.get('title')?.invalid &&
+            (form.get('title')?.dirty || form.get('title')?.touched)
+        }"
+      />
+      <small
+        *ngIf="
+          form.get('title')?.invalid &&
+          (form.get('title')?.dirty || form.get('title')?.touched)
+        "
+        id="title-help"
+        [ngClass]="{ 'color-form-red': form.get('title')?.invalid }"
+        >Tiêu đề không được trống.</small
+      >
     </div>
+
+    <!-- Hình ảnh -->
     <div>
       <label for="image">Hình ảnh:</label>
       <input
@@ -19,8 +52,19 @@
         accept="image/*"
         formControlName="image"
         (change)="onFileSelected($event)"
-        />
+        required
+      />
+      <small
+        *ngIf="
+          form.get('image')?.invalid &&
+          (form.get('image')?.dirty || form.get('image')?.touched)
+        "
+        class="color-form-red"
+        >Vui lòng tải lên hình ảnh.</small
+      >
     </div>
+
+    <!-- Tệp PDF -->
     <div>
       <label for="pdf">Tải lên PDF:</label>
       <input
@@ -31,7 +75,17 @@
         formControlName="pdfdata"
         required
       />
+      <small
+        *ngIf="
+          form.get('pdfdata')?.invalid &&
+          (form.get('pdfdata')?.dirty || form.get('pdfdata')?.touched)
+        "
+        class="color-form-red"
+        >Vui lòng tải lên tệp PDF.</small
+      >
     </div>
+
+    <!-- Trạng thái -->
     <div>
       <label for="status">Trạng thái:</label>
       <select id="status" formControlName="status" required>
@@ -39,11 +93,13 @@
         <option [ngValue]="false">Ẩn</option>
       </select>
     </div>
+
+    <!-- Nút hành động -->
     <p-button
       (click)="onSubmit(form.value)"
       pButton
       [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
       class="btn btn-primary"
-    />
+    ></p-button>
   </form>
 </div>

@@ -21,6 +21,7 @@
           pInputText
           type="text"
           id="title"
+          required
           aria-describedby="title-help"
           formControlName="title"
           [ngClass]="{
@@ -42,6 +43,7 @@
       <div>
         <label
           for="content"
+          required
           [ngClass]="{
             'color-form-red':
               form.get('content')?.invalid &&

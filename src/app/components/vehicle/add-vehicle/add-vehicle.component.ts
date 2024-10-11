@@ -112,10 +112,10 @@ export class AddVehicleComponent implements OnInit {
   }
 
   onSubmit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     
     this.handleFileInput(values)
   }

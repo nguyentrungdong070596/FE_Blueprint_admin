@@ -8,14 +8,37 @@
   </button>
   <form [formGroup]="form">
     <div>
-      <label for="name">Họ và tên:</label>
-      <input type="text" id="name" formControlName="name" required />
-      <div
-        *ngIf="form.controls['name'].invalid && form.controls['name'].touched"
-        class="error"
+      <label
+        for="name"
+        [ngClass]="{
+          'color-form-red':
+            form.get('name')?.invalid &&
+            (form.get('name')?.dirty || form.get('name')?.touched)
+        }"
+        >Họ và tên:</label
       >
-        Tên là bắt buộc
-      </div>
+      <input
+        pInputText
+        type="text"
+        id="name"
+        required
+        aria-describedby="name-help"
+        formControlName="name"
+        [ngClass]="{
+          'border-form-red':
+            form.get('name')?.invalid &&
+            (form.get('name')?.dirty || form.get('name')?.touched)
+        }"
+      />
+      <small
+        *ngIf="
+          form.get('name')?.invalid &&
+          (form.get('name')?.dirty || form.get('name')?.touched)
+        "
+        id="name-help"
+        [ngClass]="{ 'color-form-red': form.get('name')?.invalid }"
+        >Tên không được trống.</small
+      >
     </div>
     <div>
       <label for="image">Hình ảnh:</label>
@@ -27,22 +50,37 @@
       />
     </div>
     <div>
-      <label for="rank">Hạng hoa tiêu:</label>
-      <select id="rank" formControlName="rank" required>
-        <option value="Hoa tiêu ngoại hạng A">Hoa tiêu ngoại hạng A</option>
-        <option value="Hoa tiêu ngoại hạng B">Hoa tiêu ngoại hạng B</option>
-        <option value="Hoa tiêu ngoại hạng C">Hoa tiêu ngoại hạng C</option>
-        <option value="Hoa tiêu hạng 1">Hoa tiêu hạng 1</option>
-        <option value="Hoa tiêu hạng 2">Hoa tiêu hạng 2</option>
-        <option value="Hoa tiêu hạng 3">Hoa tiêu hạng 3</option>
-        <option value="Hoa tiêu tập sự">Hoa tiêu tập sự</option>
-      </select>
-      <div
-        *ngIf="form.controls['rank'].invalid && form.controls['rank'].touched"
-        class="error"
+      <label
+        for="rank"
+        [ngClass]="{
+          'color-form-red':
+            form.get('rank')?.invalid &&
+            (form.get('rank')?.dirty || form.get('rank')?.touched)
+        }"
+        >Hạng hoa tiêu</label
       >
-        Hạng hoa tiêu là bắt buộc
-      </div>
+      <input
+        pInputText
+        type="text"
+        id="rank"
+        required
+        aria-describedby="rank-help"
+        formControlName="rank"
+        [ngClass]="{
+          'border-form-red':
+            form.get('rank')?.invalid &&
+            (form.get('rank')?.dirty || form.get('rank')?.touched)
+        }"
+      />
+      <small
+        *ngIf="
+          form.get('rank')?.invalid &&
+          (form.get('rank')?.dirty || form.get('rank')?.touched)
+        "
+        id="rank-help"
+        [ngClass]="{ 'color-form-red': form.get('rank')?.invalid }"
+        >Hạng hoa tiêu không được trống.</small
+      >
     </div>
     <div>
       <label

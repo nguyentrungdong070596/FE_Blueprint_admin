@@ -7,17 +7,46 @@
     <span class="icon">&lt;</span> Trở lại
   </button>
   <form [formGroup]="form">
-    <div>
-      <label for="pdf">Tải file PDF:</label>
+    <!-- Tải file PDF -->
+    <div class="form-group">
+      <label
+        for="pdf"
+        [ngClass]="{
+          'color-form-red':
+            form.get('pdfurl')?.invalid &&
+            (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)
+        }"
+        >Tải file PDF</label
+      >
       <input
         type="file"
         id="pdf"
         (change)="onFileSelected($event)"
         accept="application/pdf"
-        formControlName="dataurl"
+        formControlName="pdfurl"
+        required
       />
+      <small
+        *ngIf="
+          form.get('pdfurl')?.invalid &&
+          (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)
+        "
+        class="color-form-red"
+        >Vui lòng tải lên tệp PDF.</small
+      >
     </div>
+
+    <!-- Ngày đăng -->
     <div class="form-group">
+      <label
+        for="postdate"
+        [ngClass]="{
+          'color-form-red':
+            form.get('postdate')?.invalid &&
+            (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+        }"
+        >Ngày đăng</label
+      >
       <input
         type="date"
         id="postdate"
@@ -25,8 +54,18 @@
         required
         class="form-control"
       />
+      <small
+        *ngIf="
+          form.get('postdate')?.invalid &&
+          (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+        "
+        class="color-form-red"
+        >Vui lòng chọn ngày đăng.</small
+      >
     </div>
-    <div *ngIf="isEditMode">
+
+    <!-- Trạng thái -->
+    <div *ngIf="isEditMode" class="form-group">
       <label
         for="status"
         [ngClass]="{
@@ -45,16 +84,18 @@
           form.get('status')?.invalid &&
           (form.get('status')?.dirty || form.get('status')?.touched)
         "
-        [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+        class="color-form-red"
         >Vui lòng chọn trạng thái.</small
       >
     </div>
+
+    <!-- Nút hành động -->
     <p-button
       type="button"
       (click)="onSubmit(form.value)"
       pButton
       [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
       class="btn btn-primary"
-    />
+    ></p-button>
   </form>
 </div>
