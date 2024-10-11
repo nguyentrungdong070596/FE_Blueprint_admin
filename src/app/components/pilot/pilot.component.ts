@@ -19,7 +19,7 @@ export class PilotComponent {
   urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
-  totalRecords: number = 120;
+  totalRecords: number = 0;
   rows: number = 5;
   first: number = 0;
   limit: number = 0;

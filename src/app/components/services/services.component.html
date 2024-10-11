@@ -44,6 +44,7 @@
   <br />
   <div class="flex-auto">
     <p-paginator
+    *ngIf="totalRecords"     
       [rows]="rows"
       [totalRecords]="totalRecords"
       [first]="first"
