@@ -59,7 +59,7 @@ export class AddTideComponent implements OnInit {
     if (data) {
       this.form.patchValue({
         status: data?.status,
-        pdfurl: data?.pdfurl,
+        pdfuri: data?.pdfuri,
         postdate: data?.postdate
 
         // call view image in here
@@ -81,7 +81,7 @@ export class AddTideComponent implements OnInit {
 
     if (this.selectedPdfFile) {
       this._uploadService.postFile(this.selectedPdfFile).subscribe((data: any) => {
-        this.item.Dataurl = data.file_save_url;
+        this.item.pdfuri = data.file_save_url;
         processSave();
       });
     }

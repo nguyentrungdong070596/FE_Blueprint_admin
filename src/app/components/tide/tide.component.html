@@ -20,7 +20,7 @@
                   <tr *ngFor="let month of const_data; let i = index">
                       <td>{{ i + 1 }}</td>
                       <td>
-                        <a href={{month.pdfuri}} target="_blank">Xem PDF</a>
+                        <a [href]="urlAPI + '/' + month.pdfuri" target="_blank">Xem PDF</a>
                         <!-- <a href="assets/monnuoc/Bang-thuy-trieu-tham-khao-thang-10.pdf" target="_blank">Xem PDF</a> -->
                       </td>
                       <td>{{ month.postdate }}</td>
