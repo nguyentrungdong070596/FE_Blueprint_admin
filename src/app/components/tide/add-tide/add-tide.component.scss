@@ -123,6 +123,18 @@ form {
         font-size: 14px; /* Giảm kích thước chữ cho nút trở lại */
     }
 }
+.btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+
+    &.btn-primary {
+        background-color: #2196f3;
+    }
+}
 
 @media (max-width: 576px) {
     .content,

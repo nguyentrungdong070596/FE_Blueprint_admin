@@ -39,11 +39,9 @@
       </div>
       <div class="form-actions">
         <p-button
-          type="button"
           (click)="onSubmit(form.value)"
-          pButton
           [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-          severity="success"
+          class="btn btn-success"
         />
         <button type="button" class="btn btn-secondary" (click)="goBack()">
           Trở Lại

@@ -38,19 +38,21 @@ form {
     border-radius: 4px; // Bo tròn góc
     box-sizing: border-box; // Bao gồm padding và border trong chiều rộng
   }
+}
+.btn {
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
 
-  button {
-    color: white; // Màu chữ
-    padding: 10px 15px; // Đệm trong cho nút
-    border: none; // Không có đường viền
-    border-radius: 4px; // Bo tròn góc
-    cursor: pointer; // Con trỏ khi hover
-
-    &:hover {
-      background-color: #0056b3; // Màu nền khi hover
-    }
+  &.btn-primary {
+      background-color: #2196f3;
   }
 }
+
+ 
 
 .sidebar {
   width: 200px; /* Chiều rộng của sidebar */

@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LayoutAdminComponent } from './components/layout-admin/layout-admin.component';
+import { InfoComponent } from './components/info/info.component';
+import { AddInfoComponent } from './components/info/add-info/add-info.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddDashboardComponent } from './components/dashboard/add-dashboard/add-dashboard.component';
 import { ListServicesComponent } from './components/list-services/list-services.component';
@@ -31,6 +33,8 @@ export const routes: Routes = [
     component: LayoutAdminComponent,
     canActivate: [AuthGuard], // Áp dụng AuthGuard
     children: [
+        { path: 'info', component: InfoComponent },
+        { path: 'info/add', component: AddInfoComponent },
         { path: 'dashboard', component: DashboardComponent },
         {path: 'dashboard/add', component:AddDashboardComponent},
         { path: 'list-services', component: ListServicesComponent },

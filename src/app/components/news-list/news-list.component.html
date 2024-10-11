@@ -1,9 +1,10 @@
 <div class="content">
   <h2>Quản lý tin tức và sự kiện</h2>
-  <button type="button" class="btn-add">
-    <a [routerLink]="['/news/add']" (click)="onAdd()">Thêm mới</a>
-  </button>
-
+  <div class="controls">
+    <button (click)="onAdd()" class="btn btn-primary">
+      <a [routerLink]="['/news/add']">Thêm mới</a>
+    </button>
+  </div>
   <table class="table table-bordered">
     <thead>
       <tr>

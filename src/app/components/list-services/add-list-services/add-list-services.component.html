@@ -26,10 +26,9 @@
     </div>
     <!-- <button type="submit" class="btn btn-success" [disabled]="form.invalid"  (ngSubmit)="onSubmit(form.valid)">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button> -->
     <p-button
-      type="button"
       [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
       (click)="onSubmit(form.value)"
-      severity="success"
+      class="btn btn-primary"
     />
   </form>
 </div>
