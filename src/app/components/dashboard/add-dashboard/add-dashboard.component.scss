@@ -38,10 +38,12 @@
             cursor: pointer;
 
             &.btn-success {
-                background-color: #0196da;
+                background-color: #2196f3;
                 color: white;
             }
-
+            &:hover {
+                color: #2196f3 /* Đổi màu chữ khi hover */
+            }
             &.btn-secondary {
                 background-color: #6c757d;
                 color: white;

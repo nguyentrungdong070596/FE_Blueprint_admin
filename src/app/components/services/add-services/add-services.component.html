@@ -40,11 +40,10 @@
       </select>
     </div>
     <p-button
-      type="button"
       (click)="onSubmit(form.value)"
       pButton
       [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-      severity="success"
+      class="btn btn-primary"
     />
   </form>
 </div>
