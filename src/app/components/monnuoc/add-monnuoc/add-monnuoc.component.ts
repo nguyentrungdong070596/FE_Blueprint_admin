@@ -100,10 +100,10 @@ export class AddMonnuocComponent implements OnInit {
     }
 
     onSubmit(values: any) {
-        // if (this.form.invalid) {
-        //   this.form.markAllAsTouched();
-        //   return;
-        // }
+        if (this.form.invalid) {
+          this.form.markAllAsTouched();
+          return;
+        }
         this.handleFileInput(values)
     }
 
@@ -123,10 +123,10 @@ export class AddMonnuocComponent implements OnInit {
     }
 
     onEdit(values: any) {
-        // if (this.form.invalid) {
-        //   this.form.markAllAsTouched();
-        //   return;
-        // }
+        if (this.form.invalid) {
+          this.form.markAllAsTouched();
+          return;
+        }
         if (this.EditData && this.EditData.id && values) {
             this.item.status = values.status;
             this.item.PostDate = values.postdate;

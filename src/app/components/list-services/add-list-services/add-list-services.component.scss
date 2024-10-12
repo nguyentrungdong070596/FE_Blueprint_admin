@@ -27,6 +27,14 @@ form {
         margin-bottom: 5px; // Khoảng cách giữa label và input
         font-weight: bold; // Làm cho chữ đậm hơn
     }
+    .color-form-red {
+        color: red; /* Màu đỏ khi có lỗi */
+      }
+      
+      /* Điều chỉnh đường viền khi có lỗi */
+      ::ng-deep .border-form-red {
+        border: 1px solid red; /* Viền màu đỏ khi có lỗi */
+      }
 
     input[type="text"],
     input[type="date"],

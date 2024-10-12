@@ -8,8 +8,37 @@
   </button>
   <form [formGroup]="form">
     <div>
-      <label for="name">Tên phương tiện:</label>
-      <input type="text" id="name" formControlName="name" required />
+      <label
+        for="name"
+        [ngClass]="{
+          'color-form-red':
+            form.get('name')?.invalid &&
+            (form.get('name')?.dirty || form.get('name')?.touched)
+        }"
+        >Tên phương tiện</label
+      >
+      <input
+        pInputText
+        type="text"
+        id="name"
+        required
+        aria-describedby="name-help"
+        formControlName="name"
+        [ngClass]="{
+          'border-form-red':
+            form.get('name')?.invalid &&
+            (form.get('name')?.dirty || form.get('name')?.touched)
+        }"
+      />
+      <small
+        *ngIf="
+          form.get('name')?.invalid &&
+          (form.get('name')?.dirty || form.get('name')?.touched)
+        "
+        id="name-help"
+        [ngClass]="{ 'color-form-red': form.get('name')?.invalid }"
+        >Tên không được trống.</small
+      >
     </div>
     <div>
       <label for="image">Hình ảnh:</label>

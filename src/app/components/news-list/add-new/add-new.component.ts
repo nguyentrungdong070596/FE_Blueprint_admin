@@ -143,10 +143,10 @@ export class AddNewComponent implements OnInit {
   }
 
   onEdit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     if (this.EditData && this.EditData.id && values) {
       console.log(values);
       this.news.title = values.title;

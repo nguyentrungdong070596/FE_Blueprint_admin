@@ -76,6 +76,14 @@ form {
         margin-left: calc(65px); /* Khi sidebar đóng (khoảng cách 5px + 60px) */
     }
 }
+.color-form-red {
+    color: red; /* Màu đỏ khi có lỗi */
+  }
+  
+  /* Điều chỉnh đường viền khi có lỗi */
+  ::ng-deep .border-form-red {
+    border: 1px solid red; /* Viền màu đỏ khi có lỗi */
+  }
 
 .btn-back {
     background: none; /* Không có màu nền */
