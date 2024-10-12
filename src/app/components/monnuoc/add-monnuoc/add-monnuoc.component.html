@@ -3,6 +3,7 @@
     <h2 *ngIf="!isEditMode">Thêm Mới</h2>
     <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
     <form [formGroup]="form">
+      <!-- Ngày đăng -->
       <div class="form-group">
         <label
           for="file"
@@ -78,7 +79,7 @@
             form.get('status')?.invalid &&
             (form.get('status')?.dirty || form.get('status')?.touched)
           "
-          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+          class="color-form-red"
           >Vui lòng chọn trạng thái.</small
         >
       </div>
