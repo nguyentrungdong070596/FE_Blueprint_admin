@@ -1,49 +1,136 @@
-<div class="content1">
-  <h1 *ngIf="!isEditMode">Thêm mới giá dịch vụ</h1>
-  <h1 *ngIf="isEditMode">Chỉnh sửa giá dịch vụ</h1>
-</div>
 <div class="content">
-  <button type="button" (click)="goBack()" class="btn-back">
-    <span class="icon">&lt;</span> Trở lại
-  </button>
-  <form [formGroup]="form">
-    <div>
-      <label for="title">Tiêu đề:</label>
-      <input type="text" id="title" formControlName="title" required />
-    </div>
-    <div>
-      <label for="image">Hình ảnh:</label>
-      <input
-        type="file"
-        id="image"
-        accept="image/*"
-        formControlName="image"
-        (change)="onFileSelected($event)"
+  <div class="add-container">
+    <h2 *ngIf="!isEditMode">Thêm Mới</h2>
+    <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
+    <form [formGroup]="form">
+      <div class="form-group">
+        <label
+          for="title"
+          [ngClass]="{
+            'color-form-red':
+              form.get('title')?.invalid &&
+              (form.get('title')?.dirty || form.get('title')?.touched)
+          }"
+          >Tiêu đề:</label
+        >
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          class="form-control"
+          required
         />
-    </div>
-    <div>
-      <label for="pdf">Tải lên PDF:</label>
-      <input
-        type="file"
-        id="pdfdata"
-        (change)="onPdfSelected($event)"
-        accept=".pdf"
-        formControlName="pdfdata"
-        required
-      />
-    </div>
-    <div>
-      <label for="status">Trạng thái:</label>
-      <select id="status" formControlName="status" required>
-        <option [ngValue]="true">Hiển thị</option>
-        <option [ngValue]="false">Ẩn</option>
-      </select>
-    </div>
-    <p-button
-      (click)="onSubmit(form.value)"
-      pButton
-      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-      class="btn btn-primary"
-    />
-  </form>
+        <small
+          *ngIf="
+            form.get('title')?.invalid &&
+            (form.get('title')?.dirty || form.get('title')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('title')?.invalid }"
+        >
+          Vui lòng nhập tiêu đề
+        </small>
+      </div>
+      <div class="form-group">
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              form.get('image')?.invalid &&
+              (form.get('image')?.dirty || form.get('image')?.touched)
+          }"
+          >Tải lên hình ảnh:</label
+        >
+        <input
+          type="file"
+          id="image"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="form-control"
+          formControlName="image"
+        />
+        <small
+          *ngIf="
+            form.get('image')?.invalid &&
+            (form.get('image')?.dirty || form.get('image')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('image')?.invalid }"
+        >
+          Vui lòng tải hình ảnh.
+        </small>
+      </div>
+      <!-- Preview Hình Ảnh -->
+      <div *ngIf="preview_upload">
+        <img [src]="preview_upload" alt="Selected Image" width="300" />
+      </div>
+
+      <div class="form-group">
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              form.get('pdfdata')?.invalid &&
+              (form.get('pdfdata')?.dirty || form.get('pdfdata')?.touched)
+          }"
+          >Tải lên dữ liệu:</label
+        >
+        <input
+          type="file"
+          id="pdfdata"
+          accept=".pdf"
+          (change)="onFilePDFSelected($event)"
+          class="form-control"
+          formControlName="pdfdata"
+          required
+        />
+        <small
+          *ngIf="
+            form.get('pdfdata')?.invalid &&
+            (form.get('pdfdata')?.dirty || form.get('pdfdata')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('pdfdata')?.invalid }"
+        >
+          Vui lòng tải dữ liệu.
+        </small>
+      </div>
+      <div *ngIf="isEditMode" class="form-group">
+        <label
+          for="status"
+          [ngClass]="{
+            'color-form-red':
+              form.get('status')?.invalid &&
+              (form.get('status')?.dirty || form.get('status')?.touched)
+          }"
+          >Trạng thái</label
+        >
+        <select
+          id="status"
+          formControlName="status"
+          class="form-control"
+          required
+        >
+          <option [ngValue]="true">Hiển thị</option>
+          <option [ngValue]="false">Ẩn</option>
+        </select>
+        <small
+          *ngIf="
+            form.get('status')?.invalid &&
+            (form.get('status')?.dirty || form.get('status')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+          >Vui lòng chọn trạng thái.</small
+        >
+      </div>
+
+      <div class="form-actions">
+        <p-button
+          (click)="onSubmit(form.value)"
+          [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+          class="btn btn-success"
+        />
+        <button type="button" class="btn btn-secondary" (click)="goBack()">
+          Trở Lại
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

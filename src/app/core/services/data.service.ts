@@ -14,6 +14,11 @@ export class DataService {
   setData(data: any) {
     this.dataSubject.next(data);
   }
+
+  clearData() {
+    this.dataSubject.next(null); // Xóa dữ liệu
+  }
+
   constructor(private _http: HttpClient) { }
   createrheader() {
     return {

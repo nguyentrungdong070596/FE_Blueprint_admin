@@ -1,28 +1,59 @@
 <div class="content">
-  <div class="add-monnuoc-container">
-    <h2>Thêm Mới Môn Nước</h2>
+  <div class="add-container">
+    <h2 *ngIf="!isEditMode">Thêm Mới</h2>
+    <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
     <form [formGroup]="form">
       <div class="form-group">
-        <input
-          type="date"
-          id="postdate"
-          formControlName="postdate"
-          required
-          class="form-control"
-        />
-      </div>
-      <div class="form-group">
-        <label for="file">Tải lên PDF:</label>
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              form.get('dataurl')?.invalid &&
+              (form.get('dataurl')?.dirty || form.get('dataurl')?.touched)
+          }"
+          >Tải lên dữ liệu:</label
+        >
         <input
           type="file"
-          id="image"
-          (change)="onFileSelected($event)"
-          formControlName="dataurl"
+          id="dataurl"
           accept=".pdf"
-          required
+          (change)="onFileSelected($event)"
           class="form-control"
+          formControlName="dataurl"
+          required
         />
+        <small
+          *ngIf="
+            form.get('dataurl')?.invalid &&
+            (form.get('dataurl')?.dirty || form.get('dataurl')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('dataurl')?.invalid }"
+        >
+          Vui lòng tải dữ liệu.
+        </small>
       </div>
+
+      <div class="form-group">
+        <label
+          for="postdate"
+          [ngClass]="{
+            'color-form-red':
+              form.get('postdate')?.invalid &&
+              (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+          }"
+          >Ngày đăng:</label
+        >
+        <input type="date" id="postdate" class="form-control" formControlName="postdate" />
+        <small
+          *ngIf="
+            form.get('postdate')?.invalid &&
+            (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('postdate')?.invalid }"
+          >Vui lòng chọn ngày đăng.</small
+        >
+      </div>
+
       <div *ngIf="isEditMode" class="form-group">
         <label
           for="status"
@@ -33,7 +64,12 @@
           }"
           >Trạng thái</label
         >
-        <select id="status" formControlName="status" required>
+        <select
+          id="status"
+          formControlName="status"
+          class="form-control"
+          required
+        >
           <option [ngValue]="true">Hiển thị</option>
           <option [ngValue]="false">Ẩn</option>
         </select>
@@ -46,14 +82,12 @@
           >Vui lòng chọn trạng thái.</small
         >
       </div>
+
       <div class="form-actions">
-        <!-- <button type="submit" class="btn btn-success" [disabled]="form.invalid" (click)="onSubmit(form.valid)">Lưu</button> -->
         <p-button
-          type="button"
           (click)="onSubmit(form.value)"
-          pButton
           [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-          severity="success"
+          class="btn btn-success"
         />
         <button type="button" class="btn btn-secondary" (click)="goBack()">
           Trở Lại

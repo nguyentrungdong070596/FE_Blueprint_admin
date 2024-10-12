@@ -54,7 +54,6 @@ export class InfoComponent  implements OnInit {
   }
 
   editInfo(item: any) {
-    console.log(item);
     const sendItem = {
       id: item.id,
       content: item.content,

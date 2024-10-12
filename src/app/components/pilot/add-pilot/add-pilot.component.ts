@@ -8,6 +8,7 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { DataService } from '../../../core/services/data.service';
 import { ButtonModule } from 'primeng/button';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   selector: 'app-add-pilot',
@@ -22,11 +23,37 @@ export class AddPilotComponent implements OnInit {
   isEditMode = true;
   EditData: any;
   item: any = {};
-  uploadImage: any;
+  stringurl = environment.apiUrl;
+
   preview_upload: any;
-  stringurl: any;
-  fileToUpload: File | null = null;
-  selectedFile: File | null = null;
+  uploadImage: any;
+
+  ranks = [
+    {
+      name: "Hoa tiêu ngoại hạng A",
+      value: "Hoa tiêu ngoại hạng A",
+    },
+    {
+      name: "Hoa tiêu ngoại hạng B",
+      value: "Hoa tiêu ngoại hạng B",
+    },
+    {
+      name: "Hoa tiêu ngoại hạng C",
+      value: "Hoa tiêu ngoại hạng C",
+    },
+    {
+      name: "Hoa tiêu ngoại hạng 1",
+      value: "Hoa tiêu ngoại hạng 1",
+    },
+    {
+      name: "Hoa tiêu ngoại hạng 2",
+      value: "Hoa tiêu ngoại hạng 2",
+    },
+    {
+      name: "Hoa tiêu ngoại hạng 3",
+      value: "Hoa tiêu ngoại hạng 3",
+    },
+  ]
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +65,6 @@ export class AddPilotComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this._dataService.data$.subscribe(data => {
-
       this.EditData = data;
       this.setValueFormEdit(data);
 
@@ -50,12 +76,13 @@ export class AddPilotComponent implements OnInit {
       name: [null, Validators.required],
       image: [null],
       rank: [null, Validators.required],
-      status: [null, Validators.required],
+      status: [true, Validators.required],
     });
   }
 
   setValueFormEdit(data: any) {
     if (data) {
+      this.preview_upload = this.stringurl + "/" + data.image;
       this.form.patchValue({
         name: data?.name,
         rank: data?.rank,
@@ -66,99 +93,99 @@ export class AddPilotComponent implements OnInit {
       this.isEditMode = false;
     }
   }
-  handleFileInput(values: any) {
-    const processSave = () => {
-      if (this.isEditMode) {
-        console.log("Edit Mode");
-        this.onEdit(values);
-      } else {
-        this.onInsert(values);
-      }
-      this.goBack();
-    };
-
-    // if (this.uploadImage && this.uploadImage.length > 0) {
-    //   this.fileToUpload = this.uploadImage[0];
-    //   if (this.fileToUpload) {
-    //     this._uploadService.postFile(this.fileToUpload).subscribe(
-    //       (data: any) => {
-    //         this.item.image = data.file_save_url;
-    //         processSave();
-    //       },
-    //       (error: any) => {
-    //         console.error('Error uploading file:', error);
-    //       }
-    //     );
-    //     return; // Dừng ở đây nếu đã upload ảnh mới
-    //   }
-    // }
-
-    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
-    this.item.image = this.EditData.image || "upload/files/default.png";
-    processSave();
-  }
 
 
-  goBack(): void {
-    this.router.navigate(['/pilot']);
-  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
 
-  onFileSelected(event: any) {
-    this.uploadImage = event.target.files; // Capture the FileList object
-    if (this.uploadImage && this.uploadImage.length > 0) {
-      const file = this.uploadImage[0];
+    if (input.files && input.files.length > 0) {
+      this.uploadImage = input.files[0];
+
+
+      // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
-      reader.onload = e => this.preview_upload = reader.result;
-      reader.readAsDataURL(file);
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.preview_upload = e.target?.result;
+      };
+      reader.readAsDataURL(this.uploadImage);
     }
   }
 
-  onSubmit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
-    
-    this.handleFileInput(values)
+  async handleFileInput() {
+    // Kiểm tra xem EditData có tồn tại và có thuộc tính image
+    if (this.EditData && this.EditData.image) {
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
+    } else {
+      this.item.image = "upload/files/default.png";
+    }
+
+    if (this.uploadImage) {
+      const imageData = await this._uploadService.postFile(this.uploadImage);
+      if (imageData.file_save_url) {
+        // Loại bỏ validator của trường image nếu upload thành công
+        this.form.controls['image'].clearValidators();
+        this.form.controls['image'].updateValueAndValidity();
+        this.item.image = imageData.file_save_url;
+      }
+    }
   }
 
+  async onSubmit(values: any) {
+    await this.handleFileInput();
+
+    // Kiểm tra lại form sau khi xử lý file
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    if (this.isEditMode) {
+      this.onEdit(values);
+    } else {
+      this.onInsert(values);
+    }
+
+    this.goBack();
+  }
+
+
   onInsert(values: any) {
-    this.item.name = values.name;
     this.item.status = true;
     this.item.rank = values.rank;
+    this.item.name = values.name;
     this._dataService.post(StringAPI.APIHoaTieu, this.item)
       .subscribe(
         (res) => {
-          console.log('News added successfully:', res);
+          console.log('added successfully:', res);
         },
         (error) => {
-          console.error('Error adding news:', error);
+          console.error('Error adding:', error);
         }
       );
 
   }
 
   onEdit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
     if (this.EditData && this.EditData.id && values) {
-      console.log(values);
-      this.item.name = values.name;
       this.item.status = values.status;
       this.item.rank = values.rank;
-
+      this.item.name = values.name;
       this._dataService.put(StringAPI.APIHoaTieu + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('News update successfully:', res);
+            console.log('update successfully:', res);
           },
           (error) => {
-            console.error('Error update news:', error);
+            console.error('Error update:', error);
           }
         );
 
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/pilot']);
   }
 }

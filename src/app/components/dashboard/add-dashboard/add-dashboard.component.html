@@ -1,20 +1,43 @@
 <div class="content">
   <div class="add-dashboard-container">
-    <h2 *ngIf="!isEditMode">Thêm Mới Hình ảnh</h2>
-    <h2 *ngIf="isEditMode">Chỉnh Sửa Hình ảnh</h2>
+    <h2 *ngIf="!isEditMode">Thêm Mới</h2>
+    <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
     <form [formGroup]="form">
       <div class="form-group">
-        <label for="file">Tải lên hình ảnh:</label>
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              form.get('image')?.invalid &&
+              (form.get('image')?.dirty || form.get('image')?.touched)
+          }"
+          >Tải lên hình ảnh:</label
+        >
         <input
           type="file"
-          id="file"
+          id="image"
           (change)="onFileSelected($event)"
           accept="image/*"
           required
           class="form-control"
+          formControlName="image"
         />
+        <small
+          *ngIf="
+            form.get('image')?.invalid &&
+            (form.get('image')?.dirty || form.get('image')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('image')?.invalid }"
+        >
+          Vui lòng tải hình ảnh.
+        </small>
       </div>
-      <div *ngIf="isEditMode">
+
+      <!-- Preview Hình Ảnh -->
+      <div *ngIf="preview_upload">
+        <img [src]="preview_upload" alt="Selected Image" width="300" />
+      </div>
+      <div *ngIf="isEditMode" class="form-group">
         <label
           for="status"
           [ngClass]="{
@@ -24,7 +47,12 @@
           }"
           >Trạng thái</label
         >
-        <select id="status" formControlName="status" required>
+        <select
+          id="status"
+          formControlName="status"
+          class="form-control"
+          required
+        >
           <option [ngValue]="true">Hiển thị</option>
           <option [ngValue]="false">Ẩn</option>
         </select>

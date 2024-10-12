@@ -83,7 +83,7 @@ export class ListServicesComponent {
       );
   }
   onAdd(): void{
-    this._dataService.setData(null);
+    this._dataService.clearData();
   }
 }
 

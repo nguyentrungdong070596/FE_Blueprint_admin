@@ -23,8 +23,8 @@
         <td>
           <img [src]="urlAPI + '/' + list.image" alt="" class="image-user" />
         </td>
-        <td>{{ list.content }}</td>
-        <td>{{ list.status }}</td>
+        <td [innerHTML]="list.content"></td>
+        <td>{{ list.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
           <button (click)="editItem(list)" class="btn-edit">
             <i class="fa-solid fa-edit"></i> Chỉnh sửa
