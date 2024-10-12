@@ -75,16 +75,16 @@ export class AddMonnuocComponent implements OnInit {
             this.goBack();
         };
 
-        if (this.selectedPdfFile) {
-            this._uploadService.postFile(this.selectedPdfFile).subscribe((data: any) => {
-                this.item.Dataurl = data.file_save_url;
-                processSave();
-            });
-        }
-        else {
-            this.item.pdfdata = this.EditData?.pdfdata;
-        }
-        processSave();
+        // if (this.selectedPdfFile) {
+        //     this._uploadService.postFile(this.selectedPdfFile).subscribe((data: any) => {
+        //         this.item.Dataurl = data.file_save_url;
+        //         processSave();
+        //     });
+        // }
+        // else {
+        //     this.item.pdfdata = this.EditData?.pdfdata;
+        // }
+        // processSave();
     }
 
     goBack(): void {

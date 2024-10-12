@@ -79,16 +79,16 @@ export class AddTideComponent implements OnInit {
       this.goBack();
     };
 
-    if (this.selectedPdfFile) {
-      this._uploadService.postFile(this.selectedPdfFile).subscribe((data: any) => {
-        this.item.pdfuri = data.file_save_url;
-        processSave();
-      });
-    }
-    else {
-      this.item.pdfurl = this.EditData?.pdfurl;
-    }
-    processSave();
+    // if (this.selectedPdfFile) {
+    //   this._uploadService.postFile(this.selectedPdfFile).subscribe((data: any) => {
+    //     this.item.pdfuri = data.file_save_url;
+    //     processSave();
+    //   });
+    // }
+    // else {
+    //   this.item.pdfurl = this.EditData?.pdfurl;
+    // }
+    // processSave();
   }
 
   goBack(): void {

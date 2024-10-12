@@ -56,46 +56,46 @@
           *ngIf="
             form.get('content')?.invalid &&
             (form.get('content')?.dirty || form.get('content')?.touched)
-          "
-          [ngClass]="{ 'color-form-red': form.get('content')?.invalid }"
-          >Nội dung không được trống.</small
-        >
-      </div>
-  
-      <div>
-        <label
-          for="status"
-          [ngClass]="{
-            'color-form-red':
-              form.get('status')?.invalid &&
-              (form.get('status')?.dirty || form.get('status')?.touched)
-          }"
-          >Trạng thái</label
-        >
-        <select id="status" formControlName="status" required>
-          <option [ngValue]="true">Hiển thị</option>
-          <option [ngValue]="false">Ẩn</option>
-        </select>
-        <small
-          *ngIf="
+        }"
+        >Nội dung</label
+      >
+      <quill-editor formControlName="content" id="content"></quill-editor>
+      <small
+        *ngIf="
+          form.get('content')?.invalid &&
+          (form.get('content')?.dirty || form.get('content')?.touched)
+        "
+        [ngClass]="{ 'color-form-red': form.get('content')?.invalid }"
+        >Nội dung không được trống.</small
+      >
+    </div>
+    <div>
+      <label
+        for="status"
+        [ngClass]="{
+          'color-form-red':
             form.get('status')?.invalid &&
             (form.get('status')?.dirty || form.get('status')?.touched)
-          "
-          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
-          >Vui lòng chọn trạng thái.</small
-        >
-      </div>
-  
-      <div>
-        <label for="postdate">Ngày đăng:</label>
-        <input type="date" id="postdate" formControlName="postdate" />
-      </div>
-  
-      <p-button
-        [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-        (click)="onSubmit(form.value)"
-        class="btn btn-primary"
-      />
-    </form>
-  </div>
-  
+        }"
+        >Trạng thái</label
+      >
+      <select id="status" formControlName="status" required>
+        <option [ngValue]="true">Hiển thị</option>
+        <option [ngValue]="false">Ẩn</option>
+      </select>
+      <small
+        *ngIf="
+          form.get('status')?.invalid &&
+          (form.get('status')?.dirty || form.get('status')?.touched)
+        "
+        [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+        >Vui lòng chọn trạng thái.</small
+      >
+    </div>
+    <p-button
+      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+      (click)="onSubmit(form.value)"
+      class="btn btn-primary"
+    />
+  </form>
+</div>

@@ -74,33 +74,23 @@ export class AddServicesComponent implements OnInit {
   async handleFileInput() {
     // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
     this.item.image = this.EditData?.image || "upload/files/default.png";
-    
+    this.item.pdfdata = this.EditData?.pdfdata || "";
 
-    try {
-      // Nếu có file PDF, upload sau khi upload ảnh
-      if (this.selectedPdfFile) {
-        const pdfUploadResponse = await this._uploadService.postFile(this.selectedPdfFile).toPromise();
-        console.log(pdfUploadResponse);
-        // this.item.pdfdata = pdfUploadResponse.file_save_url;
-      }
-      else{
-        this.item.pdfdata = this.EditData?.pdfdata;
-      }
+    // Upload Pdf
+    if (this.selectedPdfFile) {
+      const Pdfdata = await this._uploadService.postFile(this.selectedPdfFile);
+      this.item.pdfdata = Pdfdata.file_save_url;
 
-      // Nếu có file hình ảnh
-      if (this.uploadImage && this.uploadImage.length > 0) {
-        this.fileToUpload = this.uploadImage[0];
-        if (this.fileToUpload) {
-          const imageUploadResponse = await this._uploadService.postFile(this.fileToUpload).toPromise();
-          console.log(imageUploadResponse);
-          // this.item.image = imageUploadResponse.file_save_url;
-        }
+      console.log(Pdfdata);
+    }
+
+    // Upload hình ảnh
+    if (this.uploadImage && this.uploadImage.length > 0) {
+      this.fileToUpload = this.uploadImage[0];
+      if (this.fileToUpload) {
+        const imageData = await this._uploadService.postFile(this.fileToUpload);
+        this.item.image = imageData.file_save_url;
       }
-      else{
-        this.item.image = this.EditData?.image || "upload/files/default.png";
-      }
-    } catch (error) {
-      console.error('Error uploading file:', error);
     }
   }
 
@@ -121,13 +111,13 @@ export class AddServicesComponent implements OnInit {
 
   async onSubmit(values: any) {
     await this.handleFileInput();
-  
+
     if (this.isEditMode) {
       this.onEdit(values);
     } else {
       this.onInsert(values);
     }
-  
+
     this.goBack();
   }
 

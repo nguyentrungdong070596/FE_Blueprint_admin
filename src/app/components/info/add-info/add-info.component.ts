@@ -47,37 +47,21 @@ export class AddInfoComponent implements OnInit {
   }
   createForm() {
     this.form = this.fb.group({
-      title: [null, Validators.required],
       content: [null, Validators.required],
       status: [null, Validators.required],
-      postdate: [null],
     });
   }
   setValueFormEdit(data: any) {
     if (data) {
       this.form.patchValue({
-        title: data?.title,
         content: data?.content,
         status: data?.status,
-        postdate: data?.postdate,
       });
     }
     else {
       this.isEditMode = false;
     }
   }
-  handleFileInput(values: any) {
-    const processSave = () => {
-      if (this.isEditMode) {
-        console.log("Edit Mode");
-        this.onEdit(values);
-      } else {
-        this.onInsert(values);
-      }
-      this.goBack();
-    };
-  }
-
 
   goBack(): void {
     this.router.navigate(['/info']);
@@ -87,15 +71,18 @@ export class AddInfoComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    this.handleFileInput(values)
+    if (this.isEditMode) {
+      this.onEdit(values);
+    } else {
+      this.onInsert(values);
+    }
+    this.goBack();
   }
 
   onInsert(values: any) {
-    this.info.title = values.title;
     this.info.status = true;
     this.info.content = values.content;
-    this.info.postdate = values.postdate;
-    this._dataService.post(StringAPI.APINews, this.info)
+    this._dataService.post(StringAPI.APIIntroduction, this.info)
       .subscribe(
         (res) => {
           console.log('Info added successfully:', res);
@@ -108,27 +95,19 @@ export class AddInfoComponent implements OnInit {
   }
 
   onEdit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
     if (this.EditData && this.EditData.id && values) {
-      console.log(values);
-      this.info.title = values.title;
       this.info.status = values.status;
       this.info.content = values.content;
-      this.info.postdate = values.postdate;
 
-      this._dataService.put(StringAPI.APINews + "/" + this.EditData.id, this.info)
+      this._dataService.put(StringAPI.APIIntroduction + "/" + this.EditData.id, this.info)
         .subscribe(
           (res) => {
-            console.log('News update successfully:', res);
+            console.log('update successfully:', res);
           },
           (error) => {
-            console.error('Error update news:', error);
+            console.error('Error update:', error);
           }
         );
-
     }
   }
 }
