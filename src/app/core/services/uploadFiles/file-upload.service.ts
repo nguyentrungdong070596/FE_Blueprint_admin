@@ -15,10 +15,10 @@ export class FileUploadService {
     };
   }
 
-  postFile(fileToUpload: File) {
+  postFile(fileToUpload: File): Promise<any> {
     const formData: FormData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    return this.httpClient.post(environment.apiUrl + '/upload', formData);
+    return this.httpClient.post(environment.apiUrl + '/upload', formData).toPromise();
   }
 
 }

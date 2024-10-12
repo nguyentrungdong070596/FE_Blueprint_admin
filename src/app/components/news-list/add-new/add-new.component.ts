@@ -81,21 +81,21 @@ export class AddNewComponent implements OnInit {
       this.goBack();
     };
 
-    if (this.uploadImage && this.uploadImage.length > 0) {
-      this.fileToUpload = this.uploadImage[0];
-      if (this.fileToUpload) {
-        this._uploadService.postFile(this.fileToUpload).subscribe(
-          (data: any) => {
-            this.news.image = data.file_save_url;
-            processSave();
-          },
-          (error: any) => {
-            console.error('Error uploading file:', error);
-          }
-        );
-        return; // Dừng ở đây nếu đã upload ảnh mới
-      }
-    }
+    // if (this.uploadImage && this.uploadImage.length > 0) {
+    //   this.fileToUpload = this.uploadImage[0];
+    //   if (this.fileToUpload) {
+    //     this._uploadService.postFile(this.fileToUpload).subscribe(
+    //       (data: any) => {
+    //         this.news.image = data.file_save_url;
+    //         processSave();
+    //       },
+    //       (error: any) => {
+    //         console.error('Error uploading file:', error);
+    //       }
+    //     );
+    //     return; // Dừng ở đây nếu đã upload ảnh mới
+    //   }
+    // }
 
     // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
     this.news.image = this.EditData.image || "upload/files/default.png";
