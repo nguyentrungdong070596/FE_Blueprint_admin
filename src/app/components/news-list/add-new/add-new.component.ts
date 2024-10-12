@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DataService } from '../../../core/services/data.service';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { StringAPI } from '../../../shared/stringAPI/string_api';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   selector: 'app-add-new',
@@ -23,12 +24,10 @@ export class AddNewComponent implements OnInit {
   form!: FormGroup;
   isEditMode = true;
   EditData: any;
-  news: any = {};
-  uploadImage: any;
+  item: any = {};
+  stringurl = environment.apiUrl;
   preview_upload: any;
-  stringurl: any;
-  fileToUpload: File | null = null;
-  selectedFile: File | null = null;
+  uploadImage: any;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +39,6 @@ export class AddNewComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this._dataService.data$.subscribe(data => {
-
       this.EditData = data;
       this.setValueFormEdit(data);
 
@@ -51,14 +49,15 @@ export class AddNewComponent implements OnInit {
     this.form = this.fb.group({
       title: [null, Validators.required],
       image: [null],
-      content: [null, Validators.required],
-      status: [null, Validators.required],
+      content: [null],
+      status: [true, Validators.required],
       postdate: [null],
     });
   }
 
   setValueFormEdit(data: any) {
     if (data) {
+      this.preview_upload = this.stringurl + "/" + data.image;
       this.form.patchValue({
         title: data?.title,
         content: data?.content,
@@ -70,67 +69,72 @@ export class AddNewComponent implements OnInit {
       this.isEditMode = false;
     }
   }
-  handleFileInput(values: any) {
-    const processSave = () => {
-      if (this.isEditMode) {
-        console.log("Edit Mode");
-        this.onEdit(values);
-      } else {
-        this.onInsert(values);
-      }
-      this.goBack();
-    };
-
-    // if (this.uploadImage && this.uploadImage.length > 0) {
-    //   this.fileToUpload = this.uploadImage[0];
-    //   if (this.fileToUpload) {
-    //     this._uploadService.postFile(this.fileToUpload).subscribe(
-    //       (data: any) => {
-    //         this.news.image = data.file_save_url;
-    //         processSave();
-    //       },
-    //       (error: any) => {
-    //         console.error('Error uploading file:', error);
-    //       }
-    //     );
-    //     return; // Dừng ở đây nếu đã upload ảnh mới
-    //   }
-    // }
-
-    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
-    this.news.image = this.EditData.image || "upload/files/default.png";
-    processSave();
-  }
 
 
-  goBack(): void {
-    this.router.navigate(['/news']);
-  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
 
-  onFileSelected(event: any) {
-    this.uploadImage = event.target.files; // Capture the FileList object
-    if (this.uploadImage && this.uploadImage.length > 0) {
-      const file = this.uploadImage[0];
+    if (input.files && input.files.length > 0) {
+      this.uploadImage = input.files[0];
+
+
+      // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
-      reader.onload = e => this.preview_upload = reader.result;
-      reader.readAsDataURL(file);
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.preview_upload = e.target?.result;
+      };
+      reader.readAsDataURL(this.uploadImage);
     }
   }
 
-  onSubmit(values: any) {
+  async handleFileInput() {
+    // Kiểm tra xem EditData có tồn tại và có thuộc tính image
+    if (this.EditData && this.EditData.image) {
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
+    } else {
+      this.item.image = "upload/files/default.png";
+    }
+
+    if (this.uploadImage) {
+      const imageData = await this._uploadService.postFile(this.uploadImage);
+      if (imageData.file_save_url) {
+        // Loại bỏ validator của trường image nếu upload thành công
+        this.form.controls['image'].clearValidators();
+        this.form.controls['image'].updateValueAndValidity();
+        this.item.image = imageData.file_save_url;
+      }
+    }
+  }
+
+
+
+  async onSubmit(values: any) {
+    await this.handleFileInput();
+
+    // Kiểm tra lại form sau khi xử lý file
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    this.handleFileInput(values)
+
+    if (this.isEditMode) {
+      this.onEdit(values);
+    } else {
+      this.onInsert(values);
+    }
+
+    this.goBack();
   }
 
+
   onInsert(values: any) {
-    this.news.title = values.title;
-    this.news.status = true;
-    this.news.content = values.content;
-    this.news.postdate = values.postdate;
-    this._dataService.post(StringAPI.APINews, this.news)
+    this.item.status = true;
+    this.item.content = values.content;
+    this.item.title = values.title;
+    this.item.postdate = values.postdate;
+    this._dataService.post(StringAPI.APINews, this.item)
       .subscribe(
         (res) => {
           console.log('News added successfully:', res);
@@ -143,18 +147,12 @@ export class AddNewComponent implements OnInit {
   }
 
   onEdit(values: any) {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
     if (this.EditData && this.EditData.id && values) {
-      console.log(values);
-      this.news.title = values.title;
-      this.news.status = values.status;
-      this.news.content = values.content;
-      this.news.postdate = values.postdate;
-
-      this._dataService.put(StringAPI.APINews + "/" + this.EditData.id, this.news)
+      this.item.status = values.status;
+      this.item.content = values.content;
+      this.item.title = values.title;
+      this.item.postdate = values.postdate;
+      this._dataService.put(StringAPI.APINews + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
             console.log('News update successfully:', res);
@@ -165,5 +163,9 @@ export class AddNewComponent implements OnInit {
         );
 
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/news']);
   }
 }

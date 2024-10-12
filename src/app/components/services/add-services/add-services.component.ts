@@ -9,6 +9,7 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { DataService } from '../../../core/services/data.service';
 import { ButtonModule } from 'primeng/button';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   selector: 'app-add-new',
@@ -23,10 +24,12 @@ export class AddServicesComponent implements OnInit {
   isEditMode = true;
   EditData: any;
   item: any = {};
+  stringurl = environment.apiUrl;
+
+
   uploadImage: any;
   preview_upload: any;
-  selectedPdfFile: File | null = null;
-  fileToUpload: File | null = null;
+  selectedPdfFile: any;
 
   constructor(
     private fb: FormBuilder,
@@ -47,13 +50,14 @@ export class AddServicesComponent implements OnInit {
     this.form = this.fb.group({
       title: [null, Validators.required],
       image: [null],
-      pdfdata: [null],
-      status: [null],
+      pdfdata: [null, Validators.required],
+      status: [true, Validators.required],
     });
   }
 
   setValueFormEdit(data: any) {
     if (data) {
+      this.preview_upload = this.stringurl + "/" + data.image;
       this.form.patchValue({
         title: data?.title,
         status: data?.status,
@@ -64,53 +68,74 @@ export class AddServicesComponent implements OnInit {
     }
   }
 
-  onPdfSelected(event: Event): void {
+
+  onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    // Kiểm tra xem người dùng có chọn tệp hay không
+
     if (input.files && input.files.length > 0) {
-      this.selectedPdfFile = input.files[0];  // Lấy tệp PDF đầu tiên từ danh sách tệp
+      this.uploadImage = input.files[0];
+
+
+      // Đọc file hình ảnh để tạo preview
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.preview_upload = e.target?.result;
+      };
+      reader.readAsDataURL(this.uploadImage);
+    }
+  }
+
+  onFilePDFSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedPdfFile = input.files[0];
     }
   }
   async handleFileInput() {
-    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
-    this.item.image = this.EditData?.image || "upload/files/default.png";
-    this.item.pdfdata = this.EditData?.pdfdata || "";
-
     // Upload Pdf
+    if (this.EditData && this.EditData.pdfdata) {
+      this.item.pdfdata = this.EditData.pdfdata;
+      this.form.controls['pdfdata'].clearValidators();
+      this.form.controls['pdfdata'].updateValueAndValidity();
+    } else {
+      this.item.pdfdata = "";
+    }
+
     if (this.selectedPdfFile) {
       const Pdfdata = await this._uploadService.postFile(this.selectedPdfFile);
+      this.form.controls['pdfdata'].clearValidators();
+      this.form.controls['pdfdata'].updateValueAndValidity();
       this.item.pdfdata = Pdfdata.file_save_url;
-
-      console.log(Pdfdata);
     }
 
     // Upload hình ảnh
-    if (this.uploadImage && this.uploadImage.length > 0) {
-      this.fileToUpload = this.uploadImage[0];
-      if (this.fileToUpload) {
-        const imageData = await this._uploadService.postFile(this.fileToUpload);
+    if (this.EditData && this.EditData.image) {
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
+    } else {
+      this.item.image = "upload/files/default.png";
+    }
+
+    if (this.uploadImage) {
+      const imageData = await this._uploadService.postFile(this.uploadImage);
+      if (imageData.file_save_url) {
+        // Loại bỏ validator của trường image nếu upload thành công
+        this.form.controls['image'].clearValidators();
+        this.form.controls['image'].updateValueAndValidity();
         this.item.image = imageData.file_save_url;
       }
     }
   }
 
-
-  goBack(): void {
-    this.router.navigate(['/services']);
-  }
-
-  onFileSelected(event: any) {
-    this.uploadImage = event.target.files;
-    // if (this.uploadImage && this.uploadImage.length > 0) {
-    //   const file = this.uploadImage[0];
-    //   const reader = new FileReader();
-    //   reader.onload = e => this.preview_upload = reader.result;
-    //   reader.readAsDataURL(file);
-    // }
-  }
-
   async onSubmit(values: any) {
     await this.handleFileInput();
+
+    // Kiểm tra lại form sau khi xử lý file
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     if (this.isEditMode) {
       this.onEdit(values);
@@ -140,10 +165,6 @@ export class AddServicesComponent implements OnInit {
   }
 
   onEdit(values: any) {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
     if (this.EditData && this.EditData.id && values) {
       console.log(values);
       this.item.title = values.title;
@@ -159,5 +180,9 @@ export class AddServicesComponent implements OnInit {
         );
 
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/services']);
   }
 }

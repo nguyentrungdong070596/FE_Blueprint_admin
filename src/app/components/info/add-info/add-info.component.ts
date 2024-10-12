@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DataService } from '../../../core/services/data.service';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { StringAPI } from '../../../shared/stringAPI/string_api';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   selector: 'app-add-info',
@@ -25,7 +26,7 @@ export class AddInfoComponent implements OnInit {
   EditData: any;
   info: any = {};
   preview_upload: any;
-  stringurl: any;
+  stringurl = environment.apiUrl;
   fileToUpload: File | null = null;
   selectedFile: File | null = null;
 
@@ -48,7 +49,7 @@ export class AddInfoComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       content: [null, Validators.required],
-      status: [null, Validators.required],
+      status: [true, Validators.required],
     });
   }
   setValueFormEdit(data: any) {

@@ -36,7 +36,6 @@ export class MonnuocComponent {
     });
   }
   setItems(values: any): void {
-    console.log(values);
     if (values.success && values.data) {
       this.const_data = values.data.map((item: any) => ({
         id: item.id,

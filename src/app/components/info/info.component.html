@@ -17,7 +17,7 @@
       <tbody>
         <tr *ngFor="let info of const_data; index as i">
           <td>{{ i + 1 }}</td>
-          <td>{{ info.content }}</td>
+          <td [innerHTML]="info.content"></td>
           <td>{{ info.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
           <td>
             <button (click)="editInfo(info)" class="btn-edit">

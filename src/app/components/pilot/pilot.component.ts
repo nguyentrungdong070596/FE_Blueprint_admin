@@ -42,6 +42,7 @@ export class PilotComponent {
         name: pilot.name,
         rank: pilot.rank,
         image: pilot.image,
+        status: pilot.status,
 
       }));
       this.totalRecords = values.totalRecords;

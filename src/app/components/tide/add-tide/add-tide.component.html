@@ -1,101 +1,98 @@
-<div class="content1">
-  <h1 *ngIf="!isEditMode">Thêm mới lịch thủy triều</h1>
-  <h1 *ngIf="isEditMode">Chỉnh sửa lịch thủy triều</h1>
-</div>
 <div class="content">
-  <button type="button" (click)="goBack()" class="btn-back">
-    <span class="icon">&lt;</span> Trở lại
-  </button>
-  <form [formGroup]="form">
-    <!-- Tải file PDF -->
-    <div class="form-group">
-      <label
-        for="pdf"
-        [ngClass]="{
-          'color-form-red':
-            form.get('pdfurl')?.invalid &&
-            (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)
-        }"
-        >Tải file PDF</label
-      >
-      <input
-        type="file"
-        id="pdf"
-        (change)="onFileSelected($event)"
-        accept="application/pdf"
-        formControlName="pdfurl"
-        required
-      />
-      <small
-        *ngIf="
-          form.get('pdfurl')?.invalid &&
-          (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)
-        "
-        class="color-form-red"
-        >Vui lòng tải lên tệp PDF.</small
-      >
-    </div>
+  <div class="add-container">
+    <h2 *ngIf="!isEditMode">Thêm Mới</h2>
+    <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
+    <form [formGroup]="form">
+      <div class="form-group">
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              form.get('pdfuri')?.invalid &&
+              (form.get('pdfuri')?.dirty || form.get('pdfuri')?.touched)
+          }"
+          >Tải lên dữ liệu:</label
+        >
+        <input
+          type="file"
+          id="pdfuri"
+          accept=".pdf"
+          (change)="onFileSelected($event)"
+          class="form-control"
+          formControlName="pdfuri"
+          required
+        />
+        <small
+          *ngIf="
+            form.get('pdfuri')?.invalid &&
+            (form.get('pdfuri')?.dirty || form.get('pdfuri')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('pdfuri')?.invalid }"
+        >
+          Vui lòng tải dữ liệu.
+        </small>
+      </div>
 
-    <!-- Ngày đăng -->
-    <div class="form-group">
-      <label
-        for="postdate"
-        [ngClass]="{
-          'color-form-red':
+      <div class="form-group">
+        <label
+          for="postdate"
+          [ngClass]="{
+            'color-form-red':
+              form.get('postdate')?.invalid &&
+              (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+          }"
+          >Ngày đăng:</label
+        >
+        <input type="date" id="postdate" class="form-control" formControlName="postdate" />
+        <small
+          *ngIf="
             form.get('postdate')?.invalid &&
             (form.get('postdate')?.dirty || form.get('postdate')?.touched)
-        }"
-        >Ngày đăng</label
-      >
-      <input
-        type="date"
-        id="postdate"
-        formControlName="postdate"
-        required
-        class="form-control"
-      />
-      <small
-        *ngIf="
-          form.get('postdate')?.invalid &&
-          (form.get('postdate')?.dirty || form.get('postdate')?.touched)
-        "
-        class="color-form-red"
-        >Vui lòng chọn ngày đăng.</small
-      >
-    </div>
+          "
+          [ngClass]="{ 'color-form-red': form.get('postdate')?.invalid }"
+          >Vui lòng chọn trạng thái.</small
+        >
+      </div>
 
-    <!-- Trạng thái -->
-    <div *ngIf="isEditMode" class="form-group">
-      <label
-        for="status"
-        [ngClass]="{
-          'color-form-red':
+      <div *ngIf="isEditMode" class="form-group">
+        <label
+          for="status"
+          [ngClass]="{
+            'color-form-red':
+              form.get('status')?.invalid &&
+              (form.get('status')?.dirty || form.get('status')?.touched)
+          }"
+          >Trạng thái</label
+        >
+        <select
+          id="status"
+          formControlName="status"
+          class="form-control"
+          required
+        >
+          <option [ngValue]="true">Hiển thị</option>
+          <option [ngValue]="false">Ẩn</option>
+        </select>
+        <small
+          *ngIf="
             form.get('status')?.invalid &&
             (form.get('status')?.dirty || form.get('status')?.touched)
-        }"
-        >Trạng thái</label
-      >
-      <select id="status" formControlName="status" required>
-        <option [ngValue]="true">Hiển thị</option>
-        <option [ngValue]="false">Ẩn</option>
-      </select>
-      <small
-        *ngIf="
-          form.get('status')?.invalid &&
-          (form.get('status')?.dirty || form.get('status')?.touched)
-        "
-        class="color-form-red"
-        >Vui lòng chọn trạng thái.</small
-      >
-    </div>
+          "
+          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+          >Vui lòng chọn trạng thái.</small
+        >
+      </div>
 
-    <!-- Nút hành động -->
-    <p-button
-      type="button"
-      (click)="onSubmit(form.value)"
-      pButton
-      [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-      class="btn btn-primary"
-    ></p-button>
-  </form>
+      <div class="form-actions">
+        <p-button
+          (click)="onSubmit(form.value)"
+          [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+          class="btn btn-success"
+        />
+        <button type="button" class="btn btn-secondary" (click)="goBack()">
+          Trở Lại
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

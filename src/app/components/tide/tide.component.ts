@@ -35,7 +35,6 @@ export class TideComponent {
     });
   }
   setItems(values: any): void {
-    console.log(values);
     if (values.success && values.data) {
       this.const_data = values.data.map((item: any) => ({
         id: item.id,
@@ -65,7 +64,6 @@ export class TideComponent {
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
-    console.log(item);
   }
 
   OnDelete(id: any) {

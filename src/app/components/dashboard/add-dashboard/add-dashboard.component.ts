@@ -9,6 +9,7 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { DataService } from '../../../core/services/data.service';
 import { ButtonModule } from 'primeng/button';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   selector: 'app-add-dashboard',
@@ -22,11 +23,9 @@ export class AddDashboardComponent implements OnInit {
   isEditMode = true;
   EditData: any;
   item: any = {};
-  uploadImage: any;
+  stringurl = environment.apiUrl;
   preview_upload: any;
-  stringurl: any;
-  fileToUpload: File | null = null;
-  selectedFile: File | null = null;
+  uploadImage: any;
 
   constructor(
     private fb: FormBuilder,
@@ -38,87 +37,88 @@ export class AddDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this._dataService.data$.subscribe(data => {
-
       this.EditData = data;
       this.setValueFormEdit(data);
-
     });
   }
 
   createForm() {
     this.form = this.fb.group({
       image: [null, Validators.required],
-      status: [null, Validators.required],
+      status: [true, Validators.required],
     });
   }
 
   setValueFormEdit(data: any) {
     if (data) {
+      this.preview_upload = this.stringurl + "/" + data.image;
       this.form.patchValue({
-        status: data?.status
-
-        // call view image in here
+        status: data?.status,
       });
     }
     else {
       this.isEditMode = false;
     }
   }
-  handleFileInput(values: any) {
-    const processSave = () => {
-      if (this.isEditMode) {
-        this.onEdit(values);
-      } else {
-        this.onInsert(values);
-      }
-      this.goBack();
-    };
-
-    // if (this.uploadImage && this.uploadImage.length > 0) {
-    //   this.fileToUpload = this.uploadImage[0];
-    //   if (this.fileToUpload) {
-    //     this._uploadService.postFile(this.fileToUpload).subscribe(
-    //       (data: any) => {
-    //         this.item.image = data.file_save_url;
-    //         processSave();
-    //       },
-    //       (error: any) => {
-    //         console.error('Error uploading file:', error);
-    //       }
-    //     );
-    //     return; // Dừng ở đây nếu đã upload ảnh mới
-    //   }
-    // }
-
-    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
-    this.item.image = this.EditData.image || "upload/files/default.png";
-    processSave();
-  }
 
 
-  goBack(): void {
-    this.router.navigate(['/dashboard']);
-  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
 
-  onFileSelected(event: any) {
-    this.uploadImage = event.target.files; // Capture the FileList object
-    if (this.uploadImage && this.uploadImage.length > 0) {
-      const file = this.uploadImage[0];
+    if (input.files && input.files.length > 0) {
+      this.uploadImage = input.files[0];
+      // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
-      reader.onload = e => this.preview_upload = reader.result;
-      reader.readAsDataURL(file);
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.preview_upload = e.target?.result;
+      };
+      reader.readAsDataURL(this.uploadImage);
     }
   }
 
-  onSubmit(values: any) {
+  async handleFileInput() {
+    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
+    if (this.EditData.image) {
+      this.item.image = this.EditData.image
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
+    }
+    else{
+      this.item.image = "upload/files/default.png"
+    }
+
+    if (this.uploadImage) {
+      const imageData = await this._uploadService.postFile(this.uploadImage);
+      if (imageData.file_save_url) {
+        // Loại bỏ validator của trường image nếu upload thành công
+        this.form.controls['image'].clearValidators();
+        this.form.controls['image'].updateValueAndValidity();
+        this.item.image = imageData.file_save_url;
+      }
+    }
+  }
+
+
+  async onSubmit(values: any) {
+    await this.handleFileInput();
+    
+    // Kiểm tra lại form sau khi xử lý file
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    this.handleFileInput(values)
+
+    if (this.isEditMode) {
+      this.onEdit(values);
+    } else {
+      this.onInsert();
+    }
+
+    this.goBack();
   }
 
-  onInsert(values: any) {
+
+  onInsert() {
     this.item.status = true;
     this._dataService.post(StringAPI.APICarousel, this.item)
       .subscribe(
@@ -133,10 +133,6 @@ export class AddDashboardComponent implements OnInit {
   }
 
   onEdit(values: any) {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
     if (this.EditData && this.EditData.id && values) {
       this.item.status = values.status;
 
@@ -151,6 +147,10 @@ export class AddDashboardComponent implements OnInit {
         );
 
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/dashboard']);
   }
 }
 
