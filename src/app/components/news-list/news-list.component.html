@@ -14,7 +14,7 @@
         <th>Hình ảnh</th>
         <th>Trạng thái</th>
         <th>Ngày đăng</th>
-        <th>Điều chỉnh</th>
+        <th class="max-width">Điều chỉnh</th>
       </tr>
     </thead>
     <tbody>
@@ -35,10 +35,10 @@
         <td>{{ new.postdate }}</td>
         <td>
           <button (click)="editNews(new)" class="btn-edit">
-            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+            <i class="fa-solid fa-edit"></i>
           </button>
           <button (click)="deleteNews(new)" class="btn-delete">
-            <i class="fa-solid fa-trash"></i> Xóa
+            <i class="fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>

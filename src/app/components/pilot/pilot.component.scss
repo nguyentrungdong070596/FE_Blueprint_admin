@@ -153,6 +153,13 @@ a {
         text-decoration: none; // Bỏ gạch dưới
     }
 }
+.column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Canh giữa theo trục dọc */
+  align-items: center; /* Canh giữa theo trục ngang */
+  height: 100%; /* Đảm bảo cột chiếm hết chiều cao */
+}
 
 .btn-edit,
 .btn-delete {
@@ -160,22 +167,24 @@ a {
   background: none;
   color: #0196da;
   cursor: pointer;
-  display: flex;
   align-items: center;
-  white-space: nowrap;
-  padding: 5px 10px;
-  margin-right: 5px; // Giữa hai nút
+  padding: 10px 20px;
+  margin-right: 5px;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
+  font-size: 16px;
+  width: 120px;
+  text-align: center;
 }
+
+.btn-delete {
+  color: #ff4d4d;
+}
+
 
 .btn-edit:hover,
 .btn-delete:hover {
   background-color: rgba(255, 255, 255, 0.2); // Màu nền khi hover
-}
-
-.btn-edit i,
-.btn-delete i {
-  margin-right: 5px; // Khoảng cách giữa icon và text
 }
 .controls {
     margin-top: 20px;
