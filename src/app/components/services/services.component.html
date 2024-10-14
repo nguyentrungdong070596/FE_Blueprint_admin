@@ -21,7 +21,13 @@
         <td>{{ i + 1 }}</td>
         <td>{{ service.title }}</td>
         <td>
-          <img [src]="urlAPI + '/' + service.image" alt="" class="image-user" />
+          <!-- <img [src]="urlAPI + '/' + service.image" alt="" class="image-user" /> -->
+          <p-image
+          [src]="urlAPI + '/' + service.image"
+          alt="Image"
+          width="250"
+          [preview]="true"
+        />
         </td>
         <td>
           <a [href]="urlAPI + '/' + service.pdfdata" download>

@@ -7,12 +7,13 @@ import { PaginatorModule } from 'primeng/paginator';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { DataService } from '../../core/services/data.service';
 import { environment } from '../../../environment/environment';
+import { ImageModule } from 'primeng/image';
 
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule],
+  imports: [CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })

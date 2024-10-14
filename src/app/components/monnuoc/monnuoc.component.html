@@ -22,7 +22,8 @@
         <tr *ngFor="let water of const_data; let i = index">
           <td>{{ i + 1 }}</td>
           <td>
-            <a href="{{water.dataurl}}" download="file.pdf" target="_blank">Tải xuống PDF</a>
+            <!-- <a href="{{water.dataurl}}" download="file.pdf" target="_blank">Tải xuống PDF</a> -->
+            <a [href]="urlAPI + '/' + water.dataurl" target="_blank">Xem PDF</a>
           </td>
           <td>{{ water.status ? "Hiển thị" : "Ẩn" }}</td>
           <td>{{ water.postdate }}</td>

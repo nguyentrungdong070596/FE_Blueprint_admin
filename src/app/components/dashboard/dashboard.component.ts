@@ -4,12 +4,13 @@ import { Router, RouterModule } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
 import { environment } from '../../../environment/environment';
 import { StringAPI } from '../../shared/stringAPI/string_api';
+import { ImageModule } from 'primeng/image';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,RouterModule], // Đảm bảo import CarouselModule
+  imports: [CommonModule,RouterModule, ImageModule], // Đảm bảo import CarouselModule
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

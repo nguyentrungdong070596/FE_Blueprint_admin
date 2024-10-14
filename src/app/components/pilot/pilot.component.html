@@ -21,7 +21,12 @@
         <td>{{ i + 1 }}</td>
         <td>{{ pilot.name }}</td>
         <td>
-          <img [src]="urlAPI + '/' + pilot.image" alt="" class="image-user" />
+          <p-image
+            [src]="urlAPI + '/' + pilot.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
         </td>
         <td>{{ pilot.rank }}</td>
         <td>{{ pilot.status ? "Hiển thị" : "Ẩn" }}</td>
