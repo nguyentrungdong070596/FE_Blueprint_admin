@@ -23,7 +23,13 @@
         <td>{{ new.title }}</td>
         <td [innerHTML]="new.content"></td>
         <td>
-          <img [src]="urlAPI +'/'+ new.image" alt="" class="image-user" />
+          <!-- <img [src]="urlAPI +'/'+ new.image" alt="" class="image-user" /> -->
+          <p-image
+            [src]="urlAPI + '/' + new.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
         </td>
         <td>{{ new.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
         <td>{{ new.postdate }}</td>

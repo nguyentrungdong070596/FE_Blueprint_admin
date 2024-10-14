@@ -1,38 +1,49 @@
 <div class="content">
-    <h2>Quản lý danh mục ảnh</h2>
-    <div class="controls">
-      <button (click)="onAdd()" class="btn btn-primary">
-        <a [routerLink]="['/dashboard/add']">Thêm mới</a>
-      </button>
-    </div>
-    <!-- Bảng dữ liệu -->
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Hình ảnh</th>
-          <th>Trạng thái</th>
-          <th>Điều chỉnh</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
-        <tr *ngFor="let image of const_data; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>
-            <img [src]="urlAPI + '/' + image.image" alt="" class="image-user" style="width: 100px; height: auto;"/>
-          </td>
-          <td>{{ image.status ? "Hiển thị" : "Ẩn" }}</td>
-          <td>
-            <button (click)="editItem(image)" class="btn-edit">
-              <i class="fa-solid fa-edit"></i> Chỉnh sửa
-            </button>
-            <button (click)="deleteItem(image)" class="btn-delete">
-              <i class="fa-solid fa-trash"></i> Xóa
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h2>Quản lý danh mục ảnh</h2>
+  <div class="controls">
+    <button (click)="onAdd()" class="btn btn-primary">
+      <a [routerLink]="['/dashboard/add']">Thêm mới</a>
+    </button>
   </div>
-  
+  <!-- Bảng dữ liệu -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Hình ảnh</th>
+        <th>Trạng thái</th>
+        <th>Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
+      <tr *ngFor="let image of const_data; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <p-image
+            [src]="urlAPI + '/' + image.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
+
+          <!-- <img
+            [src]="urlAPI + '/' + image.image"
+            alt=""
+            class="image-user"
+            style="width: 100px; height: auto"
+          /> -->
+        </td>
+        <td>{{ image.status ? "Hiển thị" : "Ẩn" }}</td>
+        <td>
+          <button (click)="editItem(image)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+          </button>
+          <button (click)="deleteItem(image)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i> Xóa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

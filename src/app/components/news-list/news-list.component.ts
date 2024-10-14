@@ -8,11 +8,12 @@ import { PaginatorModule } from 'primeng/paginator';
 import { AddNewComponent } from './add-new/add-new.component';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { environment } from '../../../environment/environment';
+import { ImageModule } from 'primeng/image';
 
 @Component({
   selector: 'app-news-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule, AddNewComponent, PaginatorModule],
+  imports: [CommonModule, RouterModule, FormsModule, QuillModule, AddNewComponent, PaginatorModule, ImageModule],
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.scss']
 })

@@ -78,7 +78,7 @@ export class AddDashboardComponent implements OnInit {
 
   async handleFileInput() {
     // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
-    if (this.EditData.image) {
+    if ( this.EditData && this.EditData.image) {
       this.item.image = this.EditData.image
       this.form.controls['image'].clearValidators();
       this.form.controls['image'].updateValueAndValidity();

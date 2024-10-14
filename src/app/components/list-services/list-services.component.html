@@ -21,7 +21,12 @@
         <td>{{ i + 1 }}</td>
         <td>{{ list.title }}</td>
         <td>
-          <img [src]="urlAPI + '/' + list.image" alt="" class="image-user" />
+          <p-image
+            [src]="urlAPI + '/' + list.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
         </td>
         <td [innerHTML]="list.content"></td>
         <td>{{ list.status ? "Hiển thị" : "Ẩn" }}</td>

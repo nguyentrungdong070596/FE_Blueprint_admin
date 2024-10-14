@@ -20,7 +20,13 @@
         <td>{{ i + 1 }}</td>
         <td>{{ vehicle.name }}</td>
         <td>
-          <img [src]="urlAPI + '/' + vehicle.image" alt="" class="image-user" />
+          <!-- <img [src]="urlAPI + '/' + vehicle.image" alt="" class="image-user" /> -->
+          <p-image
+            [src]="urlAPI + '/' + vehicle.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
         </td>
         <td>{{ vehicle.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>

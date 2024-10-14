@@ -7,11 +7,12 @@ import { PaginatorModule } from 'primeng/paginator';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { DataService } from '../../core/services/data.service';
 import { environment } from '../../../environment/environment';
+import { ImageModule } from 'primeng/image';
 
 @Component({
   selector: 'app-pilot',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule,PaginatorModule], 
+  imports: [CommonModule, RouterModule, FormsModule, QuillModule,PaginatorModule, ImageModule], 
   templateUrl: './pilot.component.html',
   styleUrls: ['./pilot.component.scss']
 })
