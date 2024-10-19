@@ -1,0 +1,24 @@
+<nav class="sidebar" [class.closed]="isToggleSidebar()" [style.width.px]="isToggleSidebar() ? 80 : 300">
+  <div  *ngIf="isToggleSidebar()" class="btn-toggle-layout">
+    <button type="button" (click)="onToggleSidebar()" class="btn-toggle">
+      <i class="pi pi-bars"></i>
+    </button>
+  </div>
+  <div class="flex-content">
+    <p-image [src]="'/assets/images/logos/logopage.png'" alt="Image" width="60px"
+      [class.closed-content]="isToggleSidebar()" />
+  </div>
+  <h5 class="p-3" [class.closed-content]="isToggleSidebar()" style="color:#ffffff; text-align: center;">
+    CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU
+  </h5>
+  <h5 class="p-3" [class.closed-content]="isToggleSidebar()" style="color:#e52736">
+    XÍ NGHIỆP HOA TIÊU VŨNG TÀU
+  </h5>
+  <div class="components">
+    <a *ngFor="let link of links" [routerLink]="link.routerLink" routerLinkActive="active" class="text-white">
+      <i [class]="link.icon + ' icon'"></i>
+      <span class="text">{{ link.text }}</span>
+    </a>
+  </div>
+
+</nav>

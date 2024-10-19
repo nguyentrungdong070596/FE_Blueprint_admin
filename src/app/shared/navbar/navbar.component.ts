@@ -1,36 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageModule } from 'primeng/image';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button'; // Nhập mô-đun Button
+import { DataService } from '../../core/services/data.service';
 
 
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ImageModule,CommonModule,ButtonModule],
+  imports: [ImageModule, CommonModule, ButtonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent {
-  showLogoutMenu = false; // Biến để kiểm tra menu đăng xuất có hiển thị hay không
+export class NavbarComponent implements OnInit {
+  constructor(private router: Router, private _dataService: DataService) { }
 
-  constructor(private router: Router) {}
+  ngOnInit(): void { }
 
-  toggleLogoutMenu() {
-    this.showLogoutMenu = !this.showLogoutMenu; // Đảo ngược trạng thái hiển thị của menu
+  onToggleSidebar() {
+    const currentToggleState = this._dataService.getIsToggleSidebar();
+    this._dataService.setIsToggleSidebar(!currentToggleState);
   }
+
+  isToggleSidebar(): boolean {
+    return this._dataService.getIsToggleSidebar();
+  }
+
 
   logout() {
     // Logic đăng xuất (ví dụ: xóa token, điều hướng đến trang đăng nhập, v.v.)
     console.log('Đăng xuất'); // Thay bằng logic đăng xuất thực tế
     this.router.navigate(['/login']); // Điều hướng đến trang đăng nhập
   }
-  closeLogoutMenu(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.flex-content')) {
-      this.showLogoutMenu = false;
-    }
-  }
+ 
 }

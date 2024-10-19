@@ -2,7 +2,7 @@
     <h2>Quản lý thông tin giới thiệu</h2>
     <div class="controls">
       <button (click)="onAdd()" class="btn btn-primary">
-        <a [routerLink]="['/info/add']">Thêm mới</a>
+        <a [routerLink]="['/dashboard/add']">Thêm mới</a>
       </button>
     </div>
     <table class="table table-bordered">
@@ -12,8 +12,8 @@
           <th>Tiêu đề</th>
           <th>Nội dung chi tiết</th>
           <th>Trạng thái</th>
-          <th>Ngày đăng</th>
-          <th class="max-width">Điều chỉnh</th>
+          <th style="width: 50px;">Điều chỉnh</th>
+
         </tr>
       </thead>
       <tbody>
@@ -22,8 +22,8 @@
           <td>{{ info.title }}</td>
           <td>{{ info.content }}</td>
           <td>{{ info.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
-          <td>{{ info.postdate }}</td>
-          <td>
+          <td style="width: 50px;">
+
             <button (click)="editInfo(info)" class="btn-edit">
               <i class="fa-solid fa-edit"></i>
             </button>

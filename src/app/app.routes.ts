@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { LayoutAdminComponent } from './components/layout-admin/layout-admin.component';
 import { InfoComponent } from './components/info/info.component';
 import { AddInfoComponent } from './components/info/add-info/add-info.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -21,14 +20,9 @@ import { AddVehicleComponent } from './components/vehicle/add-vehicle/add-vehicl
 import { TideComponent } from './components/tide/tide.component';
 import { AddTideComponent } from './components/tide/add-tide/add-tide.component';
 import { AuthGuard } from './auth.guard'; // Nhập guard vào đây
+import { LayoutAdminComponent } from './shared/layout-admin/layout-admin.component';
 
 export const routes: Routes = [
-  // { path: 'auth', 
-  //   children: [
-  //       { path: 'login', component: LoginComponent },
-  //       { path: 'register', component: RegisterComponent }
-  //   ]
-  // },
   { path: '', 
     component: LayoutAdminComponent,
     canActivate: [AuthGuard], // Áp dụng AuthGuard

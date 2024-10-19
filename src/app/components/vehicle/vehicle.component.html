@@ -12,7 +12,9 @@
         <th>Tên phương tiện</th>
         <th>Hình ảnh</th>
         <th>Trạng thái</th>
-        <th class="max-width">Điều chỉnh</th>
+
+        <th style="width: 50px;">Điều chỉnh</th>
+
       </tr>
     </thead>
     <tbody>
@@ -31,7 +33,9 @@
         <td>{{ vehicle.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
           <button (click)="editItem(vehicle)" class="btn-edit">
-            <i class="fa-solid fa-edit"></i> 
+
+            <i class="fa-solid fa-edit"></i>
+
           </button>
           <button (click)="deleteItem(vehicle)" class="btn-delete">
             <i class="fa-solid fa-trash"></i>

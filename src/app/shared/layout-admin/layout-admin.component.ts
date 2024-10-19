@@ -15,5 +15,6 @@ export class LayoutAdminComponent {
   isToggleSidebar: boolean = false;
   onChangeToggle(event: any){
     this.isToggleSidebar = event;
+    console.log(this.isToggleSidebar);
   }
 }

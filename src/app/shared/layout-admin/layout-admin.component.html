@@ -1,0 +1,9 @@
+<div class="wrapper" [class.closed]="isToggleSidebar">
+  <!-- Sidebar -->
+  <app-sidebar (isToggleChange)="onChangeToggle($event)"></app-sidebar>
+
+  <div class="content-wrapper" [class.closed]="isToggleSidebar">
+    <app-navbar (isToggleChange)="onChangeToggle($event)" class="navbar-content"></app-navbar>
+    <router-outlet></router-outlet>
+  </div>
+</div>

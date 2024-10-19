@@ -13,28 +13,25 @@
         <th>Hình ảnh</th>
         <th>Giá</th>
         <th>Trạng thái</th>
-        <th class="max-width">Điều chỉnh</th>
+        <th style="width: 100px">Điều chỉnh</th>
+
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let service of const_data; index as i">
         <td>{{ i + 1 }}</td>
-        <td>{{ service.title }}</td>
+        <td style="max-width: 200px">{{ service.title }}</td>
         <td>
-          <!-- <img [src]="urlAPI + '/' + service.image" alt="" class="image-user" /> -->
           <p-image
-          [src]="urlAPI + '/' + service.image"
-          alt="Image"
-          width="250"
-          [preview]="true"
-        />
+            [src]="urlAPI + '/' + service.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
         </td>
         <td>
-          <a [href]="urlAPI + '/' + service.pdfdata" download>
-            Chi tiết
-          </a>
+          <a [href]="urlAPI + '/' + service.pdfdata" download> Chi tiết </a>
         </td>
-        
         <td>{{ service.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
           <button (click)="editItem(service)" class="btn-edit">
@@ -50,7 +47,7 @@
   <br />
   <div class="flex-auto">
     <p-paginator
-    *ngIf="totalRecords"     
+      *ngIf="totalRecords"
       [rows]="rows"
       [totalRecords]="totalRecords"
       [first]="first"
