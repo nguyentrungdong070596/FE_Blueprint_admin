@@ -9,17 +9,21 @@
       <thead>
         <tr>
           <th>STT</th>
+          <th>Tiêu đề</th>
           <th>Nội dung chi tiết</th>
           <th>Trạng thái</th>
           <th style="width: 50px;">Điều chỉnh</th>
+
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let info of const_data; index as i">
           <td>{{ i + 1 }}</td>
-          <td [innerHTML]="info.content"></td>
+          <td>{{ info.title }}</td>
+          <td>{{ info.content }}</td>
           <td>{{ info.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
           <td style="width: 50px;">
+
             <button (click)="editInfo(info)" class="btn-edit">
               <i class="fa-solid fa-edit"></i>
             </button>

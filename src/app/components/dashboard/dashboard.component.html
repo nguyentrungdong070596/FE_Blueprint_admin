@@ -13,6 +13,7 @@
         <th>Hình ảnh</th>
         <th>Trạng thái</th>
         <th style="width: 50px;">Điều chỉnh</th>
+
       </tr>
     </thead>
     <tbody>
@@ -30,7 +31,9 @@
         <td>{{ image.status ? "Hiển thị" : "Ẩn" }}</td>
         <td style="width: 50px;">
           <button (click)="editItem(image)" class="btn-edit">
+
             <i class="fa-solid fa-edit"></i> 
+
           </button>
           <button (click)="deleteItem(image)" class="btn-delete">
             <i class="fa-solid fa-trash"></i>
