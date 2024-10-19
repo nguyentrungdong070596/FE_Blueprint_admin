@@ -10,9 +10,18 @@ import { BehaviorSubject } from 'rxjs';
 export class DataService {
   private dataSubject = new BehaviorSubject<any>(null);
   data$ = this.dataSubject.asObservable();
+  private _isToggleSidebar: boolean = false;
 
   setData(data: any) {
     this.dataSubject.next(data);
+  }
+
+  getIsToggleSidebar(): boolean {
+    return this._isToggleSidebar;
+  }
+
+  setIsToggleSidebar(value: boolean) {
+    this._isToggleSidebar = value;
   }
 
   clearData() {

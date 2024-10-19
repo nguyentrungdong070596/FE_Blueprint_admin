@@ -1,0 +1,90 @@
+
+
+.closed-content {
+  display: none;
+}
+
+// Khi sidebar đóng
+.sidebar.closed {
+  width: 80px; // Thu nhỏ chiều rộng của sidebar nhưng vẫn đủ để hiển thị icon
+  padding: 0;
+  overflow: hidden;
+
+  .components a .text {
+    display: none; // Ẩn văn bản của các item
+  }
+
+  .components a {
+    justify-content: center; // Căn giữa nội dung khi sidebar đóng
+  }
+}
+
+// CSS cho các icon và nội dung
+.components {
+  text-align: left;
+
+  display: flex;
+  flex-direction: column; // Đặt các mục theo chiều dọc
+
+  a {
+    padding: 10px;
+    text-decoration: none;
+    display: flex; // Hiển thị dạng flex để dễ căn chỉnh icon và text
+    align-items: center; // Căn giữa theo chiều dọc
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+    width: 100%; // Đảm bảo mỗi mục chiếm 100% chiều rộng
+    margin: 5px 0; // Tạo khoảng cách giữa các mục
+
+    .icon {
+      font-size: 18px; // Kích thước của icon
+    }
+
+    .text {
+      margin-left: 10px;
+      flex: 1; // Văn bản sẽ chiếm phần còn lại
+    }
+
+    &:hover {
+      color: #ffffff;
+      border-bottom: 1px solid white; // Đường gạch dưới màu trắng khi hover
+    }
+  }
+}
+.btn-toggle-layout {
+  height: 64px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  .btn-toggle {
+    border: none;
+    background: inherit;
+    width: 40px; // Thay đổi kích thước theo ý muốn
+    height: 40px; // Thay đổi kích thước theo ý muốn
+    border-radius: 50%; // Đảm bảo rằng nút luôn có hình tròn
+    transition: background-color 0.3s, padding 0.3s; // Thêm hiệu ứng chuyển tiếp
+
+    &:hover {
+      background-color: white;
+      padding: 0; // Giữ cho padding bằng 0 khi hover để duy trì hình tròn
+    }
+  }
+}
+
+.flex-content {
+  display: flex;
+  justify-content: space-between; // Giữ nút toggle và logo ở hai đầu
+  align-items: center; // Căn giữa theo chiều dọc
+  flex-direction: column; // Chuyển đổi chiều dọc cho phần tử con
+}
+
+.active {
+  background-color: #0196da;
+  color: white;
+  font-weight: bold;
+
+  a {
+    color: white;
+  }
+}

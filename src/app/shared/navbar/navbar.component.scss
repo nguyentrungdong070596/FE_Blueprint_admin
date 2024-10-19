@@ -1,0 +1,47 @@
+.layout-topbar {
+  position: relative; /* Đặt vị trí cho layout-topbar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .btn-toggle {
+    margin-left: 10px;
+    border: none;
+    background: inherit;
+    width: 40px; // Thay đổi kích thước theo ý muốn
+    height: 40px; // Thay đổi kích thước theo ý muốn
+    border-radius: 50%; // Đảm bảo rằng nút luôn có hình tròn
+    transition: background-color 0.3s, padding 0.3s; // Thêm hiệu ứng chuyển tiếp
+
+    &:hover {
+      background-color: #0196da;
+      padding: 0; // Giữ cho padding bằng 0 khi hover để duy trì hình tròn
+      color: white;
+    }
+  }
+  .user-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 30px;
+    h4 {
+      margin-left: 10px;
+    }
+    .logout-menu {
+      position: absolute; /* Đặt menu ở vị trí tuyệt đối */
+      top: 100%; /* Xuất hiện ngay bên dưới hình ảnh */
+      background-color: white; /* Màu nền cho menu */
+      border: 1px solid #ccc; /* Viền cho menu */
+      z-index: 1000; /* Đảm bảo menu xuất hiện phía trên các phần tử khác */
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+      .logout-option {
+        cursor: pointer; /* Con trỏ cho thấy đây là một tùy chọn có thể nhấp */
+        &:hover {
+          color: red; /* Thay đổi màu khi hover */
+        }
+      }
+    }
+  }
+}

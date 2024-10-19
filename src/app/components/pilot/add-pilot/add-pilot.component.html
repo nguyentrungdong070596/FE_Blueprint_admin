@@ -115,14 +115,11 @@
         >
       </div>
 
-      <div class="form-actions">
-        <p-button
-          (click)="onSubmit(form.value)"
-          [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
-          class="btn btn-success"
-        />
-        <button type="button" class="btn btn-secondary" (click)="goBack()">
-          Trở Lại
+      <div class="bt-actions">
+        <button pButton pRipple label="Trở Lại" class="p-button-secondary" (click)="goBack()">
+        </button>
+        <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
+          class="p-button-success">
         </button>
       </div>
     </form>

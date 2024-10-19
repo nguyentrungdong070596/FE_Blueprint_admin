@@ -13,7 +13,7 @@
         <th>Hình ảnh</th>
         <th>Nội dung</th>
         <th>Trạng thái</th>
-        <th>Điều chỉnh</th>
+        <th style="width: 50px;">Điều chỉnh</th>
       </tr>
     </thead>
     <tbody>
@@ -32,10 +32,10 @@
         <td>{{ list.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
           <button (click)="editItem(list)" class="btn-edit">
-            <i class="fa-solid fa-edit"></i> Chỉnh sửa
+            <i class="fa-solid fa-edit"></i>
           </button>
           <button (click)="deleteItem(list)" class="btn-delete">
-            <i class="fa-solid fa-trash"></i> Xóa
+            <i class="fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>

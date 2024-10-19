@@ -1,88 +1,222 @@
-@import "primeicons/primeicons.css";
 // import Quill styles in styles.scss
 @import "../node_modules/quill/dist/quill.core.css";
-@import "../node_modules/quill/dist/quill.snow.css";
-/* You can add global styles to this file, and also import other style files */
-* {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
+
+@import "primeicons/primeicons.css";
+
+body {
+  margin: 0 !important;
+  height: 100%; /* Đảm bảo chiều cao của body là 100% */
+  margin: 0; /* Xóa margin mặc định của body */
 }
-::ng-deep .p-paginator {
+
+.p-paginator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
   .p-paginator-button {
-    padding: 0.5rem 1rem; // Tăng kích thước padding
-    font-size: 1.2rem; // Thay đổi kích thước chữ
-    min-width: 3rem; // Đặt chiều rộng tối thiểu
+    background: none;
+    border: none;
+    color: black;
+    padding: 0;
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    &:hover {
+      background: lightgray;
+      color: black;
+    }
   }
 
   .p-paginator-prev,
   .p-paginator-next {
-    // Thay đổi kích thước nút trước và sau
-    padding: 0.5rem 1rem; // Tăng kích thước padding
-    font-size: 1.2rem; // Thay đổi kích thước chữ
+    background: none;
+    border: none;
+    color: black;
+    padding: 0;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
   }
 
   .p-paginator-page {
-    // Thay đổi kích thước các nút trang
-    padding: 0.5rem 1rem; // Tăng kích thước padding
-    font-size: 1.2rem; // Thay đổi kích thước chữ
+    background: none;
+    border: none;
+    color: black;
+    padding: 0;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    &:hover {
+      background: lightgray;
+    }
+
+    &.p-highlight {
+      background: #eff6ff;
+      color: black;
+    }
+  }
+
+  .p-paginator-first,
+  .p-paginator-last {
+    background: none;
+    border: none;
+    color: black;
+    padding: 0;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+
+    &:hover {
+      border-radius: 50%;
+    }
   }
 }
 
 .color-form-red {
   color: red;
 }
-.add-container {
-  max-width: 90%;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
 
-  h2 {
-      text-align: center;
-      margin-bottom: 20px;
-  }
+/* Nội dung */
+.content {
+  transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
+  padding: 20px 20px; /* Thêm padding cho nội dung */
+  .add-container {
+    h2 {
+      text-align: center; // Căn giữa tiêu đề
+      margin-bottom: 20px; // Khoảng cách dưới cho tiêu đề
+      font-size: 24px; // Kích thước chữ tiêu đề
+      color: #333; // Màu chữ
+    }
+    form {
+      .color-form-red {
+        color: red; /* Màu đỏ khi có lỗi */
+      }
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-  .form-group {
-      margin-bottom: 15px;
+      .form-group {
+        margin-bottom: 15px; // Khoảng cách giữa các trường
+      }
 
       label {
-          display: block;
-          margin-bottom: 5px;
+        font-weight: bold; // Làm cho chữ đậm hơn
       }
 
-      .form-control {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
+      input,
+      select {
+        width: 100%; // Đặt chiều rộng đầy đủ
+        padding: 10px; // Đệm trong cho input
+        border: 1px solid #ccc;
+        border-radius: 4px; // Bo tròn góc
+        box-sizing: border-box; // Bao gồm padding và border trong chiều rộng
       }
+      .bt-actions {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  .table {
+    width: calc(100% - 10px);
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    &.table-bordered {
+      border: 1px solid #ddd;
+
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+    }
+  }
+  .btn-edit,
+  .btn-delete {
+    border: none;
+    background: none;
+    color: #0196da;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 5px 10px;
+    margin-right: 5px; // Giữa hai nút
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2); // Màu nền khi hover
+    }
+
+    i {
+      margin-right: 5px; // Khoảng cách giữa icon và text
+    }
   }
 
-  .form-actions {
-      display: flex;
-      justify-content: space-between;
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    .btn {
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: white;
 
-      .btn {
-          padding: 10px 15px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-
-          &.btn-success {
-              background-color: #2196f3;
-              color: white;
-          }
-          &:hover {
-              color: #2196f3 /* Đổi màu chữ khi hover */
-          }
-          &.btn-secondary {
-              background-color: #6c757d;
-              color: white;
-          }
+      &.btn-primary {
+        background-color: #007bff;
       }
+
+      a {
+        color: white; // Màu chữ trắng
+        text-decoration: none; // Bỏ gạch dưới
+      }
+    }
   }
 }
 
+.layout-topbar {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  position: relative;
+  text-align: center;
+  align-items: center;
+  height: 100%; /* Thay đổi từ 100vh thành 100% */
+  top: 0;
+  margin: 0;
+  padding: 15px;
+  background-color: #0196da;
+  transition: all 0.3s ease;
+  color: white;
+  overflow-x: hidden;
+}
