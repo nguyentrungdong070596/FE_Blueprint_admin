@@ -70,7 +70,7 @@ export class InfoComponent implements OnInit {
 
     // Kiểm tra nếu có item, thì thêm dữ liệu vào
     if (item) {
-      console.log(item)
+      // console.log(item)
       dialogConfig.data = {
         id: item.id,
         content: item.content,
@@ -89,11 +89,11 @@ export class InfoComponent implements OnInit {
     this._dataService.delete(StringAPI.APIIntroduction + "/" + id)
       .subscribe(
         (res) => {
-          console.log('delete successfully:', res);
+          // console.log('delete successfully:', res);
           window.location.reload();
         },
         (error) => {
-          console.error('delete news:', error);
+          // console.error('delete news:', error);
         }
       );
   }

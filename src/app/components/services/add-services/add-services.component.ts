@@ -148,7 +148,7 @@ export class AddServicesComponent implements OnInit {
 
   onEdit(values: any) {
     if (this.EditData && this.EditData.id && values) {
-      console.log(values);
+      // console.log(values);
       this.item.title = values.title;
       this.item.status = values.status;
       this._dataService.put(StringAPI.APIServicePrice + "/" + this.EditData.id, this.item)

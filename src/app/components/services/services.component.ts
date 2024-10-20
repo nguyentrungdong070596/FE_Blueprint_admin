@@ -93,7 +93,7 @@ export class ServicesComponent {
     this._dataService.delete(StringAPI.APIServicePrice + "/" + id)
       .subscribe(
         (res) => {
-          console.log('service delete successfully:', res);
+          // console.log('service delete successfully:', res);
           // window.location.reload();
           this.router.navigate(['/services']).then(() => {
             window.location.reload();

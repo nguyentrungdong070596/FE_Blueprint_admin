@@ -83,7 +83,7 @@ export class VehicleComponent {
     this.ref = this.dialogService.open(AddVehicleComponent, dialogConfig);
   }
   deleteItem(item: any) {
-    console.log(item);
+    // console.log(item);
     this.OnDelete(item.id);
   }
 
