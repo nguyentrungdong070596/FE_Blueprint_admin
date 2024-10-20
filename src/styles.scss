@@ -119,7 +119,7 @@ body {
       }
 
       input,
-      select {
+      select, quill-editor {
         width: 100%; // Đặt chiều rộng đầy đủ
         padding: 10px; // Đệm trong cho input
         border: 1px solid #ccc;

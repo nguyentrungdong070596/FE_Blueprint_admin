@@ -16,7 +16,7 @@
             form.get('title')?.invalid &&
             (form.get('title')?.dirty || form.get('title')?.touched)
           " [ngClass]="{ 'color-form-red': form.get('title')?.invalid }">
-          Vui lòng nhập tiêu đề
+          Vui lòng nhập tên dịch vụ
         </small>
       </div>
 
@@ -56,7 +56,7 @@
             form.get('pdfdata')?.invalid &&
             (form.get('pdfdata')?.dirty || form.get('pdfdata')?.touched)
           " [ngClass]="{ 'color-form-red': form.get('pdfdata')?.invalid }">
-          Dữ liệu.
+          Vui lòng tải dữ liệu.
         </small>
       </div>
       <div *ngIf="isEditMode" class="form-group">
