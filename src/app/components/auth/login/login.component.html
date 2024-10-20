@@ -1,8 +1,8 @@
 <div class="login-page">
     <div class="login-container">
       <img src="assets/images/logos/logopage.png" alt="Logo" />
-      <h2 style="text-align: center;">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</h2>
-      <p class="sub-title" style="color: red; text-align: center;">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</p>
+      <h1 style="text-align: center;">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</h1>
+      <h2 class="sub-title" style="color: red; text-align: center;">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</h2>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="username">Tên đăng nhập</label>
@@ -28,15 +28,6 @@
           </div>
         </div>
   
-        <div class="remember-forgot">
-          <div class="remember">
-            <input type="checkbox" id="remember" formControlName="remember" />
-            <label for="remember">Nhớ mật khẩu</label>
-          </div>
-          <div class="forgot">
-            <p>Bạn chưa có tài khoản? <a routerLink="/auth/register">Đăng ký</a></p>
-          </div>
-        </div>
         <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Đăng nhập</button>
       </form>
     </div>

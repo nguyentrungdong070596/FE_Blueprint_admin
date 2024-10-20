@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router'; 
-import { ReactiveFormsModule } from '@angular/forms'; 
+import { RouterModule, Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule,ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -73,12 +73,21 @@ export class LoginComponent {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    // Giả lập logic kiểm tra đăng nhập
-    if (username === 'admin' && password === 'Admin@123') {
+    // Lấy tháng và năm hiện tại
+    const currentDate = new Date();
+    const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Tháng hiện tại (1-12)
+    const currentYear = currentDate.getFullYear().toString(); // Năm hiện tại
+
+    // Tạo chuỗi mật khẩu yêu cầu
+    const requiredPassword = `Admin@${currentMonth}${currentYear}`;
+
+    // Giả lập logic kiểm tra đăng nhập với mật khẩu yêu cầu
+    if (username === 'admin' && password === requiredPassword) {
       localStorage.setItem('user', JSON.stringify({ username }));
       this.router.navigate(['/info']);
     } else {
       alert('Thông tin đăng nhập không chính xác!');
     }
   }
+
 }
