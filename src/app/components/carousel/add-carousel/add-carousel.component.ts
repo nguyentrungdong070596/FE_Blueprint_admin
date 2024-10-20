@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
-import { StringAPI } from '../../../shared/stringAPI/string_api';
-import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
-import { DataService } from '../../../core/services/data.service';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../environment/environment';
+import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
+import { DataService } from '../../../core/services/data.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Router } from '@angular/router';
+import { StringAPI } from '../../../shared/stringAPI/string_api';
 
 @Component({
-  selector: 'app-add-dashboard',
+  selector: 'app-add-carousel',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ButtonModule],
-  templateUrl: './add-dashboard.component.html',
-  styleUrls: ['./add-dashboard.component.scss']
+  templateUrl: './add-carousel.component.html',
+  styleUrl: './add-carousel.component.scss'
 })
-export class AddDashboardComponent implements OnInit {
+export class AddCarouselComponent {
   form!: FormGroup;
   isEditMode = true;
   EditData: any;
@@ -29,17 +27,19 @@ export class AddDashboardComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
-    private _dataService: DataService,
     private _uploadService: FileUploadService,
-  ) { }
+    private _dataService: DataService,
+    public config: DynamicDialogConfig,
+    public ref: DynamicDialogRef,
+    private router: Router
+  ) {
+    this.EditData = this.config.data
+
+  }
 
   ngOnInit(): void {
     this.createForm();
-    this._dataService.data$.subscribe(data => {
-      this.EditData = data;
-      this.setValueFormEdit(data);
-    });
+    this.setValueFormEdit(this.EditData);
   }
 
   createForm() {
@@ -51,23 +51,25 @@ export class AddDashboardComponent implements OnInit {
 
   setValueFormEdit(data: any) {
     if (data) {
+      this.isEditMode = true;
+      this.EditData = data;
       this.preview_upload = this.stringurl + "/" + data.image;
       this.form.patchValue({
         status: data?.status,
       });
-    }
-    else {
+      this.item.image = data.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
+    } else {
       this.isEditMode = false;
     }
   }
-
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files.length > 0) {
       this.uploadImage = input.files[0];
-      // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.preview_upload = e.target?.result;
@@ -77,20 +79,9 @@ export class AddDashboardComponent implements OnInit {
   }
 
   async handleFileInput() {
-    // Nếu không có ảnh mới thì dùng ảnh đã tồn tại hoặc ảnh mặc định
-    if ( this.EditData && this.EditData.image) {
-      this.item.image = this.EditData.image
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
-    }
-    else{
-      this.item.image = "upload/files/default.png"
-    }
-
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
-        // Loại bỏ validator của trường image nếu upload thành công
         this.form.controls['image'].clearValidators();
         this.form.controls['image'].updateValueAndValidity();
         this.item.image = imageData.file_save_url;
@@ -98,10 +89,9 @@ export class AddDashboardComponent implements OnInit {
     }
   }
 
-
   async onSubmit(values: any) {
     await this.handleFileInput();
-    
+
     // Kiểm tra lại form sau khi xử lý file
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -114,7 +104,6 @@ export class AddDashboardComponent implements OnInit {
       this.onInsert();
     }
 
-    this.goBack();
   }
 
 
@@ -123,7 +112,10 @@ export class AddDashboardComponent implements OnInit {
     this._dataService.post(StringAPI.APICarousel, this.item)
       .subscribe(
         (res) => {
-          console.log('News added successfully:', res);
+          this.ref.close();
+          this.router.navigate(['/carousel']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
           console.error('Error adding news:', error);
@@ -139,7 +131,10 @@ export class AddDashboardComponent implements OnInit {
       this._dataService.put(StringAPI.APICarousel + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('News update successfully:', res);
+            this.ref.close();
+            this.router.navigate(['/carousel']).then(() => {
+              window.location.reload(); // Load lại trang
+            });
           },
           (error) => {
             console.error('Error update news:', error);
@@ -148,10 +143,4 @@ export class AddDashboardComponent implements OnInit {
 
     }
   }
-
-  goBack(): void {
-    this.router.navigate(['/dashboard']);
-  }
 }
-
-

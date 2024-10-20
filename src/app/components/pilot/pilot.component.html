@@ -1,15 +1,13 @@
 <div class="content">
   <h2>Quản lý danh sách hoa tiêu</h2>
   <div class="controls">
-    <button (click)="onAdd()" class="btn btn-primary">
-      <a [routerLink]="['/pilot/add']">Thêm mới</a>
-    </button>
+    <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
   </div>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>STT</th>
-        <th>Họ và tên</th>
+        <th>Tên hoa tiêu</th>
         <th>Hình ảnh</th>
         <th>Hạng hoa tiêu</th>
         <th>Trạng thái</th>
@@ -33,7 +31,7 @@
         <td>{{ pilot.rank }}</td>
         <td>{{ pilot.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
-          <button (click)="editPilot(pilot)" class="btn-edit">
+          <button (click)="show(pilot)" class="btn-edit">
             <i class="fa-solid fa-edit"></i>
           </button>
           <button (click)="deleteNews(pilot)" class="btn-delete">

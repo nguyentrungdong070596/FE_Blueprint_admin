@@ -10,6 +10,7 @@ import { FileUploadService } from '../../../core/services/uploadFiles/file-uploa
 import { DataService } from '../../../core/services/data.service';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../environment/environment';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 @Component({
     selector: 'app-add-monnuoc',
     standalone: true,
@@ -30,15 +31,13 @@ export class AddMonnuocComponent implements OnInit {
         private router: Router,
         private _dataService: DataService,
         private _uploadService: FileUploadService,
-    ) { }
+        public config: DynamicDialogConfig,
+        public ref: DynamicDialogRef,
+    ) { this.EditData = this.config.data }
 
     ngOnInit(): void {
         this.createForm();
-        this._dataService.data$.subscribe(data => {
-            this.EditData = data;
-            this.setValueFormEdit(data);
-
-        });
+        this.setValueFormEdit(this.EditData);
     }
 
     createForm() {
@@ -55,11 +54,16 @@ export class AddMonnuocComponent implements OnInit {
                 status: data?.status,
                 postdate: data?.postdate
             });
+            this.item.dataurl = this.EditData.dataurl;
+            // Loại bỏ validators nếu là chế độ edit
+            this.form.controls['dataurl'].clearValidators();
+            this.form.controls['dataurl'].updateValueAndValidity();
         }
         else {
             this.isEditMode = false;
         }
     }
+    
 
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
@@ -70,16 +74,10 @@ export class AddMonnuocComponent implements OnInit {
     }
 
     async handleFileInput() {
-        // Kiểm tra xem EditData có tồn tại và có thuộc tính image
-        if (this.EditData && this.EditData.dataurl) {
-            this.item.dataurl = this.EditData.dataurl;
-            this.form.controls['dataurl'].clearValidators();
-            this.form.controls['dataurl'].updateValueAndValidity();
-        }
         if (this.selectedPdfFile) {
             const PdfData = await this._uploadService.postFile(this.selectedPdfFile);
             if (PdfData.file_save_url) {
-                // Loại bỏ validator của trường image nếu upload thành công
+                // Loại bỏ validator của trường dataurl nếu upload thành công
                 this.form.controls['dataurl'].clearValidators();
                 this.form.controls['dataurl'].updateValueAndValidity();
                 this.item.dataurl = PdfData.file_save_url;
@@ -103,8 +101,6 @@ export class AddMonnuocComponent implements OnInit {
         } else {
             this.onInsert(values);
         }
-
-        this.goBack();
     }
 
 
@@ -114,7 +110,9 @@ export class AddMonnuocComponent implements OnInit {
         this._dataService.post(StringAPI.APIManeuveringDraft, this.item)
             .subscribe(
                 (res) => {
-                    console.log('News added successfully:', res);
+                    this.router.navigate(['/monnuoc']).then(() => {
+                        window.location.reload(); // Load lại trang
+                    });
                 },
                 (error) => {
                     console.error('Error adding news:', error);
@@ -130,7 +128,9 @@ export class AddMonnuocComponent implements OnInit {
             this._dataService.put(StringAPI.APIManeuveringDraft + "/" + this.EditData.id, this.item)
                 .subscribe(
                     (res) => {
-                        console.log('update successfully:', res);
+                        this.router.navigate(['/monnuoc']).then(() => {
+                            window.location.reload(); // Load lại trang
+                        });
                     },
                     (error) => {
                         console.error('Error update:', error);
@@ -138,9 +138,5 @@ export class AddMonnuocComponent implements OnInit {
                 );
 
         }
-    }
-
-    goBack(): void {
-        this.router.navigate(['/monnuoc']);
     }
 }

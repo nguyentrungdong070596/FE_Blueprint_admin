@@ -10,6 +10,7 @@ import { FileUploadService } from '../../../core/services/uploadFiles/file-uploa
 import { DataService } from '../../../core/services/data.service';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../environment/environment';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-add-new',
@@ -36,20 +37,19 @@ export class AddServicesComponent implements OnInit {
     private router: Router,
     private _dataService: DataService,
     private _uploadService: FileUploadService,
-  ) { }
+    public config: DynamicDialogConfig,
+    public ref: DynamicDialogRef,
+  ) { this.EditData = this.config.data }
 
   ngOnInit(): void {
     this.createForm();
-    this._dataService.data$.subscribe(data => {
-      this.EditData = data;
-      this.setValueFormEdit(data);
-    });
+    this.setValueFormEdit(this.EditData);
   }
 
   createForm() {
     this.form = this.fb.group({
       title: [null, Validators.required],
-      image: [null],
+      image: [null, Validators.required],
       pdfdata: [null, Validators.required],
       status: [true, Validators.required],
     });
@@ -62,6 +62,12 @@ export class AddServicesComponent implements OnInit {
         title: data?.title,
         status: data?.status,
       });
+      this.item.pdfdata = this.EditData.pdfdata;
+      this.form.controls['pdfdata'].clearValidators();
+      this.form.controls['pdfdata'].updateValueAndValidity();
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
     }
     else {
       this.isEditMode = false;
@@ -74,8 +80,6 @@ export class AddServicesComponent implements OnInit {
 
     if (input.files && input.files.length > 0) {
       this.uploadImage = input.files[0];
-
-
       // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -92,35 +96,15 @@ export class AddServicesComponent implements OnInit {
     }
   }
   async handleFileInput() {
-    // Upload Pdf
-    if (this.EditData && this.EditData.pdfdata) {
-      this.item.pdfdata = this.EditData.pdfdata;
-      this.form.controls['pdfdata'].clearValidators();
-      this.form.controls['pdfdata'].updateValueAndValidity();
-    } else {
-      this.item.pdfdata = "";
-    }
-
     if (this.selectedPdfFile) {
       const Pdfdata = await this._uploadService.postFile(this.selectedPdfFile);
       this.form.controls['pdfdata'].clearValidators();
       this.form.controls['pdfdata'].updateValueAndValidity();
       this.item.pdfdata = Pdfdata.file_save_url;
     }
-
-    // Upload hình ảnh
-    if (this.EditData && this.EditData.image) {
-      this.item.image = this.EditData.image;
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
-    } else {
-      this.item.image = "upload/files/default.png";
-    }
-
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
-        // Loại bỏ validator của trường image nếu upload thành công
         this.form.controls['image'].clearValidators();
         this.form.controls['image'].updateValueAndValidity();
         this.item.image = imageData.file_save_url;
@@ -131,7 +115,6 @@ export class AddServicesComponent implements OnInit {
   async onSubmit(values: any) {
     await this.handleFileInput();
 
-    // Kiểm tra lại form sau khi xử lý file
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -142,8 +125,6 @@ export class AddServicesComponent implements OnInit {
     } else {
       this.onInsert(values);
     }
-
-    this.goBack();
   }
 
   onInsert(values: any) {
@@ -156,10 +137,11 @@ export class AddServicesComponent implements OnInit {
     this._dataService.post(StringAPI.APIServicePrice, this.item)
       .subscribe(
         (res) => {
-          console.log('added successfully:', res);
+          this.router.navigate(['/services']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
-          console.error('Error adding:', error);
         }
       );
   }
@@ -172,17 +154,13 @@ export class AddServicesComponent implements OnInit {
       this._dataService.put(StringAPI.APIServicePrice + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('update successfully:', res);
+            this.router.navigate(['/services']).then(() => {
+              window.location.reload(); // Load lại trang
+            });
           },
           (error) => {
-            console.error('Error update:', error);
           }
         );
-
     }
-  }
-
-  goBack(): void {
-    this.router.navigate(['/services']);
   }
 }

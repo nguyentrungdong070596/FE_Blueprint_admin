@@ -1,17 +1,15 @@
 <div class="content">
   <h2>Quản lý giá dịch vụ</h2>
   <div class="controls">
-    <button class="btn btn-primary">
-      <a [routerLink]="['/services/add']" (click)="onAdd()">Thêm mới</a>
-    </button>
+    <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
   </div>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>STT</th>
-        <th>Tiêu đề</th>
+        <th>Tên dịch vụ</th>
         <th>Hình ảnh</th>
-        <th>Giá</th>
+        <th>Dữ liệu</th>
         <th>Trạng thái</th>
         <th style="width: 100px">Điều chỉnh</th>
 
@@ -34,7 +32,7 @@
         </td>
         <td>{{ service.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
-          <button (click)="editItem(service)" class="btn-edit">
+          <button (click)="show(service)" class="btn-edit">
             <i class="fa-solid fa-edit"></i>
           </button>
           <button (click)="deleteItem(service)" class="btn-delete">

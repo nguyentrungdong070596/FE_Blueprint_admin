@@ -5,15 +5,18 @@ import { CommonModule } from '@angular/common';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { DataService } from '../../core/services/data.service';
 import { environment } from '../../../environment/environment';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AddMonnuocComponent } from './add-monnuoc/add-monnuoc.component';
 
 
 
 @Component({
   selector: 'app-monnuoc',
   standalone: true,
-  imports: [PdfViewerModule, RouterModule,CommonModule],
+  imports: [DynamicDialogModule, PdfViewerModule, RouterModule, CommonModule],
   templateUrl: './monnuoc.component.html',
-  styleUrls: ['./monnuoc.component.scss']
+  styleUrls: ['./monnuoc.component.scss'],
+  providers: [DialogService]
 })
 export class MonnuocComponent {
   urlAPI = environment.apiUrl;
@@ -24,7 +27,10 @@ export class MonnuocComponent {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+
+  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
   ngOnInit(): void {
     this.getItems(this.limit, this.rows);
   }
@@ -53,35 +59,44 @@ export class MonnuocComponent {
     this.getItems(this.first, this.rows);
   }
 
-  editItem(item: any) {
-    const sendItem = {
-      id: item.id,
-      dataurl: item.dataurl,
-      status: item.status,
-      postdate: item.postdate,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/monnuoc/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      dialogConfig.data = {
+        id: item.id,
+        dataurl: item.dataurl,
+        status: item.status,
+        postdate: item.postdate,
+      };
+    }
+
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddMonnuocComponent, dialogConfig);
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
-    console.log(item);
   }
 
   OnDelete(id: any) {
-    
+
     this._dataService.delete(StringAPI.APIManeuveringDraft + "/" + id)
       .subscribe(
         (res) => {
-          console.log('delete successfully:', res);
-          window.location.reload();
+          this.router.navigate(['/monnuoc']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
-          console.error('Error delete service:', error);
         }
       );
-  }
-  onAdd(): void{
-    this._dataService.setData(null);
   }
 }

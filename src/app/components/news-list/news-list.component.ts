@@ -9,13 +9,15 @@ import { AddNewComponent } from './add-new/add-new.component';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { environment } from '../../../environment/environment';
 import { ImageModule } from 'primeng/image';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-news-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule, AddNewComponent, PaginatorModule, ImageModule],
+  imports: [DynamicDialogModule, CommonModule, RouterModule, FormsModule, QuillModule, AddNewComponent, PaginatorModule, ImageModule],
   templateUrl: './news-list.component.html',
-  styleUrls: ['./news-list.component.scss']
+  styleUrls: ['./news-list.component.scss'],
+  providers: [DialogService]
 })
 export class NewsListComponent implements OnInit {
   urlAPI = environment.apiUrl;
@@ -26,7 +28,10 @@ export class NewsListComponent implements OnInit {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+
+  constructor(private router: Router, private _dataService: DataService, public dialogService: DialogService,) { }
   ngOnInit(): void {
     this.getNewsEventsItems(this.limit, this.rows);
   }
@@ -58,18 +63,30 @@ export class NewsListComponent implements OnInit {
     this.getNewsEventsItems(this.first, this.rows);
   }
 
-  editNews(item: any) {
-    // console.log(item);
-    const sendItem = {
-      id: item.id,
-      title: item.title,
-      content: item.content,
-      image: item.image,
-      status: item.status,
-      postdate: item.postdate,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/news/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      dialogConfig.data = {
+        id: item.id,
+        title: item.title,
+        content: item.content,
+        image: item.image,
+        status: item.status,
+        postdate: item.postdate,
+      };
+    }
+
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddNewComponent, dialogConfig);
   }
   deleteNews(item: any) {
     this.OnDelete(item.id);
@@ -79,17 +96,12 @@ export class NewsListComponent implements OnInit {
     this._dataService.delete(StringAPI.APINews + "/" + id)
       .subscribe(
         (res) => {
-          console.log('News delete successfully:', res);
-          window.location.reload();
+          this.router.navigate(['/news']).then(() => {
+            window.location.reload();
+          });
         },
         (error) => {
-          console.error('Error delete news:', error);
         }
       );
   }
-  onAdd(): void{
-    this._dataService.setData(null);
-  }
-
-
 }

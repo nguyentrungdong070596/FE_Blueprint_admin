@@ -10,6 +10,7 @@ import { DataService } from '../../../core/services/data.service';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../environment/environment';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-add-list-services',
@@ -33,22 +34,22 @@ export class AddListServicesComponent implements OnInit {
     private router: Router,
     private _dataService: DataService,
     private _uploadService: FileUploadService,
-  ) { }
+    public config: DynamicDialogConfig,
+    public ref: DynamicDialogRef,
+  ) {
+    this.EditData = this.config.data
+  }
 
   ngOnInit(): void {
     this.createForm();
-    this._dataService.data$.subscribe(data => {
-      this.EditData = data;
-      this.setValueFormEdit(data);
-
-    });
+    this.setValueFormEdit(this.EditData);
   }
 
   createForm() {
     this.form = this.fb.group({
       title: [null, Validators.required],
       content: [null],
-      image: [null],
+      image: [null, Validators.required],
       status: [true, Validators.required],
     });
   }
@@ -61,6 +62,9 @@ export class AddListServicesComponent implements OnInit {
         title: data?.title,
         content: data?.content,
       });
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
     }
     else {
       this.isEditMode = false;
@@ -85,15 +89,6 @@ export class AddListServicesComponent implements OnInit {
   }
 
   async handleFileInput() {
-    // Kiểm tra xem EditData có tồn tại và có thuộc tính image
-    if (this.EditData && this.EditData.image) {
-      this.item.image = this.EditData.image;
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
-    } else {
-      this.item.image = "upload/files/default.png";
-    }
-
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
@@ -104,8 +99,6 @@ export class AddListServicesComponent implements OnInit {
       }
     }
   }
-
-
 
   async onSubmit(values: any) {
     await this.handleFileInput();
@@ -122,7 +115,6 @@ export class AddListServicesComponent implements OnInit {
       this.onInsert(values);
     }
 
-    this.goBack();
   }
 
 
@@ -133,10 +125,11 @@ export class AddListServicesComponent implements OnInit {
     this._dataService.post(StringAPI.APIDichvu, this.item)
       .subscribe(
         (res) => {
-          console.log('News added successfully:', res);
+          this.router.navigate(['/list-services']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
-          console.error('Error adding news:', error);
         }
       );
 
@@ -150,18 +143,15 @@ export class AddListServicesComponent implements OnInit {
       this._dataService.put(StringAPI.APIDichvu + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('News update successfully:', res);
+            this.router.navigate(['/list-services']).then(() => {
+              window.location.reload(); // Load lại trang
+            });
           },
           (error) => {
-            console.error('Error update news:', error);
           }
         );
 
     }
-  }
-
-  goBack(): void {
-    this.router.navigate(['/list-services']);
   }
 }
 

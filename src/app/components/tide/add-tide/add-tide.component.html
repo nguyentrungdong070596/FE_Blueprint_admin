@@ -4,31 +4,19 @@
     <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
     <form [formGroup]="form">
       <div class="form-group">
-        <label
-          for="file"
-          [ngClass]="{
+        <label for="file" [ngClass]="{
             'color-form-red':
+            !isEditMode &&
               form.get('pdfuri')?.invalid &&
               (form.get('pdfuri')?.dirty || form.get('pdfuri')?.touched)
-          }"
-          >Tải lên dữ liệu:</label
-        >
-        <input
-          type="file"
-          id="pdfuri"
-          accept=".pdf"
-          (change)="onFileSelected($event)"
-          class="form-control"
-          formControlName="pdfuri"
-          required
-        />
-        <small
-          *ngIf="
+          }">Dữ liệu:</label>
+        <input type="file" id="pdfuri" (change)="onFileSelected($event)" accept=".pdf" class="form-control"
+          formControlName="pdfuri"/>
+        <small *ngIf="
+        !isEditMode &&
             form.get('pdfuri')?.invalid &&
             (form.get('pdfuri')?.dirty || form.get('pdfuri')?.touched)
-          "
-          [ngClass]="{ 'color-form-red': form.get('pdfuri')?.invalid }"
-        >
+          " [ngClass]="{ 'color-form-red': form.get('pdfuri')?.invalid }">
           Vui lòng tải dữ liệu.
         </small>
       </div>
@@ -84,8 +72,6 @@
       </div>
 
       <div class="bt-actions">
-        <button pButton pRipple label="Trở Lại" class="p-button-secondary" (click)="goBack()">
-        </button>
         <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
           class="p-button-success">
         </button>

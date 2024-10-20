@@ -8,14 +8,17 @@ import { StringAPI } from '../../shared/stringAPI/string_api';
 import { DataService } from '../../core/services/data.service';
 import { environment } from '../../../environment/environment';
 import { ImageModule } from 'primeng/image';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AddServicesComponent } from './add-services/add-services.component';
 
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule],
+  imports: [DynamicDialogModule, CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule],
   templateUrl: './services.component.html',
-  styleUrls: ['./services.component.scss']
+  styleUrls: ['./services.component.scss'],
+  providers: [DialogService]
 })
 export class ServicesComponent {
   urlAPI = environment.apiUrl;
@@ -26,7 +29,9 @@ export class ServicesComponent {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
   ngOnInit(): void {
     this.getDichvuItems(this.limit, this.rows);
   }
@@ -56,36 +61,46 @@ export class ServicesComponent {
     this.getDichvuItems(this.first, this.rows);
   }
 
-  editItem(item: any) {
-    const sendItem = {
-      id: item.id,
-      title: item.title,
-      pdfdata: item.pdfdata,
-      image: item.image,
-      status: item.status,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/services/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      dialogConfig.data = {
+        id: item.id,
+        title: item.title,
+        pdfdata: item.pdfdata,
+        image: item.image,
+        status: item.status,
+      };
+    }
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddServicesComponent, dialogConfig);
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
-    console.log(item);
   }
 
   OnDelete(id: any) {
-    
+
     this._dataService.delete(StringAPI.APIServicePrice + "/" + id)
       .subscribe(
         (res) => {
           console.log('service delete successfully:', res);
-          window.location.reload();
+          // window.location.reload();
+          this.router.navigate(['/services']).then(() => {
+            window.location.reload();
+          });
         },
         (error) => {
-          console.error('Error delete service:', error);
         }
       );
-  }
-  onAdd(): void{
-    this._dataService.setData(null);
   }
 }

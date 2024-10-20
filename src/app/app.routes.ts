@@ -1,52 +1,27 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { InfoComponent } from './components/info/info.component';
-import { AddInfoComponent } from './components/info/add-info/add-info.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AddDashboardComponent } from './components/dashboard/add-dashboard/add-dashboard.component';
-import { ListServicesComponent } from './components/list-services/list-services.component';
-import { AddListServicesComponent } from './components/list-services/add-list-services/add-list-services.component';
-import { NewsListComponent } from './components/news-list/news-list.component';
-import { AddNewComponent } from './components/news-list/add-new/add-new.component';
-import { MonnuocComponent } from './components/monnuoc/monnuoc.component';  
-import { AddMonnuocComponent } from './components/monnuoc/add-monnuoc/add-monnuoc.component';
-import { ServicesComponent } from './components/services/services.component';
-import { AddServicesComponent } from './components/services/add-services/add-services.component';
-import { PilotComponent } from './components/pilot/pilot.component';
-import { AddPilotComponent } from './components/pilot/add-pilot/add-pilot.component';
-import { VehicleComponent } from './components/vehicle/vehicle.component';
-import { AddVehicleComponent } from './components/vehicle/add-vehicle/add-vehicle.component';
-import { TideComponent } from './components/tide/tide.component';
-import { AddTideComponent } from './components/tide/add-tide/add-tide.component';
-import { AuthGuard } from './auth.guard'; // Nhập guard vào đây
 import { LayoutAdminComponent } from './shared/layout-admin/layout-admin.component';
+import { AuthGuard } from './auth.guard';
+import { LoginComponent } from './components/auth/login/login.component';
 
 export const routes: Routes = [
-  { path: '', 
+  {
+    path: '',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: LayoutAdminComponent,
-    canActivate: [AuthGuard], // Áp dụng AuthGuard
+    canActivate: [AuthGuard],
     children: [
-        { path: 'info', component: InfoComponent },
-        { path: 'info/add', component: AddInfoComponent },
-        { path: 'dashboard', component: DashboardComponent },
-        {path: 'dashboard/add', component:AddDashboardComponent},
-        { path: 'list-services', component: ListServicesComponent },
-        { path: 'list-services/add', component: AddListServicesComponent },
-        { path: 'news', component: NewsListComponent },
-        { path: 'news/add', component: AddNewComponent },  
-        { path: 'monnuoc', component: MonnuocComponent }, 
-        { path: 'monnuoc/add', component: AddMonnuocComponent }, 
-        { path: 'services', component: ServicesComponent },
-        { path: 'services/add', component: AddServicesComponent },
-        { path: 'pilot', component: PilotComponent },
-        { path: 'pilot/add', component: AddPilotComponent },
-        { path: 'vehicle', component: VehicleComponent },
-        { path: 'vehicle/add', component: AddVehicleComponent },
-        { path: 'tide', component: TideComponent },
-        { path: 'tide/add', component: AddTideComponent },
-        { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
+      {
+        path: '',
+        loadChildren: () => import('./shared/shared.routers').then(m => m.SHARED_ROUTERS),
+      }
     ]
   },
-  { path: '**', redirectTo: '/auth/login' } // Chuyển hướng về trang đăng nhập nếu không tìm thấy đường dẫn
+  {
+    path: 'login', component: LoginComponent
+  },
+  { path: '**', redirectTo: '/login' }
 ];

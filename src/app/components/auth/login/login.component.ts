@@ -5,38 +5,35 @@ import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  imports: [CommonModule, RouterModule,ReactiveFormsModule],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class LoginComponent {
+  loginForm: FormGroup; // FormGroup để quản lý form
   showPassword: boolean = false;
   passwordStrengthMessage: string = '';
   passwordStrengthClass: string = '';
 
   constructor(private formBuilder: FormBuilder, private router: Router) {
     // Sử dụng FormBuilder để tạo form với các validator
-    this.registerForm = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: ['', Validators.required], // Trường username bắt buộc
       password: ['', [Validators.required, Validators.minLength(8)]], // Trường password bắt buộc và phải có ít nhất 8 ký tự
-      confirmPassword: ['', Validators.required], // Trường xác nhận mật khẩu
       remember: [false] // Trường remember là checkbox
-    }, { validators: this.passwordMatchValidator }); // Sử dụng validator để kiểm tra mật khẩu và xác nhận mật khẩu
+    });
   }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     const passwordField: any = document.getElementById('password');
-    const confirmPasswordField: any = document.getElementById('confirmPassword');
     passwordField.type = this.showPassword ? 'text' : 'password';
-    confirmPasswordField.type = this.showPassword ? 'text' : 'password';
   }
 
   checkPasswordStrength() {
-    const password = this.registerForm.get('password')?.value || '';
+    const password = this.loginForm.get('password')?.value || '';
     const strength = this.calculatePasswordStrength(password);
 
     if (strength === 'weak') {
@@ -71,19 +68,17 @@ export class RegisterComponent {
     }
   }
 
-  // Hàm kiểm tra sự khớp giữa mật khẩu và xác nhận mật khẩu
-  passwordMatchValidator(form: FormGroup) {
-    return form.get('password')?.value === form.get('confirmPassword')?.value ? null : { mismatch: true };
-  }
-
   // Hàm xử lý khi submit form
   onSubmit() {
-    if (this.registerForm.valid) {
-      const username = this.registerForm.get('username')?.value;
-      const password = this.registerForm.get('password')?.value;
-      // Thực hiện logic đăng ký ở đây, như gửi yêu cầu tới API
-      console.log('Đăng ký thành công:', { username, password });
-      // Chuyển hướng hoặc làm gì đó sau khi đăng ký thành công
+    const username = this.loginForm.get('username')?.value;
+    const password = this.loginForm.get('password')?.value;
+
+    // Giả lập logic kiểm tra đăng nhập
+    if (username === 'admin' && password === 'Admin@123') {
+      localStorage.setItem('user', JSON.stringify({ username }));
+      this.router.navigate(['/info']);
+    } else {
+      alert('Thông tin đăng nhập không chính xác!');
     }
   }
 }

@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
 import { NgModule } from '@angular/core';
-import { RouterModule, Router } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Đảm bảo đã import ở đây
 import { environment } from '../../../environment/environment';
 import { DataService } from '../../core/services/data.service';
 import { StringAPI } from '../../shared/stringAPI/string_api';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AddTideComponent } from './add-tide/add-tide.component';
 
 @Component({
   selector: 'app-tide',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [DynamicDialogModule, CommonModule, FormsModule, RouterModule],
   templateUrl: './tide.component.html',
-  styleUrls: ['./tide.component.scss'] // Chỉnh sửa từ 'styleUrl' thành 'styleUrls'
+  styleUrls: ['./tide.component.scss'],
+  providers: [DialogService]
 })
 export class TideComponent {
   urlAPI = environment.apiUrl;
@@ -23,7 +26,9 @@ export class TideComponent {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
   ngOnInit(): void {
     this.getItems(this.limit, this.rows);
   }
@@ -52,34 +57,43 @@ export class TideComponent {
     this.getItems(this.first, this.rows);
   }
 
-  editItem(item: any) {
-    const sendItem = {
-      id: item.id,
-      pdfuri: item.pdfuri,
-      status: item.status,
-      postdate: item.postdate,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/tide/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      dialogConfig.data = {
+        id: item.id,
+        pdfuri: item.pdfuri,
+        status: item.status,
+        postdate: item.postdate,
+      };
+    }
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddTideComponent, dialogConfig);
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
   }
 
   OnDelete(id: any) {
-    
+
     this._dataService.delete(StringAPI.APITide + "/" + id)
       .subscribe(
         (res) => {
-          console.log('delete successfully:', res);
-          window.location.reload();
+          this.router.navigate(['/tide']).then(() => {
+            window.location.reload();
+          });
         },
         (error) => {
-          console.error('Error delete service:', error);
         }
       );
-  }
-  onAdd(): void{
-    this._dataService.setData(null);
   }
 }
