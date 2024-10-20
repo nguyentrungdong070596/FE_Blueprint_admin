@@ -8,10 +8,11 @@
           for="title"
           [ngClass]="{
             'color-form-red':
+            !isEditMode &&
               form.get('title')?.invalid &&
               (form.get('title')?.dirty || form.get('title')?.touched)
           }"
-          >Tiêu đề:</label
+          >Tên dịch vụ:</label
         >
         <input
           type="text"
@@ -22,6 +23,7 @@
         />
         <small
           *ngIf="
+          !isEditMode &&
             form.get('title')?.invalid &&
             (form.get('title')?.dirty || form.get('title')?.touched)
           "
@@ -36,10 +38,11 @@
           for="file"
           [ngClass]="{
             'color-form-red':
+            !isEditMode &&
               form.get('image')?.invalid &&
               (form.get('image')?.dirty || form.get('image')?.touched)
           }"
-          >Tải lên hình ảnh:</label
+          >Hình ảnh:</label
         >
         <input
           type="file"
@@ -51,6 +54,7 @@
         />
         <small
           *ngIf="
+          !isEditMode &&
             form.get('image')?.invalid &&
             (form.get('image')?.dirty || form.get('image')?.touched)
           "
@@ -99,8 +103,6 @@
       </div>
 
       <div class="bt-actions">
-        <button pButton pRipple label="Trở Lại" class="p-button-secondary" (click)="goBack()">
-        </button>
         <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
           class="p-button-success">
         </button>

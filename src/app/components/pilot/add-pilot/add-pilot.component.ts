@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { QuillModule } from 'ngx-quill'; 
+import { QuillModule } from 'ngx-quill';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { StringAPI } from '../../../shared/stringAPI/string_api';
@@ -9,6 +9,7 @@ import { FileUploadService } from '../../../core/services/uploadFiles/file-uploa
 import { DataService } from '../../../core/services/data.service';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../environment/environment';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-add-pilot',
@@ -30,29 +31,21 @@ export class AddPilotComponent implements OnInit {
 
   ranks = [
     {
-      name: "Hoa tiêu ngoại hạng A",
-      value: "Hoa tiêu ngoại hạng A",
+      name: "Hoa tiêu ngoại hạng",
+      value: "Hoa tiêu ngoại hạng",
     },
     {
-      name: "Hoa tiêu ngoại hạng B",
-      value: "Hoa tiêu ngoại hạng B",
+      name: "Hoa tiêu hạng nhất",
+      value: "Hoa tiêu hạng nhất",
     },
     {
-      name: "Hoa tiêu ngoại hạng C",
-      value: "Hoa tiêu ngoại hạng C",
+      name: "Hoa tiêu hạng hai",
+      value: "Hoa tiêu hạng hai",
     },
     {
-      name: "Hoa tiêu ngoại hạng 1",
-      value: "Hoa tiêu ngoại hạng 1",
-    },
-    {
-      name: "Hoa tiêu ngoại hạng 2",
-      value: "Hoa tiêu ngoại hạng 2",
-    },
-    {
-      name: "Hoa tiêu ngoại hạng 3",
-      value: "Hoa tiêu ngoại hạng 3",
-    },
+      name: "Hoa tiêu hạng ba",
+      value: "Hoa tiêu hạng ba",
+    }
   ]
 
   constructor(
@@ -60,21 +53,21 @@ export class AddPilotComponent implements OnInit {
     private router: Router,
     private _dataService: DataService,
     private _uploadService: FileUploadService,
-  ) { }
+    public config: DynamicDialogConfig,
+    public ref: DynamicDialogRef,
+  ) {
+    this.EditData = this.config.data
+  }
 
   ngOnInit(): void {
     this.createForm();
-    this._dataService.data$.subscribe(data => {
-      this.EditData = data;
-      this.setValueFormEdit(data);
-
-    });
+    this.setValueFormEdit(this.EditData);
   }
 
   createForm() {
     this.form = this.fb.group({
       name: [null, Validators.required],
-      image: [null],
+      image: [null, Validators.required],
       rank: [null, Validators.required],
       status: [true, Validators.required],
     });
@@ -88,6 +81,10 @@ export class AddPilotComponent implements OnInit {
         rank: data?.rank,
         status: data?.status,
       });
+
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
     }
     else {
       this.isEditMode = false;
@@ -112,15 +109,6 @@ export class AddPilotComponent implements OnInit {
   }
 
   async handleFileInput() {
-    // Kiểm tra xem EditData có tồn tại và có thuộc tính image
-    if (this.EditData && this.EditData.image) {
-      this.item.image = this.EditData.image;
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
-    } else {
-      this.item.image = "upload/files/default.png";
-    }
-
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
@@ -146,10 +134,7 @@ export class AddPilotComponent implements OnInit {
     } else {
       this.onInsert(values);
     }
-
-    this.goBack();
   }
-
 
   onInsert(values: any) {
     this.item.status = true;
@@ -158,10 +143,11 @@ export class AddPilotComponent implements OnInit {
     this._dataService.post(StringAPI.APIHoaTieu, this.item)
       .subscribe(
         (res) => {
-          console.log('added successfully:', res);
+          this.router.navigate(['/pilot']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
-          console.error('Error adding:', error);
         }
       );
 
@@ -175,17 +161,13 @@ export class AddPilotComponent implements OnInit {
       this._dataService.put(StringAPI.APIHoaTieu + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('update successfully:', res);
+            this.router.navigate(['/pilot']).then(() => {
+              window.location.reload(); // Load lại trang
+            });
           },
           (error) => {
-            console.error('Error update:', error);
           }
         );
-
     }
-  }
-
-  goBack(): void {
-    this.router.navigate(['/pilot']);
   }
 }

@@ -127,6 +127,7 @@ body {
         box-sizing: border-box; // Bao gồm padding và border trong chiều rộng
       }
       .bt-actions {
+        padding-top: 20px;
         display: flex;
         justify-content: space-between;
       }

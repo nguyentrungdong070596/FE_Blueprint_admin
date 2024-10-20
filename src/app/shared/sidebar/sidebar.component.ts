@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit {
       { routerLink: '/info', icon: 'pi pi-id-card', text: 'Giới thiệu' },
       { routerLink: '/list-services', icon: 'pi pi-briefcase', text: 'Các dịch vụ' },
       { routerLink: '/news', icon: 'pi pi-calendar', text: 'Tin tức và sự kiện' },
-      { routerLink: '/dashboard', icon: 'pi pi-folder', text: 'Danh mục' },
+      { routerLink: '/carousel', icon: 'pi pi-folder', text: 'Carousel' },
       { routerLink: '/monnuoc', icon: 'pi pi-clock', text: 'Giờ điều động và mớn nước' },
       { routerLink: '/services', icon: 'pi pi-dollar', text: 'Giá dịch vụ' },
       { routerLink: '/pilot', icon: 'pi pi-users', text: 'Danh sách hoa tiêu' },

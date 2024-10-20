@@ -1,14 +1,15 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { QuillModule } from 'ngx-quill'; 
-import { Router } from '@angular/router'; 
-import { DatePipe } from '@angular/common'; 
+import { QuillModule } from 'ngx-quill';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { StringAPI } from '../../../shared/stringAPI/string_api';
 import { DataService } from '../../../core/services/data.service';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../environment/environment';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-add-vehicle',
@@ -34,15 +35,13 @@ export class AddVehicleComponent implements OnInit {
     private router: Router,
     private _dataService: DataService,
     private _uploadService: FileUploadService,
-  ) { }
+    public config: DynamicDialogConfig,
+    public ref: DynamicDialogRef,
+  ) { this.EditData = this.config.data }
 
   ngOnInit(): void {
     this.createForm();
-    this._dataService.data$.subscribe(data => {
-      this.EditData = data;
-      this.setValueFormEdit(data);
-
-    });
+    this.setValueFormEdit(this.EditData);
   }
 
   createForm() {
@@ -60,6 +59,9 @@ export class AddVehicleComponent implements OnInit {
         name: data?.name,
         status: data?.status,
       });
+      this.item.image = this.EditData.image;
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
     }
     else {
       this.isEditMode = false;
@@ -84,15 +86,6 @@ export class AddVehicleComponent implements OnInit {
   }
 
   async handleFileInput() {
-    // Kiểm tra xem EditData có tồn tại và có thuộc tính image
-    if (this.EditData && this.EditData.image) {
-      this.item.image = this.EditData.image;
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
-    } else {
-      this.item.image = "upload/files/default.png";
-    }
-
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
@@ -118,8 +111,6 @@ export class AddVehicleComponent implements OnInit {
     } else {
       this.onInsert(values);
     }
-
-    this.goBack();
   }
 
 
@@ -129,10 +120,11 @@ export class AddVehicleComponent implements OnInit {
     this._dataService.post(StringAPI.APIShip, this.item)
       .subscribe(
         (res) => {
-          console.log('added successfully:', res);
+          this.router.navigate(['/vehicle']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
-          console.error('Error adding:', error);
         }
       );
 
@@ -145,17 +137,14 @@ export class AddVehicleComponent implements OnInit {
       this._dataService.put(StringAPI.APIShip + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            console.log('update successfully:', res);
+            this.router.navigate(['/vehicle']).then(() => {
+              window.location.reload(); // Load lại trang
+            });
           },
           (error) => {
-            console.error('Error update:', error);
           }
         );
 
     }
-  }
-
-  goBack(): void {
-    this.router.navigate(['/vehicle']);
   }
 }

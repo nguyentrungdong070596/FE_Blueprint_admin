@@ -8,15 +8,18 @@ import { PaginatorModule } from 'primeng/paginator';
 import { AddInfoComponent } from './add-info/add-info.component';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { environment } from '../../../environment/environment';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-info',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule, AddInfoComponent, PaginatorModule],
+  imports: [AddInfoComponent,CommonModule, RouterModule, FormsModule, QuillModule, AddInfoComponent, PaginatorModule, DynamicDialogModule],
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss']
+  styleUrls: ['./info.component.scss'],
+  providers: [DialogService]
+
 })
-export class InfoComponent  implements OnInit {
+export class InfoComponent implements OnInit {
   urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
@@ -25,7 +28,9 @@ export class InfoComponent  implements OnInit {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
   ngOnInit(): void {
     this.getIntro(this.limit, this.rows);
   }
@@ -53,16 +58,30 @@ export class InfoComponent  implements OnInit {
     this.getIntro(this.first, this.rows);
   }
 
-  editInfo(item: any) {
-    const sendItem = {
-      id: item.id,
-      content: item.content,
-      status: item.status,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/info/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      console.log(item)
+      dialogConfig.data = {
+        id: item.id,
+        content: item.content,
+        status: item.status
+      };
+    }
+
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddInfoComponent, dialogConfig);
   }
-  deleteInfo(item: any) {
+  deleteItem(item: any) {
     this.OnDelete(item.id);
   }
 
@@ -78,10 +97,5 @@ export class InfoComponent  implements OnInit {
         }
       );
   }
-  onAdd(): void{
-    this._dataService.setData(null);
-  }
-
-
 }
 

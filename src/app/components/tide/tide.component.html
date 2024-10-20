@@ -1,16 +1,14 @@
 <div class="content">
-  <div class="add-dashboard-container">
+  <div class="add-carousel-container">
       <h2>Quản lý lịch thủy triều</h2>
       <div class="controls">
-          <button class="btn btn-primary" (click)="onAdd()">
-              <a [routerLink]="['/tide/add']" class="link-button">Thêm mới</a>
-          </button>
+        <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
       </div>
           <table class="table table-bordered">
               <thead>
                   <tr>
                       <th>STT</th>
-                      <th>Lịch thủy triều</th>
+                      <th>Dữ liệu thủy triều</th>
                       <th>Ngày cập nhật</th>
                       <th>Trạng thái</th>
                       <th style="width: 50px;">Điều chỉnh</th>
@@ -27,7 +25,7 @@
                       <td>{{ month.postdate }}</td>
                       <td>{{ month.status ? "Hiển thị" : "Ẩn" }}</td>
                       <td style="width: 50px;">
-                          <button (click)="editItem(month)" class="btn btn-edit">
+                          <button (click)="show(month)" class="btn btn-edit">
                               <i class="fa-solid fa-edit"></i>
                           </button>
                           <button (click)="deleteItem(month)" class="btn btn-delete">

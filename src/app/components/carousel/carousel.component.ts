@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { DataService } from '../../core/services/data.service';
-import { environment } from '../../../environment/environment';
-import { StringAPI } from '../../shared/stringAPI/string_api';
+import { ButtonModule } from 'primeng/button';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ImageModule } from 'primeng/image';
-
+import { AddCarouselComponent } from './add-carousel/add-carousel.component';
+import { environment } from '../../../environment/environment';
+import { DataService } from '../../core/services/data.service';
+import { StringAPI } from '../../shared/stringAPI/string_api';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule,RouterModule, ImageModule], // Đảm bảo import CarouselModule
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  imports: [ButtonModule, CommonModule, RouterModule, ImageModule, DynamicDialogModule, AddCarouselComponent],
+  templateUrl: './carousel.component.html',
+  styleUrl: './carousel.component.scss',
+  providers: [DialogService]
 })
-export class DashboardComponent {
+export class CarouselComponent {
   urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
@@ -23,7 +26,10 @@ export class DashboardComponent {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
+
   ngOnInit(): void {
     this.getDichvuItems(this.limit, this.rows);
   }
@@ -51,34 +57,42 @@ export class DashboardComponent {
     this.getDichvuItems(this.first, this.rows);
   }
 
-  editItem(item: any) {
-    const sendItem = {
-      id: item.id,
-      image: item.image,
-      status: item.status,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/dashboard/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      dialogConfig.data = {
+        id: item.id,
+        image: item.image,
+        status: item.status
+      };
+    }
+
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddCarouselComponent, dialogConfig);
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
-    console.log(item);
   }
 
   OnDelete(id: any) {
-    
     this._dataService.delete(StringAPI.APICarousel + "/" + id)
       .subscribe(
         (res) => {
-          console.log('delete successfully:', res);
-          window.location.reload();
+          this.router.navigate(['/carousel']).then(() => {
+            window.location.reload();
+          });
         },
         (error) => {
-          console.error('Error delete service:', error);
         }
       );
-  }
-  onAdd(): void{
-    this._dataService.setData(null);
   }
 }

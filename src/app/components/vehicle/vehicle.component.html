@@ -1,9 +1,7 @@
 <div class="content">
   <h2>Quản lý danh sách phương tiện</h2>
   <div class="controls">
-    <button (click)="onAdd()" class="btn btn-primary">
-      <a [routerLink]="['/vehicle/add']">Thêm mới</a>
-    </button>
+    <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
   </div>
   <table class="table table-bordered">
     <thead>
@@ -32,7 +30,7 @@
         </td>
         <td>{{ vehicle.status ? "Hiển thị" : "Ẩn" }}</td>
         <td>
-          <button (click)="editItem(vehicle)" class="btn-edit">
+          <button (click)="show(vehicle)" class="btn-edit">
 
             <i class="fa-solid fa-edit"></i>
 

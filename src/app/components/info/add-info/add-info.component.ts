@@ -10,6 +10,7 @@ import { DataService } from '../../../core/services/data.service';
 import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
 import { StringAPI } from '../../../shared/stringAPI/string_api';
 import { environment } from '../../../../environment/environment';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-add-info',
@@ -34,17 +35,15 @@ export class AddInfoComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private _dataService: DataService,
-    private _uploadService: FileUploadService,
-  ) { }
+    public config: DynamicDialogConfig,
+    public ref: DynamicDialogRef,
+  ) {
+    this.EditData = this.config.data
+  }
 
   ngOnInit(): void {
     this.createForm();
-    this._dataService.data$.subscribe(data => {
-
-      this.EditData = data;
-      this.setValueFormEdit(data);
-
-    });
+    this.setValueFormEdit(this.EditData);
   }
   createForm() {
     this.form = this.fb.group({
@@ -64,9 +63,6 @@ export class AddInfoComponent implements OnInit {
     }
   }
 
-  goBack(): void {
-    this.router.navigate(['/info']);
-  }
   onSubmit(values: any) {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -77,7 +73,6 @@ export class AddInfoComponent implements OnInit {
     } else {
       this.onInsert(values);
     }
-    this.goBack();
   }
 
   onInsert(values: any) {
@@ -86,7 +81,10 @@ export class AddInfoComponent implements OnInit {
     this._dataService.post(StringAPI.APIIntroduction, this.info)
       .subscribe(
         (res) => {
-          console.log('Info added successfully:', res);
+          this.ref.close();
+          this.router.navigate(['/info']).then(() => {
+            window.location.reload(); // Load lại trang
+          });
         },
         (error) => {
           console.error('Error adding info:', error);
@@ -103,7 +101,10 @@ export class AddInfoComponent implements OnInit {
       this._dataService.put(StringAPI.APIIntroduction + "/" + this.EditData.id, this.info)
         .subscribe(
           (res) => {
-            console.log('update successfully:', res);
+            this.ref.close();
+            this.router.navigate(['/info']).then(() => {
+              window.location.reload(); // Load lại trang
+            });
           },
           (error) => {
             console.error('Error update:', error);

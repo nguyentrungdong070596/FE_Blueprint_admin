@@ -1,20 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { QuillModule } from 'ngx-quill'; 
+import { QuillModule } from 'ngx-quill';
 import { PaginatorModule } from 'primeng/paginator';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { DataService } from '../../core/services/data.service';
 import { environment } from '../../../environment/environment';
 import { ImageModule } from 'primeng/image';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AddListServicesComponent } from './add-list-services/add-list-services.component';
 
 @Component({
   selector: 'app-list-services',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, QuillModule,PaginatorModule, ImageModule], 
+  imports: [DynamicDialogModule, CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule],
   templateUrl: './list-services.component.html',
-  styleUrls: ['./list-services.component.scss']
+  styleUrls: ['./list-services.component.scss'],
+  providers: [DialogService]
 })
 export class ListServicesComponent {
   urlAPI = environment.apiUrl;
@@ -25,7 +28,9 @@ export class ListServicesComponent {
   first: number = 0;
   limit: number = 0;
 
-  constructor(private router: Router, private _dataService: DataService) { }
+  ref: DynamicDialogRef | undefined;
+
+  constructor(private router: Router, private _dataService: DataService, public dialogService: DialogService,) { }
   ngOnInit(): void {
     this.getServicelistItems(this.limit, this.rows);
   }
@@ -55,17 +60,29 @@ export class ListServicesComponent {
     this.getServicelistItems(this.first, this.rows);
   }
 
-  editItem(item: any) {
-    // console.log(item);
-    const sendItem = {
-      id: item.id,
-      title: item.title,
-      content: item.content,
-      image: item.image,
-      status: item.status,
+  show(item: any) {
+    const dialogConfig: any = {
+      width: '80vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }
     };
-    this._dataService.setData(sendItem);
-    this.router.navigate(['/list-services/add'])
+
+    // Kiểm tra nếu có item, thì thêm dữ liệu vào
+    if (item) {
+      dialogConfig.data = {
+        id: item.id,
+        title: item.title,
+        content: item.content,
+        image: item.image,
+        status: item.status,
+      };
+    }
+
+    // Mở dialog với cấu hình đã định nghĩa
+    this.ref = this.dialogService.open(AddListServicesComponent, dialogConfig);
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
@@ -75,16 +92,13 @@ export class ListServicesComponent {
     this._dataService.delete(StringAPI.APIDichvu + "/" + id)
       .subscribe(
         (res) => {
-          console.log('News delete successfully:', res);
-          window.location.reload();
+          this.router.navigate(['/list-services']).then(() => {
+            window.location.reload();
+          });
         },
         (error) => {
-          console.error('Error delete news:', error);
         }
       );
-  }
-  onAdd(): void{
-    this._dataService.clearData();
   }
 }
 

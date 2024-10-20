@@ -4,58 +4,36 @@
     <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
     <form [formGroup]="form">
       <div>
-        <label
-          for="content"
-          [ngClass]="{
+        <label for="content" [ngClass]="{
             'color-form-red':
+            !isEditMode &&
               form.get('content')?.invalid &&
               (form.get('content')?.dirty || form.get('content')?.touched)
-          }"
-          >Nội dung</label
-        >
+          }">Nội dung</label>
         <quill-editor formControlName="content" id="content"></quill-editor>
-        <small
-          *ngIf="
+        <small *ngIf=" !isEditMode &&
             form.get('content')?.invalid &&
             (form.get('content')?.dirty || form.get('content')?.touched)
-          "
-          [ngClass]="{ 'color-form-red': form.get('content')?.invalid }"
-          >Nội dung không được trống.</small
-        >
+          " [ngClass]="{ 'color-form-red': form.get('content')?.invalid }">Nội dung không được trống.</small>
       </div>
 
       <div *ngIf="isEditMode" class="form-group">
-        <label
-          for="status"
-          [ngClass]="{
+        <label for="status" [ngClass]="{
             'color-form-red':
               form.get('status')?.invalid &&
               (form.get('status')?.dirty || form.get('status')?.touched)
-          }"
-          >Trạng thái</label
-        >
-        <select
-          id="status"
-          formControlName="status"
-          class="form-control"
-          required
-        >
+          }">Trạng thái</label>
+        <select id="status" formControlName="status" class="form-control" required>
           <option [ngValue]="true">Hiển thị</option>
           <option [ngValue]="false">Ẩn</option>
         </select>
-        <small
-          *ngIf="
+        <small *ngIf="
             form.get('status')?.invalid &&
             (form.get('status')?.dirty || form.get('status')?.touched)
-          "
-          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
-          >Vui lòng chọn trạng thái.</small
-        >
+          " [ngClass]="{ 'color-form-red': form.get('status')?.invalid }">Vui lòng chọn trạng thái.</small>
       </div>
 
       <div class="bt-actions">
-        <button pButton pRipple label="Trở Lại" class="p-button-secondary" (click)="goBack()">
-        </button>
         <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
           class="p-button-success">
         </button>
