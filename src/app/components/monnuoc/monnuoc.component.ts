@@ -81,6 +81,9 @@ export class MonnuocComponent {
 
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddMonnuocComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getItems(this.first, this.rows);
+    });
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
@@ -91,9 +94,7 @@ export class MonnuocComponent {
     this._dataService.delete(StringAPI.APIManeuveringDraft + "/" + id)
       .subscribe(
         (res) => {
-          this.router.navigate(['/monnuoc']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.getItems(this.first, this.rows);
         },
         (error) => {
         }

@@ -81,10 +81,7 @@ export class AddInfoComponent implements OnInit {
     this._dataService.post(StringAPI.APIIntroduction, this.info)
       .subscribe(
         (res) => {
-          this.ref.close();
-          this.router.navigate(['/info']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
           console.error('Error adding info:', error);
@@ -101,10 +98,7 @@ export class AddInfoComponent implements OnInit {
       this._dataService.put(StringAPI.APIIntroduction + "/" + this.EditData.id, this.info)
         .subscribe(
           (res) => {
-            this.ref.close();
-            this.router.navigate(['/info']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
             console.error('Error update:', error);

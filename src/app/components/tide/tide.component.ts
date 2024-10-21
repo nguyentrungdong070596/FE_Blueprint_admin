@@ -78,6 +78,9 @@ export class TideComponent {
     }
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddTideComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getItems(this.first, this.rows);
+    });
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
@@ -88,9 +91,7 @@ export class TideComponent {
     this._dataService.delete(StringAPI.APITide + "/" + id)
       .subscribe(
         (res) => {
-          this.router.navigate(['/tide']).then(() => {
-            window.location.reload();
-          });
+          this.getItems(this.first, this.rows);
         },
         (error) => {
         }

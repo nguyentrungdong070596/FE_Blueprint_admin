@@ -113,9 +113,7 @@ export class AddTideComponent implements OnInit {
     this._dataService.post(StringAPI.APITide, this.item)
       .subscribe(
         (res) => {
-          this.router.navigate(['/tide']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
           console.error('Error adding news:', error);
@@ -131,9 +129,7 @@ export class AddTideComponent implements OnInit {
       this._dataService.put(StringAPI.APITide + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.router.navigate(['/tide']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
             console.error('Error update news:', error);

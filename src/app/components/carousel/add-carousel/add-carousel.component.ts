@@ -112,10 +112,7 @@ export class AddCarouselComponent {
     this._dataService.post(StringAPI.APICarousel, this.item)
       .subscribe(
         (res) => {
-          this.ref.close();
-          this.router.navigate(['/carousel']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
           console.error('Error adding news:', error);
@@ -131,10 +128,7 @@ export class AddCarouselComponent {
       this._dataService.put(StringAPI.APICarousel + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.ref.close();
-            this.router.navigate(['/carousel']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
             console.error('Error update news:', error);

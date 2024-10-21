@@ -81,6 +81,9 @@ export class VehicleComponent {
     }
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddVehicleComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getPilotItems(this.first, this.rows);
+    });
   }
   deleteItem(item: any) {
     // console.log(item);
@@ -92,9 +95,7 @@ export class VehicleComponent {
       .subscribe(
         (res) => {
 
-          this.router.navigate(['/vehicle']).then(() => {
-            window.location.reload();
-          });
+          this.getPilotItems(this.first, this.rows);
         },
         (error) => {
         }

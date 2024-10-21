@@ -13,7 +13,7 @@ import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dy
 @Component({
   selector: 'app-info',
   standalone: true,
-  imports: [AddInfoComponent,CommonModule, RouterModule, FormsModule, QuillModule, AddInfoComponent, PaginatorModule, DynamicDialogModule],
+  imports: [AddInfoComponent, CommonModule, RouterModule, FormsModule, QuillModule, AddInfoComponent, PaginatorModule, DynamicDialogModule],
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.scss'],
   providers: [DialogService]
@@ -80,6 +80,9 @@ export class InfoComponent implements OnInit {
 
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddInfoComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getIntro(this.first, this.rows);
+    });
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
@@ -89,8 +92,8 @@ export class InfoComponent implements OnInit {
     this._dataService.delete(StringAPI.APIIntroduction + "/" + id)
       .subscribe(
         (res) => {
-          // console.log('delete successfully:', res);
-          window.location.reload();
+  
+          this.getIntro(this.first, this.rows);
         },
         (error) => {
           // console.error('delete news:', error);

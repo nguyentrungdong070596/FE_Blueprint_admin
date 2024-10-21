@@ -75,11 +75,10 @@ export class LoginComponent {
 
     // Lấy tháng và năm hiện tại
     const currentDate = new Date();
-    const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Tháng hiện tại (1-12)
     const currentYear = currentDate.getFullYear().toString(); // Năm hiện tại
 
     // Tạo chuỗi mật khẩu yêu cầu
-    const requiredPassword = `Admin@${currentMonth}${currentYear}`;
+    const requiredPassword = `Admin@${currentYear}`;
 
     // Giả lập logic kiểm tra đăng nhập với mật khẩu yêu cầu
     if (username === 'admin' && password === requiredPassword) {

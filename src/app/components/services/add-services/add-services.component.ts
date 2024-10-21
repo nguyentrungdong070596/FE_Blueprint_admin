@@ -137,9 +137,7 @@ export class AddServicesComponent implements OnInit {
     this._dataService.post(StringAPI.APIServicePrice, this.item)
       .subscribe(
         (res) => {
-          this.router.navigate(['/services']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
         }
@@ -154,9 +152,7 @@ export class AddServicesComponent implements OnInit {
       this._dataService.put(StringAPI.APIServicePrice + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.router.navigate(['/services']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
           }

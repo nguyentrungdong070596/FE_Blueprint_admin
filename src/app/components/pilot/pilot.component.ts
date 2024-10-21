@@ -83,6 +83,9 @@ export class PilotComponent {
     }
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddPilotComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getPilotItems(this.first, this.rows);
+    });
   }
   deleteNews(item: any) {
     this.OnDelete(item.id);
@@ -92,9 +95,7 @@ export class PilotComponent {
     this._dataService.delete(StringAPI.APIHoaTieu + "/" + id)
       .subscribe(
         (res) => {
-          this.router.navigate(['/pilot']).then(() => {
-            window.location.reload();
-          });
+          this.getPilotItems(this.first, this.rows);
         },
         (error) => {
         }

@@ -143,9 +143,7 @@ export class AddPilotComponent implements OnInit {
     this._dataService.post(StringAPI.APIHoaTieu, this.item)
       .subscribe(
         (res) => {
-          this.router.navigate(['/pilot']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
         }
@@ -161,9 +159,7 @@ export class AddPilotComponent implements OnInit {
       this._dataService.put(StringAPI.APIHoaTieu + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.router.navigate(['/pilot']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
           }

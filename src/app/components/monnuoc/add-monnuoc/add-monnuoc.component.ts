@@ -110,9 +110,7 @@ export class AddMonnuocComponent implements OnInit {
         this._dataService.post(StringAPI.APIManeuveringDraft, this.item)
             .subscribe(
                 (res) => {
-                    this.router.navigate(['/monnuoc']).then(() => {
-                        window.location.reload(); // Load lại trang
-                    });
+                    this.ref.close(res || []);
                 },
                 (error) => {
                     console.error('Error adding news:', error);
@@ -128,9 +126,7 @@ export class AddMonnuocComponent implements OnInit {
             this._dataService.put(StringAPI.APIManeuveringDraft + "/" + this.EditData.id, this.item)
                 .subscribe(
                     (res) => {
-                        this.router.navigate(['/monnuoc']).then(() => {
-                            window.location.reload(); // Load lại trang
-                        });
+                        this.ref.close(res || []);
                     },
                     (error) => {
                         console.error('Error update:', error);

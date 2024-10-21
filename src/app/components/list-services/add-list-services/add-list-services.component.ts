@@ -125,9 +125,7 @@ export class AddListServicesComponent implements OnInit {
     this._dataService.post(StringAPI.APIDichvu, this.item)
       .subscribe(
         (res) => {
-          this.router.navigate(['/list-services']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
         }
@@ -143,9 +141,7 @@ export class AddListServicesComponent implements OnInit {
       this._dataService.put(StringAPI.APIDichvu + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.router.navigate(['/list-services']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
           }

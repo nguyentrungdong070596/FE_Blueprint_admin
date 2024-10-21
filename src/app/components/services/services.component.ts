@@ -83,6 +83,9 @@ export class ServicesComponent {
     }
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddServicesComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getDichvuItems(this.first, this.rows);
+    });
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
@@ -93,11 +96,8 @@ export class ServicesComponent {
     this._dataService.delete(StringAPI.APIServicePrice + "/" + id)
       .subscribe(
         (res) => {
-          // console.log('service delete successfully:', res);
-          // window.location.reload();
-          this.router.navigate(['/services']).then(() => {
-            window.location.reload();
-          });
+
+          this.getDichvuItems(this.first, this.rows);
         },
         (error) => {
         }

@@ -127,9 +127,8 @@ export class AddNewComponent implements OnInit {
     this._dataService.post(StringAPI.APINews, this.item)
       .subscribe(
         (res) => {
-          this.router.navigate(['/news']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+
+          this.ref.close(res || []);
         },
         (error) => {
         }
@@ -146,9 +145,8 @@ export class AddNewComponent implements OnInit {
       this._dataService.put(StringAPI.APINews + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.router.navigate(['/news']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+
+            this.ref.close(res || []);
           },
           (error) => {
           }

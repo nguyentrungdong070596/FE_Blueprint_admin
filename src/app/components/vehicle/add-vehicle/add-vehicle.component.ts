@@ -120,9 +120,7 @@ export class AddVehicleComponent implements OnInit {
     this._dataService.post(StringAPI.APIShip, this.item)
       .subscribe(
         (res) => {
-          this.router.navigate(['/vehicle']).then(() => {
-            window.location.reload(); // Load lại trang
-          });
+          this.ref.close(res || []);
         },
         (error) => {
         }
@@ -137,9 +135,7 @@ export class AddVehicleComponent implements OnInit {
       this._dataService.put(StringAPI.APIShip + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
-            this.router.navigate(['/vehicle']).then(() => {
-              window.location.reload(); // Load lại trang
-            });
+            this.ref.close(res || []);
           },
           (error) => {
           }

@@ -78,6 +78,9 @@ export class CarouselComponent {
 
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddCarouselComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getDichvuItems(this.first, this.rows);
+    });
   }
   deleteItem(item: any) {
     this.OnDelete(item.id);
@@ -87,9 +90,8 @@ export class CarouselComponent {
     this._dataService.delete(StringAPI.APICarousel + "/" + id)
       .subscribe(
         (res) => {
-          this.router.navigate(['/carousel']).then(() => {
-            window.location.reload();
-          });
+          this.getDichvuItems(this.first, this.rows);
+
         },
         (error) => {
         }

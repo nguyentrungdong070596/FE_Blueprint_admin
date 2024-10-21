@@ -87,6 +87,9 @@ export class NewsListComponent implements OnInit {
 
     // Mở dialog với cấu hình đã định nghĩa
     this.ref = this.dialogService.open(AddNewComponent, dialogConfig);
+    this.ref.onClose.subscribe((product: any) => {
+      this.getNewsEventsItems(this.first, this.rows);
+    });
   }
   deleteNews(item: any) {
     this.OnDelete(item.id);
@@ -96,9 +99,7 @@ export class NewsListComponent implements OnInit {
     this._dataService.delete(StringAPI.APINews + "/" + id)
       .subscribe(
         (res) => {
-          this.router.navigate(['/news']).then(() => {
-            window.location.reload();
-          });
+          this.getNewsEventsItems(this.first, this.rows);
         },
         (error) => {
         }
