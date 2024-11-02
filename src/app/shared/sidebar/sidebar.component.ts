@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit {
   createLinks(): void {
     this.links = [
       {
-        routerLink: '/home',
+        routerLink: '/home/banner',
         icon: 'pi pi-id-card',
         text: 'Trang chủ',
         items: [
@@ -45,7 +45,7 @@ export class SidebarComponent implements OnInit {
         ]
       },
       {
-        routerLink: '/introduction', icon: 'pi pi-id-card', text: 'Giới thiệu', items: [
+        routerLink: '/introduction/thungo', icon: 'pi pi-id-card', text: 'Giới thiệu', items: [
           { routerLink: '/introduction/thungo', icon: 'pi pi-id-card', text: 'Thư ngỏ' },
           { routerLink: '/introduction/chucnang', icon: 'pi pi-id-card', text: 'Chức năng nhiệm vụ' },
           { routerLink: '/introduction/lanhdao', icon: 'pi pi-id-card', text: 'Ban lãnh đạo' },
@@ -54,12 +54,12 @@ export class SidebarComponent implements OnInit {
         ]
       },
       {
-        routerLink: '/tintuc', icon: 'pi pi-briefcase', text: 'Tin tức',
+        routerLink: '/news/tintonghop', icon: 'pi pi-briefcase', text: 'Tin tức',
         items: [
-          { routerLink: '/tintuc/tintonghop', icon: 'pi pi-id-card', text: 'Tin tổng hợp hoạt động' },
-          { routerLink: '/tintuc/thongbao', icon: 'pi pi-id-card', text: 'Thông báo' },
-          { routerLink: '/tintuc/vanban', icon: 'pi pi-id-card', text: 'Văn bản' },
-          { routerLink: '/tintuc/baiviet', icon: 'pi pi-id-card', text: 'Bài viết tham khảo' },
+          { routerLink: '/news/tintonghop', icon: 'pi pi-id-card', text: 'Tin tổng hợp hoạt động' },
+          { routerLink: '/news/thongbao', icon: 'pi pi-id-card', text: 'Thông báo' },
+          { routerLink: '/news/vanban', icon: 'pi pi-id-card', text: 'Văn bản' },
+          { routerLink: '/news/baiviet', icon: 'pi pi-id-card', text: 'Bài viết tham khảo' },
         ]
       },
       { routerLink: '/monnuoc', icon: 'pi pi-calendar', text: 'Giờ điều động và mớn nước' },
@@ -75,9 +75,6 @@ export class SidebarComponent implements OnInit {
           { routerLink: '/thongso/trieuky', icon: 'pi pi-id-card', text: 'Các trạm triều ký' },
         ]
       },
-      // { routerLink: '/services', icon: 'pi pi-dollar', text: 'Giá dịch vụ' },
-      // { routerLink: '/vehicle', icon: 'pi pi-car', text: 'Danh sách phương tiện' },
-      // { routerLink: '/tide', icon: 'pi pi-calendar-clock', text: 'Lịch thủy triều' }
     ];
   }
 }

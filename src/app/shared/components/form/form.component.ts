@@ -60,6 +60,34 @@ export class FormComponent {
       id: 7,
       name: "luocsu"
     },
+    {
+      id: 8,
+      name: "tintuc"
+    },
+    {
+      id: 9,
+      name: "thongbao"
+    },
+    {
+      id: 10,
+      name: "vanban"
+    },
+    {
+      id: 11,
+      name: "thamkhao"
+    },
+    {
+      id: 12,
+      name: "monnuoc"
+    },
+    {
+      id: 13,
+      name: "giadichvu"
+    },
+    {
+      id: 14,
+      name: "hoatieu"
+    },
   ]
   constructor(
     private fb: FormBuilder,

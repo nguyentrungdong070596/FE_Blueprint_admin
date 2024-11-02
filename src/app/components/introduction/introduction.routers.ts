@@ -8,9 +8,6 @@ import { HistoryComponent } from './history/history.component';
 
 export const INTRODUCTION_ROUTERS: Routes = [
   {
-    path: '', component: OpenletterComponent
-  },
-  {
     path: 'thungo', component: OpenletterComponent
   },
   {
