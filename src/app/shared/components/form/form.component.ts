@@ -88,6 +88,14 @@ export class FormComponent {
       id: 14,
       name: "hoatieu"
     },
+    {
+      id: 15,
+      name: "vungnuoc"
+    },
+    {
+      id: 16,
+      name: "thuytrieu"
+    },
   ]
   constructor(
     private fb: FormBuilder,
