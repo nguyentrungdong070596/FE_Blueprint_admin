@@ -22,5 +22,6 @@ export const StringAPI = {
     APIStream: '/stream',
     //tide-calendar
     APITide: '/tide-calendar',
+    APIItems: '/items',
   };
   

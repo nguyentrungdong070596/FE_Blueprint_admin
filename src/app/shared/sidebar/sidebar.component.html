@@ -1,5 +1,5 @@
 <nav class="sidebar" [class.closed]="isToggleSidebar()" [style.width.px]="isToggleSidebar() ? 80 : 300">
-  <div  *ngIf="isToggleSidebar()" class="btn-toggle-layout">
+  <div *ngIf="isToggleSidebar()" class="btn-toggle-layout">
     <button type="button" (click)="onToggleSidebar()" class="btn-toggle">
       <i class="pi pi-bars"></i>
     </button>
@@ -14,11 +14,27 @@
   <h5 class="p-3" [class.closed-content]="isToggleSidebar()" style="color:#e52736">
     XÍ NGHIỆP HOA TIÊU VŨNG TÀU
   </h5>
-  <div class="components">
+  <!-- <div class="components">
     <a *ngFor="let link of links" [routerLink]="link.routerLink" routerLinkActive="active" class="text-white">
       <i [class]="link.icon + ' icon'"></i>
       <span class="text">{{ link.text }}</span>
     </a>
+  </div> -->
+  <div class="components">
+    <ng-container *ngFor="let link of links">
+      <a [routerLink]="link.routerLink" routerLinkActive="active" class="text-white" (click)="link.open = !link.open">
+        <i [class]="link.icon + ' icon'"></i>
+        <span class="text">{{ link.text }}</span>
+        <i class="pi pi-angle-down" *ngIf="link.items"></i> <!-- Hiển thị biểu tượng nếu có sub-item -->
+      </a>
+      
+      <div *ngIf="link.items && link.open" class="submenu">
+        <a *ngFor="let item of link.items" [routerLink]="item.routerLink" routerLinkActive="active" class="text-white">
+          <i [class]="item.icon + ' icon'"></i>
+          <span class="text">{{ item.text }}</span>
+        </a>
+      </div>
+    </ng-container>
   </div>
-
+  
 </nav>

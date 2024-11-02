@@ -1,0 +1,37 @@
+<div class="content">
+    <h2>Quản lý thư ngỏ</h2>
+    <div class="controls">
+        <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
+    </div>
+    <!-- Bảng dữ liệu -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Hình ảnh</th>
+                <th>Trạng thái</th>
+                <th style="width: 50px;">Điều chỉnh</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
+            <tr *ngFor="let item of const_data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                    <p-image [src]="stringUrl + item.image" alt="Hình ảnh" alt="Image" width="250" [preview]="true" />
+                </td>
+                <td>{{ item.status ? "Hiển thị" : "Ẩn" }}</td>
+                <td style="width: 50px;">
+                    <button (click)="show(item)" class="btn-edit">
+                        <i class="fa-solid fa-edit"></i>
+                    </button>
+
+                    <button (click)="deleteItem(item)" class="btn-delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

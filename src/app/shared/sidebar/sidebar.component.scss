@@ -22,7 +22,6 @@
 // CSS cho các icon và nội dung
 .components {
   text-align: left;
-
   display: flex;
   flex-direction: column; // Đặt các mục theo chiều dọc
 
@@ -87,4 +86,16 @@
   a {
     color: white;
   }
+}
+.submenu {
+  padding-left: 20px; // Lùi vào bên trái cho submenu
+  background-color: rgba(255, 255, 255, 0.1); // Màu nền cho submenu
+  margin: 5px 0; // Tạo khoảng cách cho submenu
+  transition: max-height 0.3s ease; // Thêm hiệu ứng chuyển tiếp
+  display: block; // Hiển thị block để giữ các mục bên trong
+}
+
+.submenu a {
+  padding: 8px; // Padding cho các item trong submenu
+  color: #ffffff; // Màu chữ cho submenu
 }

@@ -44,7 +44,7 @@ export class DataService {
   GetItem(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit, page: value.page, showHiddenItem: true },
+      params: { limit: value.limit, page: value.page, showHiddenItem: true, itemType: value.itemType },
       headers,
     });
   }

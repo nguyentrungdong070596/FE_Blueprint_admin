@@ -30,8 +30,6 @@ export class NavbarComponent implements OnInit {
 
 
   logout() {
-    // Logic đăng xuất (ví dụ: xóa token, điều hướng đến trang đăng nhập, v.v.)
-    // console.log('Đăng xuất'); // Thay bằng logic đăng xuất thực tế
     this.router.navigate(['/login']); // Điều hướng đến trang đăng nhập
   }
  
