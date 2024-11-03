@@ -48,6 +48,7 @@ export class ServicesComponent {
         id: item?.id,
         title: item?.title,
         image: item?.image,
+        pdfurl: item?.pdfurl,
         content: item?.content,
         status: item?.status,
       }));
@@ -74,13 +75,13 @@ export class ServicesComponent {
           id: item?.id,
           title: item?.title,
           image: item?.image,
-          content: item?.content,
+          pdfurl: item?.pdfurl,
           status: item?.status,
         },
         fields: [
+          { name: 'pdfurl', required: true },
           { name: 'image', required: true },
           { name: 'title', required: true },
-          { name: 'content', required: true },
           { name: 'status', required: true },
         ],
         item_type: 'dichvu',

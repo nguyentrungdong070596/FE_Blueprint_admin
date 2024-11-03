@@ -8,13 +8,12 @@ import { FileUploadService } from '../../../core/services/uploadFiles/file-uploa
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule, PdfViewerModule, ButtonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule, ButtonModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss'
 })
@@ -106,7 +105,7 @@ export class FormComponent {
     public ref: DynamicDialogRef,
   ) {
     this.EditData = this.config.data.itemData;
-    console.log(this.EditData);
+    // console.log(this.EditData);
   }
 
   ngOnInit(): void {
@@ -179,7 +178,11 @@ export class FormComponent {
         this.item.pdfurl = pdfurl.file_save_url;
       }
     }
-
+    else if (this.EditData.pdfurl) {
+      this.form.controls['pdfurl'].clearValidators();
+      this.form.controls['pdfurl'].updateValueAndValidity();
+      this.item.pdfurl = this.EditData.pdfurl;
+    }
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
@@ -187,6 +190,11 @@ export class FormComponent {
         this.form.controls['image'].updateValueAndValidity();
         this.item.image = imageData.file_save_url;
       }
+    }
+    else if (this.EditData.image) {
+      this.form.controls['image'].clearValidators();
+      this.form.controls['image'].updateValueAndValidity();
+      this.item.image = this.EditData.image;
     }
   }
 

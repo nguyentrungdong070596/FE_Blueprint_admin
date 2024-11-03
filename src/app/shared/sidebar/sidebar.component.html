@@ -14,12 +14,6 @@
   <h5 class="p-3" [class.closed-content]="isToggleSidebar()" style="color:#e52736">
     XÍ NGHIỆP HOA TIÊU VŨNG TÀU
   </h5>
-  <!-- <div class="components">
-    <a *ngFor="let link of links" [routerLink]="link.routerLink" routerLinkActive="active" class="text-white">
-      <i [class]="link.icon + ' icon'"></i>
-      <span class="text">{{ link.text }}</span>
-    </a>
-  </div> -->
   <div class="components">
     <ng-container *ngFor="let link of links">
       <a [routerLink]="link.routerLink" routerLinkActive="active" class="text-white" (click)="link.open = !link.open">

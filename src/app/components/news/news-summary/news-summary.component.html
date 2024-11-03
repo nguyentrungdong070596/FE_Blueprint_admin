@@ -21,7 +21,7 @@
             <tr *ngFor="let item of const_data; index as i">
                 <td>{{ i + 1 }}</td>
                 <td>{{ item.title }}</td>
-                <td [innerHTML]="item.content"></td>
+                <td class="block-content" [innerHTML]="item.content"></td>
                 <td>
                     <p-image [src]="urlAPI + '/' + item.image" alt="Image" width="250" [preview]="true" />
                 </td>

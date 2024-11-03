@@ -6,6 +6,9 @@ import { NewsComponent } from './news/news.component';
 
 export const HOME_ROUTERS: Routes = [
   {
+    path: '', component: CarouselComponent
+  },
+  {
     path: 'banner', component: CarouselComponent
   },
   {

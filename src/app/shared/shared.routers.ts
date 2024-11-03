@@ -5,6 +5,10 @@ import { DraughtComponent } from '../components/draught/draught.component';
 
 export const SHARED_ROUTERS: Routes = [
   {
+    path: '',
+    loadChildren: () => import('../components/home/home.routers').then(m => m.HOME_ROUTERS),
+  },
+  {
     path: 'home',
     loadChildren: () => import('../components/home/home.routers').then(m => m.HOME_ROUTERS),
   },

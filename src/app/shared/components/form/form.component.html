@@ -38,6 +38,11 @@
       <div class="form-group" *ngIf="showField('content')">
         <label for="content">Nội dung:</label>
         <quill-editor formControlName="content"></quill-editor>
+        <small
+          *ngIf="!isEditMode && form.get('content')?.invalid && (form.get('content')?.dirty || form.get('content')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('content')?.invalid }">
+          Vui lòng nhập nội dung.
+        </small>
       </div>
 
       <!-- Tải lên dữ liệu -->

@@ -18,7 +18,7 @@
             <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
             <tr *ngFor="let image of const_data; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td [innerHTML]="image.content"></td>
+                <td class="block-content" [innerHTML]="item.content"></td>
                 <td>{{ image.status ? "Hiển thị" : "Ẩn" }}</td>
                 <td style="width: 50px;">
                     <button (click)="show(image)" class="btn-edit">
