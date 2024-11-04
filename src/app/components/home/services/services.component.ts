@@ -52,7 +52,7 @@ export class ServicesComponent {
         content: item?.content,
         status: item?.status,
       }));
-      console.log(this.const_data);
+      //consolethis.const_data);
       this.totalRecords = values.totalRecords;
     }
   }

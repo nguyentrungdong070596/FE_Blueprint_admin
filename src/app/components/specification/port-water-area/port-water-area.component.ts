@@ -54,7 +54,7 @@ export class PortWaterAreaComponent {
         postdate: item?.postdate,
         status: item?.status,
       }));
-      console.log(this.const_data);
+      //consolethis.const_data);
       this.totalRecords = values.totalRecords;
     }
   }
@@ -84,10 +84,10 @@ export class PortWaterAreaComponent {
         },
         fields: [
           { name: 'image', required: true },
-          { name: 'pdfurl', required: true },
+          { name: 'pdfurl', required: false },
           { name: 'title', required: true },
-          { name: 'content', required: true },
-          { name: 'postdate', required: true },
+          { name: 'content', required: false },
+          { name: 'postdate', required: false},
           { name: 'status', required: true },
         ],
         item_type: 'vungnuoc',

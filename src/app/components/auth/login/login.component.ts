@@ -83,7 +83,7 @@ export class LoginComponent {
     // Giả lập logic kiểm tra đăng nhập với mật khẩu yêu cầu
     if (username === 'admin' && password === requiredPassword) {
       localStorage.setItem('user', JSON.stringify({ username }));
-      this.router.navigate(['/info']);
+      this.router.navigate(['/home/banner']);
     } else {
       alert('Thông tin đăng nhập không chính xác!');
     }

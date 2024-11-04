@@ -105,7 +105,7 @@ export class FormComponent {
     public ref: DynamicDialogRef,
   ) {
     this.EditData = this.config.data.itemData;
-    // console.log(this.EditData);
+    // //consolethis.EditData);
   }
 
   ngOnInit(): void {

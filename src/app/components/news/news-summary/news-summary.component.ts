@@ -82,7 +82,7 @@ export class NewsSummaryComponent {
           { name: 'image', required: true },
           { name: 'title', required: true },
           { name: 'content', required: true },
-          { name: 'postdate', required: true },
+          { name: 'postdate', required: false},
           { name: 'status', required: true },
         ],
         item_type: 'tintuc',

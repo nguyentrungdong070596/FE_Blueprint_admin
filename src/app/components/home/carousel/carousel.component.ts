@@ -49,7 +49,7 @@ export class CarouselComponent {
         image: service.image,
         status: service.status,
       }));
-      console.log(this.const_data);
+      //consolethis.const_data);
       this.totalRecords = values.totalRecords;
     }
   }
