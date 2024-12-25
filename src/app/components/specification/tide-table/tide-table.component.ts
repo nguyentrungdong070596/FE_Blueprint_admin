@@ -9,6 +9,7 @@ import { environment } from '../../../../environment/environment';
 import { DataService } from '../../../core/services/data.service';
 import { FormComponent } from '../../../shared/components/form/form.component';
 import { StringAPI } from '../../../shared/stringAPI/string_api';
+import { FormTideComponent } from '../../../shared/components/form-tide/form-tide.component';
 
 @Component({
   selector: 'app-tide-table',
@@ -39,7 +40,7 @@ export class TideTableComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '16';
-    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APITide}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
   }
@@ -48,11 +49,13 @@ export class TideTableComponent {
       this.const_data = values.data.map((service: any) => ({
         id: service.id,
         pdfurl: service.pdfurl,
+        postdate: service?.postdate,  
         status: service.status,
       }));
       this.totalRecords = values.totalRecords;
     }
   }
+
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
@@ -71,10 +74,12 @@ export class TideTableComponent {
         itemData: {
           id: item?.id,
           pdfurl: item?.pdfurl,
+          postdate: item?.postdate,
           status: item?.status,
         },
         fields: [
           { name: 'pdfurl', required: true },
+          { name: 'postdate', required: true },
           { name: 'status', required: true },
         ],
         item_type: 'thuytrieu',
@@ -82,7 +87,7 @@ export class TideTableComponent {
     };
 
     // Open dialog with the extended configuration
-    this.ref = this.dialogService.open(FormComponent, dialogConfig);
+    this.ref = this.dialogService.open(FormTideComponent, dialogConfig);
     this.ref.onClose.subscribe(() => {
       this.getItems(this.first, this.rows);
     });
@@ -93,7 +98,7 @@ export class TideTableComponent {
   }
 
   OnDelete(id: any) {
-    this._dataService.delete(StringAPI.APIItems + "/" + id)
+    this._dataService.delete(StringAPI.APITide + "/" + id)
       .subscribe(
         (res) => {
           this.getItems(this.first, this.rows);

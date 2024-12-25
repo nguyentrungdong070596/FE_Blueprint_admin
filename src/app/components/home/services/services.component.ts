@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { PaginatorModule } from 'primeng/paginator';
 import { FormComponent } from '../../../shared/components/form/form.component';
+import { FormServicesComponent } from '../../../shared/components/form-services/form-services.component';
 
 @Component({
   selector: 'app-services',
@@ -38,7 +39,7 @@ export class ServicesComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '2';
-    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APIDichvu}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
   }
@@ -47,6 +48,7 @@ export class ServicesComponent {
       this.const_data = values.data.map((item: any) => ({
         id: item?.id,
         title: item?.title,
+        subtitle: item?.subtitle,
         image: item?.image,
         pdfurl: item?.pdfurl,
         content: item?.content,
@@ -74,6 +76,7 @@ export class ServicesComponent {
         itemData: {
           id: item?.id,
           title: item?.title,
+          subtitle: item?.subtitle,
           image: item?.image,
           pdfurl: item?.pdfurl,
           status: item?.status,
@@ -82,6 +85,7 @@ export class ServicesComponent {
           { name: 'pdfurl', required: true },
           { name: 'image', required: true },
           { name: 'title', required: true },
+          { name: 'subtitle', required: true },
           { name: 'status', required: true },
         ],
         item_type: 'dichvu',
@@ -89,7 +93,7 @@ export class ServicesComponent {
     };
 
     // Open dialog with the extended configuration
-    this.ref = this.dialogService.open(FormComponent, dialogConfig);
+    this.ref = this.dialogService.open(FormServicesComponent, dialogConfig);
     this.ref.onClose.subscribe(() => {
       this.getItems(this.first, this.rows);
     });
@@ -100,7 +104,7 @@ export class ServicesComponent {
   }
 
   OnDelete(id: any) {
-    this._dataService.delete(StringAPI.APIItems + "/" + id)
+    this._dataService.delete(StringAPI.APIDichvu + "/" + id)
       .subscribe(
         (res) => {
           this.getItems(this.first, this.rows);

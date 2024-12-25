@@ -107,7 +107,7 @@ export class AddPilotsComponent implements OnInit {
     }
   }
 
-  async handleFileInput() {
+  async handleFileInput() { 
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {

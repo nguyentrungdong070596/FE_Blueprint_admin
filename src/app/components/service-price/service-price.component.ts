@@ -9,6 +9,7 @@ import { environment } from '../../../environment/environment';
 import { DataService } from '../../core/services/data.service';
 import { FormComponent } from '../../shared/components/form/form.component';
 import { StringAPI } from '../../shared/stringAPI/string_api';
+import { FormPriceDichvuComponent } from '../../shared/components/form-pricedichvu/form-pricedichvu.component';
 
 @Component({
   selector: 'app-service-price',
@@ -39,7 +40,7 @@ export class ServicePriceComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '13';
-    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APIServicePrice}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
   }
@@ -87,7 +88,7 @@ export class ServicePriceComponent {
           { name: 'pdfurl', required: true },
           { name: 'title', required: true },
           { name: 'content', required: true },
-          { name: 'postdate', required: false},
+          { name: 'postdate', required: false },
           { name: 'status', required: true },
         ],
         item_type: 'giadichvu',
@@ -95,7 +96,7 @@ export class ServicePriceComponent {
     };
 
     // Open dialog with the extended configuration
-    this.ref = this.dialogService.open(FormComponent, dialogConfig);
+    this.ref = this.dialogService.open(FormPriceDichvuComponent, dialogConfig);
     this.ref.onClose.subscribe(() => {
       this.getItems(this.first, this.rows);
     });
@@ -106,7 +107,7 @@ export class ServicePriceComponent {
   }
 
   OnDelete(id: any) {
-    this._dataService.delete(StringAPI.APIItems + "/" + id)
+    this._dataService.delete(StringAPI.APIServicePrice + "/" + id)
       .subscribe(
         (res) => {
           this.getItems(this.first, this.rows);
