@@ -9,6 +9,7 @@ import { environment } from '../../../environment/environment';
 import { DataService } from '../../core/services/data.service';
 import { FormComponent } from '../../shared/components/form/form.component';
 import { StringAPI } from '../../shared/stringAPI/string_api';
+import { FormDraughtComponent } from '../../shared/components/form-draught/form-draught.component';
 
 @Component({
   selector: 'app-draught',
@@ -26,7 +27,7 @@ export class DraughtComponent {
   rows: number = 5;
   first: number = 0;
   limit: number = 0;
-  stringUrl = environment.apiUrl +'/';
+  stringUrl = environment.apiUrl + '/';
 
   ref: DynamicDialogRef | undefined;
 
@@ -39,7 +40,7 @@ export class DraughtComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '12';
-    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APIManeuveringDraft}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
   }
@@ -48,6 +49,7 @@ export class DraughtComponent {
       this.const_data = values.data.map((service: any) => ({
         id: service.id,
         pdfurl: service.pdfurl,
+        postdate: service.postdate,
         status: service.status,
       }));
       this.totalRecords = values.totalRecords;
@@ -71,18 +73,21 @@ export class DraughtComponent {
         itemData: {
           id: item?.id,
           pdfurl: item?.pdfurl,
+          postdate: item?.postdate,
+
           status: item?.status,
         },
         fields: [
           { name: 'pdfurl', required: true },
           { name: 'status', required: true },
+          { name: 'postdate', required: true },
         ],
         item_type: 'monnuoc',
       }
     };
 
     // Open dialog with the extended configuration
-    this.ref = this.dialogService.open(FormComponent, dialogConfig);
+    this.ref = this.dialogService.open(FormDraughtComponent, dialogConfig);
     this.ref.onClose.subscribe(() => {
       this.getItems(this.first, this.rows);
     });
@@ -93,7 +98,7 @@ export class DraughtComponent {
   }
 
   OnDelete(id: any) {
-    this._dataService.delete(StringAPI.APIItems + "/" + id)
+    this._dataService.delete(StringAPI.APIManeuveringDraft + "/" + id)
       .subscribe(
         (res) => {
           this.getItems(this.first, this.rows);

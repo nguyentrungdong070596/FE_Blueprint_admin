@@ -9,6 +9,7 @@
             <tr>
                 <th>STT</th>
                 <th>NỘI DUNG</th>
+                <th>Ngày đăng</th>
                 <th>Trạng thái</th>
                 <th style="width: 50px;">Điều chỉnh</th>
 
@@ -21,6 +22,8 @@
                 <td>
                     <a [href]="stringUrl + item.pdfurl" target="_blank" rel="noopener noreferrer">Xem PDF</a>
                 </td>
+                <td>{{ item.postdate }}</td>
+
 
 
                 <td>{{ item.status ? "Hiển thị" : "Ẩn" }}</td>

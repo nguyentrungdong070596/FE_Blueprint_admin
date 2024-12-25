@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { DataService } from '../../../core/services/data.service';
 import { environment } from '../../../../environment/environment';
 import { PaginatorModule } from 'primeng/paginator';
+import { FormNewsComponent } from '../../../shared/components/form-news/form-news.component';
 
 @Component({
   selector: 'app-news',
@@ -38,7 +39,7 @@ export class NewsComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '1';
-    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APINews}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
   }
@@ -47,6 +48,7 @@ export class NewsComponent {
       this.const_data = values.data.map((item: any) => ({
         id: item?.id,
         title: item?.title,
+        subtitle: item?.subtitle,
         image: item?.image,
         content: item?.content,
         postdate: item?.postdate,
@@ -74,6 +76,7 @@ export class NewsComponent {
         itemData: {
           id: item?.id,
           title: item?.title,
+          subtitle: item?.subtitle,
           image: item?.image,
           content: item?.content,
           postdate: item?.postdate,
@@ -82,8 +85,9 @@ export class NewsComponent {
         fields: [
           { name: 'image', required: true },
           { name: 'title', required: true },
+          { name: 'subtitle', required: true },
           { name: 'content', required: true },
-          { name: 'postdate', required: false},
+          { name: 'postdate', required: false },
           { name: 'status', required: true },
         ],
         item_type: 'news',
@@ -91,7 +95,7 @@ export class NewsComponent {
     };
 
     // Open dialog with the extended configuration
-    this.ref = this.dialogService.open(FormComponent, dialogConfig);
+    this.ref = this.dialogService.open(FormNewsComponent, dialogConfig);
     this.ref.onClose.subscribe(() => {
       this.getItems(this.first, this.rows);
     });
@@ -102,7 +106,7 @@ export class NewsComponent {
   }
 
   OnDelete(id: any) {
-    this._dataService.delete(StringAPI.APIItems + "/" + id)
+    this._dataService.delete(StringAPI.APINews + "/" + id)
       .subscribe(
         (res) => {
           this.getItems(this.first, this.rows);

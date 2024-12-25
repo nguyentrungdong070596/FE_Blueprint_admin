@@ -16,6 +16,19 @@
         </small>
       </div>
 
+      <!-- Tên tiêu đề phụ -->
+      <div class="form-group" *ngIf="showField('subtitle')">
+        <label for="subtitle"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('subtitle')?.invalid && (form.get('subtitle')?.dirty || form.get('subtitle')?.touched) }">Tiêu
+          đề Phụ</label>
+        <input type="text" id="subtitle" formControlName="subtitle" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('subtitle')?.invalid && (form.get('subtitle')?.dirty || form.get('subtitle')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('subtitle')?.invalid }">
+          Vui lòng nhập tên tiêu đề phụ (subtitle)
+        </small>
+      </div>
+
       <!-- Hình ảnh -->
       <div class="form-group" *ngIf="showField('image')">
         <label for="file"
@@ -57,6 +70,8 @@
           Vui lòng tải dữ liệu.
         </small>
       </div>
+
+      
 
 
       <!-- Ngày đăng -->

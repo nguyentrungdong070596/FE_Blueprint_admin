@@ -2,11 +2,22 @@
 @import "../node_modules/quill/dist/quill.core.css";
 
 @import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pompiere&family=Varela+Round&display=swap');
+
+* {
+  font-family: 'Roboto', sans-serif;
+
+
+}
 
 body {
   margin: 0 !important;
-  height: 100%; /* Đảm bảo chiều cao của body là 100% */
-  margin: 0; /* Xóa margin mặc định của body */
+
+  height: 100%;
+  /* Đảm bảo chiều cao của body là 100% */
+  margin: 0;
+  /* Xóa margin mặc định của body */
 }
 
 .p-paginator {
@@ -14,6 +25,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
+
   .p-paginator-button {
     background: none;
     border: none;
@@ -91,8 +103,11 @@ body {
 
 /* Nội dung */
 .content {
-  transition: margin-left 0.3s ease; /* Hiệu ứng chuyển tiếp cho margin */
-  padding: 20px 20px; /* Thêm padding cho nội dung */
+  transition: margin-left 0.3s ease;
+  /* Hiệu ứng chuyển tiếp cho margin */
+  padding: 20px 20px;
+
+  /* Thêm padding cho nội dung */
   .add-container {
     h2 {
       text-align: center; // Căn giữa tiêu đề
@@ -100,10 +115,13 @@ body {
       font-size: 24px; // Kích thước chữ tiêu đề
       color: #333; // Màu chữ
     }
+
     form {
       .color-form-red {
-        color: red; /* Màu đỏ khi có lỗi */
+        color: red;
+        /* Màu đỏ khi có lỗi */
       }
+
       padding: 20px;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -127,6 +145,7 @@ body {
         border-radius: 4px; // Bo tròn góc
         box-sizing: border-box; // Bao gồm padding và border trong chiều rộng
       }
+
       .bt-actions {
         padding-top: 20px;
         display: flex;
@@ -134,10 +153,12 @@ body {
       }
     }
   }
+
   .table {
     .block-content {
       overflow: scroll;
-      display: block; /* Bỏ qua !important nếu không cần thiết */
+      display: block;
+      /* Bỏ qua !important nếu không cần thiết */
       // overflow: hidden; /* Để ẩn phần nội dung tràn */
       // border-right: none !important;
     }
@@ -200,6 +221,7 @@ body {
     margin-top: 20px;
     display: flex;
     gap: 10px;
+
     .btn {
       padding: 10px 20px;
       font-size: 13px;
@@ -229,7 +251,8 @@ body {
   position: relative;
   text-align: center;
   align-items: center;
-  height: 100%; /* Thay đổi từ 100vh thành 100% */
+  height: 100%;
+  /* Thay đổi từ 100vh thành 100% */
   top: 0;
   margin: 0;
   padding: 15px;
