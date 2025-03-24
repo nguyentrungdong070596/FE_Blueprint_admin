@@ -26,7 +26,7 @@ export class OrganizationalComponent {
   rows: number = 5;
   first: number = 0;
   limit: number = 0;
-  stringUrl = environment.apiUrl +'/';
+  stringUrl = environment.apiUrl + '/';
 
   ref: DynamicDialogRef | undefined;
 
@@ -39,7 +39,8 @@ export class OrganizationalComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '6';
-    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
+    this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe((res: any) => {
+      console.log("res", res?.data[0].title)
       this.setItems(res || []);
     });
   }
@@ -48,6 +49,7 @@ export class OrganizationalComponent {
       this.const_data = values.data.map((service: any) => ({
         id: service.id,
         image: service.image,
+        title: service.title,
         status: service.status,
       }));
       this.totalRecords = values.totalRecords;
@@ -71,10 +73,12 @@ export class OrganizationalComponent {
         itemData: {
           id: item?.id,
           image: item?.image,
+          title: item?.title,
           status: item?.status,
         },
         fields: [
           { name: 'image', required: true },
+          { name: 'title', required: true },
           { name: 'status', required: true },
         ],
         item_type: 'tochuc',

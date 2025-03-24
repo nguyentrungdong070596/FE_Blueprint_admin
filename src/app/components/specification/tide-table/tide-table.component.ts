@@ -49,7 +49,8 @@ export class TideTableComponent {
       this.const_data = values.data.map((service: any) => ({
         id: service.id,
         pdfurl: service.pdfurl,
-        postdate: service?.postdate,  
+        title: service.title,
+        postdate: service?.postdate,
         status: service.status,
       }));
       this.totalRecords = values.totalRecords;
@@ -75,11 +76,13 @@ export class TideTableComponent {
           id: item?.id,
           pdfurl: item?.pdfurl,
           postdate: item?.postdate,
+          title: item?.title,
           status: item?.status,
         },
         fields: [
           { name: 'pdfurl', required: true },
           { name: 'postdate', required: true },
+          { name: 'title', required: true },
           { name: 'status', required: true },
         ],
         item_type: 'thuytrieu',

@@ -7,15 +7,17 @@ import { ReferencePostComponent } from './reference-post/reference-post.componen
 
 export const NEWS_ROUTERS: Routes = [
   {
-    path: 'tintonghop', component: NewsSummaryComponent
+    path: 'hoatdongcongty', component: NewsSummaryComponent
   },
   {
-    path: 'thongbao', component: NotificationComponent
+    path: 'vitridontrahoatieu', component: NotificationComponent
   },
   {
-    path: 'vanban', component: ExecutiveTextComponent
+    path: 'link-dathangdichvu', component: ExecutiveTextComponent
   },
   {
-    path: 'baiviet', component: ReferencePostComponent
+    path: 'vunghoatieu', component: ReferencePostComponent
   },
+
+
 ];

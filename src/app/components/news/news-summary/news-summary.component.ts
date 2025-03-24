@@ -18,6 +18,7 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
   styleUrl: './news-summary.component.scss',
   providers: [DialogService]
 })
+// HOẠT ĐỘNG
 export class NewsSummaryComponent {
   urlAPI = environment.apiUrl;
   item: any = {};
@@ -51,6 +52,7 @@ export class NewsSummaryComponent {
         content: item?.content,
         postdate: item?.postdate,
         status: item?.status,
+        videourl: item?.videourl,
       }));
       this.totalRecords = values.totalRecords;
     }
@@ -77,13 +79,16 @@ export class NewsSummaryComponent {
           content: item?.content,
           postdate: item?.postdate,
           status: item?.status,
+          videourl: item?.videourl,
+
         },
         fields: [
           { name: 'image', required: true },
           { name: 'title', required: true },
           { name: 'content', required: true },
-          { name: 'postdate', required: false},
+          { name: 'postdate', required: false },
           { name: 'status', required: true },
+          { name: 'videourl', required: true },
         ],
         item_type: 'tintuc',
       }

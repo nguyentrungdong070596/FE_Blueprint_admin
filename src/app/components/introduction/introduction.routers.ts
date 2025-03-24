@@ -17,7 +17,7 @@ export const INTRODUCTION_ROUTERS: Routes = [
     path: 'lanhdao', component: LeadershipComponent
   },
   {
-    path: 'tochuc', component: OrganizationalComponent
+    path: 'danhsachphuongtien', component: OrganizationalComponent
   },
   {
     path: 'luocsu', component: HistoryComponent

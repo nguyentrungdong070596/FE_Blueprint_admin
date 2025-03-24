@@ -19,7 +19,7 @@ import { StringAPI } from '../../../shared/stringAPI/string_api';
   providers: [DialogService]
 })
 export class PortWaterAreaComponent {
-  
+
   urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
@@ -87,7 +87,7 @@ export class PortWaterAreaComponent {
           { name: 'pdfurl', required: false },
           { name: 'title', required: true },
           { name: 'content', required: false },
-          { name: 'postdate', required: false},
+          { name: 'postdate', required: false },
           { name: 'status', required: true },
         ],
         item_type: 'vungnuoc',

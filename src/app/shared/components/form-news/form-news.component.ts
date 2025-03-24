@@ -120,6 +120,8 @@ export class FormNewsComponent {
   createForm() {
     const formGroupConfig: { [key: string]: any } = {};
     this.config.data.fields.forEach((field: any) => {
+      console.log("field news ->", field)
+
       if (field.name == 'status') {
         formGroupConfig['status'] = [true, Validators.required];
       }

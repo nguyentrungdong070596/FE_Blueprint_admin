@@ -2,6 +2,8 @@ import { PilotsComponent } from './../components/pilots/pilots.component';
 import { ServicePriceComponent } from './../components/service-price/service-price.component';
 import { Routes } from '@angular/router';
 import { DraughtComponent } from '../components/draught/draught.component';
+import { TideTableComponent } from '../components/specification/tide-table/tide-table.component';
+import { PortWaterAreaComponent } from '../components/specification/port-water-area/port-water-area.component';
 
 export const SHARED_ROUTERS: Routes = [
   {
@@ -20,6 +22,13 @@ export const SHARED_ROUTERS: Routes = [
     path: 'news',
     loadChildren: () => import('../components/news/news.routers').then(m => m.NEWS_ROUTERS),
   },
+
+  {
+    path: 'about',
+    loadChildren: () => import('../components/news/news.routers').then(m => m.NEWS_ROUTERS),
+  },
+
+
   {
     path: 'monnuoc', component: DraughtComponent
   },
@@ -29,6 +38,23 @@ export const SHARED_ROUTERS: Routes = [
   {
     path: 'hoatieu', component: PilotsComponent
   },
+
+  {
+    path: 'specification/hethongcangbien', component: PortWaterAreaComponent
+  },
+
+  {
+    path: 'specification/tuyenluong', component: DraughtComponent
+  },
+
+  {
+    path: 'specification/bangthuytrieu', component: TideTableComponent
+  },
+
+
+
+
+
   {
     path: 'specification',
     loadChildren: () => import('../components/specification/specification.routers').then(m => m.SPECIFICATION_ROUTERS),
