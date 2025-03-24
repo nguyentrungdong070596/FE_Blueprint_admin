@@ -48,9 +48,9 @@ export class ExecutiveTextComponent {
       this.const_data = values.data.map((item: any) => ({
         id: item?.id,
         title: item?.title,
-        image: item?.image,
-        content: item?.content,
-        postdate: item?.postdate,
+        // image: item?.image,
+        // content: item?.content,
+        // postdate: item?.postdate,
         status: item?.status,
       }));
       //consolethis.const_data);
@@ -75,19 +75,19 @@ export class ExecutiveTextComponent {
         itemData: {
           id: item?.id,
           title: item?.title,
-          image: item?.image,
-          content: item?.content,
-          postdate: item?.postdate,
+          // image: item?.image,
+          // content: item?.content,
+          // postdate: item?.postdate,
           status: item?.status,
         },
         fields: [
-          { name: 'image', required: true },
+          // { name: 'image', required: true },
           { name: 'title', required: true },
-          { name: 'content', required: true },
-          { name: 'postdate', required: false},
+          // { name: 'content', required: true },
+          // { name: 'postdate', required: false },
           { name: 'status', required: true },
         ],
-        item_type: 'vanban',
+        item_type: 'link-dathangdichvu',
       }
     };
 

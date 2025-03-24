@@ -69,7 +69,7 @@ export class FormComponent {
     },
     {
       id: 10,
-      name: "vanban"
+      name: "link-dathangdichvu"
     },
     {
       id: 11,
@@ -113,6 +113,7 @@ export class FormComponent {
     this.setValueFormEdit(this.EditData);
   }
 
+
   showField(fieldName: string): boolean {
     return this.config.data.fields.some((field: { name: string }) => field.name === fieldName);
   }
@@ -123,9 +124,14 @@ export class FormComponent {
       if (field.name == 'status') {
         formGroupConfig['status'] = [true, Validators.required];
       }
+      else if (field.name === 'videourl') {
+        formGroupConfig['videourl'] = [null]; // hoặc thêm Validator nếu muốn
+      }
       else {
         formGroupConfig[field.name] = [null, Validators.required];
       }
+
+
     });
     this.form = this.fb.group(formGroupConfig);
   }
@@ -138,6 +144,8 @@ export class FormComponent {
       });
       this.form.patchValue(formData);
       this.preview_upload = this.stringurl + '/' + data.image;
+      this.preview_video = this.stringurl + '/' + data.videourl;
+
     } else {
       this.isEditMode = false;
     }
@@ -196,7 +204,64 @@ export class FormComponent {
       this.form.controls['image'].updateValueAndValidity();
       this.item.image = this.EditData.image;
     }
+
+
+    console.log("this.uploadVideo", this.uploadVideo)
+
+    if (this.uploadVideo) {
+      const videoData = await this._uploadService.postFileVideo(this.uploadVideo);
+      if (videoData.video_url) {
+        console.log("VideoData", videoData)
+        this.form.controls['videourl'].clearValidators();
+        this.form.controls['videourl'].updateValueAndValidity();
+        this.item.videourl = videoData.video_url;
+        console.log(" this.item.videourl", this.item.videourl)
+      }
+    } else if (this.EditData.videourl) {
+      this.form.controls['videourl'].clearValidators();
+      this.form.controls['videourl'].updateValueAndValidity();
+      this.item.videourl = this.EditData.videourl;
+    }
+
   }
+
+
+  //video----------------
+
+  uploadVideo: any;
+  preview_video: any;
+  ngOnDestroy(): void {
+    if (this.preview_video) {
+      URL.revokeObjectURL(this.preview_video);
+    }
+  }
+
+  onFileVideoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadVideo = input.files[0];
+
+      // Cập nhật form với tên file (nếu cần)
+      this.form.controls['videourl'].setValue(this.uploadVideo.name);
+
+      // Hủy URL cũ nếu có để tránh memory leak
+      if (this.preview_video) {
+        URL.revokeObjectURL(this.preview_video);
+      }
+
+      // Tạo URL preview mượt hơn
+      this.preview_video = URL.createObjectURL(this.uploadVideo);
+
+      // Reset input để có thể chọn lại file trùng sau này
+      input.value = '';
+    }
+  }
+
+
+
+
+
+  //end video ---------
 
   async onSubmit(values: any) {
     await this.handleFileInput();
@@ -218,9 +283,10 @@ export class FormComponent {
     if (item_type) {
       this.item.itemtype = item_type.id.toString();
       Object.keys(values).forEach(key => {
-        if (key !== 'image' && key !== 'pdfurl') {
+        if (key !== 'image' && key !== 'pdfurl' && key != 'videourl') {
           this.item[key] = values[key];
         }
+
       });
       this._dataService.post(StringAPI.APIItems, this.item)
         .subscribe(
@@ -237,9 +303,10 @@ export class FormComponent {
   onEdit(values: any) {
     if (this.EditData && this.EditData.id && values) {
       Object.keys(values).forEach(key => {
-        if (key !== 'image' && key !== 'pdfurl') {
+        if (key !== 'image' && key !== 'pdfurl' && key != 'videourl') {
           this.item[key] = values[key];
         }
+
       });
       this._dataService.put(StringAPI.APIItems + "/" + this.EditData.id, this.item)
         .subscribe(

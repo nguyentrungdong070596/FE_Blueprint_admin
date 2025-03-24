@@ -1,5 +1,5 @@
 <div class="content">
-    <h2 style="text-transform: uppercase;">Quản SƠ ĐỒ TỔ CHỨC</h2>
+    <h2 style="text-transform: uppercase;">Danh sách phương tiện </h2>
     <div class="controls">
         <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
     </div>
@@ -8,9 +8,11 @@
         <thead>
             <tr>
                 <th>STT</th>
+                <th>TIÊU ĐỀ</th>
                 <th>Hình ảnh</th>
                 <th>Trạng thái</th>
                 <th style="width: 50px;">Điều chỉnh</th>
+
 
             </tr>
         </thead>
@@ -18,8 +20,9 @@
             <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
             <tr *ngFor="let item of const_data; let i = index">
                 <td>{{ i + 1 }}</td>
+                <td>{{ item?.title}}</td>
                 <td>
-                    <p-image [src]="stringUrl + item.image" alt="Hình ảnh" alt="Image" width="250" [preview]="true" />
+                    <p-image [src]="stringUrl + item?.image" alt="Hình ảnh" alt="Image" width="250" [preview]="true" />
                 </td>
                 <td>{{ item.status ? "Hiển thị" : "Ẩn" }}</td>
                 <td style="width: 50px;">
@@ -31,6 +34,8 @@
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>
+
+
             </tr>
         </tbody>
     </table>

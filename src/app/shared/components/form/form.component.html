@@ -42,9 +42,27 @@
         </small>
       </div>
 
+
+
+
+
       <!-- Preview Hình Ảnh -->
       <div *ngIf="preview_upload && showField('image')">
         <img [src]="preview_upload" alt="Selected Image" width="300" />
+      </div>
+
+
+      <!--VIDEO -->
+
+      <div *ngIf="showField('videourl')" class="form-group">
+        <label>Video</label>
+        <input type="file" accept="video/*" (change)="onFileVideoSelected($event)">
+        <div *ngIf="preview_video">
+          <video width="300" controls>
+            <source [src]="preview_video" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
 
       <!-- Nội dung -->
@@ -71,7 +89,7 @@
         </small>
       </div>
 
-      
+
 
 
       <!-- Ngày đăng -->

@@ -1,17 +1,18 @@
 <div class="content">
-    <h2 style="text-transform: uppercase;">Quản lý Văn bản</h2>
+    <h2 style="text-transform: uppercase;">Liên kết Đặt Hàng dịch vụ</h2>
+    <p style="color:red">(Lưu ý: nhớ load lại trang web sau khi đã cập nhật lại phần Quản trị)</p>
     <div class="controls">
         <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
     </div>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>STT</th>
-                <th>Tiêu đề</th>
-                <th>Nội dung chi tiết</th>
-                <th>Hình ảnh</th>
-                <th>Trạng thái</th>
-                <th>Ngày đăng</th>
+                <!-- <th>STT</th> -->
+                <!-- <th>Tiêu đề</th> -->
+                <th>Đường link Đặt hàng dịch vụ</th>
+                <!-- <th>Hình ảnh</th> -->
+                <!-- <th>Trạng thái</th> -->
+                <!-- <th>Ngày đăng</th> -->
 
                 <th style="width: 50px;">Điều chỉnh</th>
 
@@ -19,15 +20,14 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of const_data; index as i">
-                <td>{{ i + 1 }}</td>
+                <!-- <td>{{ i + 1 }}</td> -->
                 <td>{{ item.title }}</td>
-                <td class="block-content" [innerHTML]="item.content"></td>
+                <!-- <td class="block-content" [innerHTML]="item.content"></td>
                 <td>
-                    <!-- <img [src]="urlAPI +'/'+ new.image" alt="" class="image-user" /> -->
                     <p-image [src]="urlAPI + '/' + item.image" alt="Image" width="250" [preview]="true" />
                 </td>
                 <td>{{ item.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
-                <td>{{ item.postdate }}</td>
+                <td>{{ item.postdate }}</td> -->
                 <td>
                     <button (click)="show(item)" class="btn-edit">
                         <i class="fa-solid fa-edit"></i>
