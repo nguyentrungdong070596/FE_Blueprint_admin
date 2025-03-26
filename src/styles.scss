@@ -256,6 +256,56 @@ body {
       }
     }
   }
+
+  // search---
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+  }
+
+  .search-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: border-color 0.3s ease;
+  }
+
+  .search-input {
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+    width: 220px;
+    transition: all 0.3s ease;
+  }
+
+
+
+  .search-input:focus {
+    background-color: #fff;
+  }
+
+  .search-btn {
+    background-color: #007ad9;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .search-btn:hover {
+    background-color: #005fa3;
+  }
 }
 
 .layout-topbar {

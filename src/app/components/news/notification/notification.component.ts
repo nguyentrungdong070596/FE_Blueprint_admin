@@ -26,7 +26,10 @@ export class NotificationComponent {
   rows: number = 5;
   first: number = 0;
   limit: number = 0;
+  loading: boolean = false;
 
+  searchText: string = '';
+  private searchTimeout: any;
   ref: DynamicDialogRef | undefined;
 
   constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
@@ -38,9 +41,36 @@ export class NotificationComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '9';
+
+    this.item.name = this.searchText ?? "undefined";
+
     this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
+  }
+
+
+
+  search(query: string): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout); // Xoá timeout trước đó nếu có
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.loading = true;
+      this.searchText = query;
+      this.first = 0;
+      this.getItems(this.first, this.rows);
+    }, 300);
+  }
+
+  onInput(event: any): void {
+    const query = event.target.value;
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.search(query);
+    }, 500);
   }
   setItems(values: any): void {
     if (values.success && values.data) {
@@ -83,7 +113,7 @@ export class NotificationComponent {
           { name: 'image', required: true },
           { name: 'title', required: true },
           { name: 'content', required: true },
-          { name: 'postdate', required: false},
+          { name: 'postdate', required: false },
           { name: 'status', required: true },
         ],
         item_type: 'thongbao',

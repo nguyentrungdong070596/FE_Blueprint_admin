@@ -1,42 +1,46 @@
 <div class="content">
-    <h2 style="text-transform: uppercase;">Banner</h2>
-    <div class="controls">
-      <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
-    </div>
-    <!-- Bảng dữ liệu -->
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Hình ảnh</th>
-          <th>Trạng thái</th>
-          <th style="width: 50px;">Điều chỉnh</th>
-  
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
-        <tr *ngFor="let image of const_data; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>
-            <p-image [src]="urlAPI + '/' + image.image" alt="Image" width="250" [preview]="true" />
-          </td>
-          <td>{{ image.status ? "Hiển thị" : "Ẩn" }}</td>
-          <td style="width: 50px;">
-            <button (click)="show(image)" class="btn-edit">
-              <i class="fa-solid fa-edit"></i>
-            </button>
-  
-            <button (click)="deleteItem(image)" class="btn-delete">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br />
-    <div class="flex-auto">
-        <p-paginator *ngIf="totalRecords" [rows]="rows" [totalRecords]="totalRecords" [first]="first"
-            [showFirstLastIcon]="false" (onPageChange)="onPageChange($event)"></p-paginator>
-    </div>
+  <h2 style="text-transform: uppercase;">Banner</h2>
+  <div class="controls">
+    <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
   </div>
+  <!-- Bảng dữ liệu -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Hình ảnh</th>
+        <th>Trạng thái</th>
+        <th style="width: 50px;">Điều chỉnh</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dùng *ngFor để lặp qua danh sách tài liệu -->
+      <tr *ngFor="let image of const_data; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <p-image [src]="urlAPI + '/' + image.image" alt="Image" width="250" [preview]="true" />
+        </td>
+        <td>{{ image.status ? "Hiển thị" : "Ẩn" }}</td>
+        <td style="width: 50px;">
+          <button (click)="show(image)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i>
+          </button>
+
+          <button (click)="deleteItem(image)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="flex-auto">
+    <p-paginator *ngIf="totalRecords" [rows]="rows" [totalRecords]="totalRecords" [first]="first"
+      [showFirstLastIcon]="false" (onPageChange)="onPageChange($event)"></p-paginator>
+  </div>
+  <p-toast class="p-toast" [style]="{'top': '60px'}"></p-toast>
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner-border text-light" role="status"></div>
+  </div>
+</div>

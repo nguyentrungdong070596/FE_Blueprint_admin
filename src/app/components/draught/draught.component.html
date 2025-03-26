@@ -1,8 +1,22 @@
 <div class="content">
     <h2 style="text-transform: uppercase;">Quản lý Giờ Điều Động & Mớn Nước</h2>
     <div class="controls">
-        <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
+        <p-button label="Thêm mới" icon="pi pi-plus" (onClick)="show(null)" styleClass="p-button-primary" />
+
+        <div class="search-group">
+            <span class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-search"></i>
+                </span>
+                <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..."
+                    (input)="onInput($event)" />
+                <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
+                    <i class="pi pi-arrow-right"></i>
+                </span>
+            </span>
+        </div>
     </div>
+
     <!-- Bảng dữ liệu -->
     <table class="table table-bordered">
         <thead>
@@ -23,7 +37,7 @@
                     <a [href]="stringUrl + item.pdfurl" target="_blank" rel="noopener noreferrer">Xem PDF</a>
                 </td>
                 <td>{{ item.postdate }}</td>
-                
+
                 <td>{{ item.status ? "Hiển thị" : "Ẩn" }}</td>
                 <td style="width: 50px;">
                     <button (click)="show(item)" class="btn-edit">

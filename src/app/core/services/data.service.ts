@@ -44,9 +44,60 @@ export class DataService {
   GetItem(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit, page: value.page, showHiddenItem: true, itemType: value.itemType },
+      params: { limit: value.limit, page: value.page, showHiddenItem: true, itemType: value.itemType, name: value.name },
       headers,
     });
+  }
+
+  postFile(fileToUpload: File) {
+    const formData: FormData = new FormData();
+    const headers = this.createrheader();
+
+    formData.append('file', fileToUpload, fileToUpload.name);
+    return this._http.post(environment.apiUrl + '/upload', formData);
+
+  }
+
+
+
+  getSearchLimitName(uri: string, value: any) {
+    const headers = this.createrheader(); // Corrected function name
+    return this._http.get(environment.apiUrl + uri, {
+      params: {
+        name: value.name,
+        limit: value.limit,
+        ngay: value.ngay,
+        page: value.page,
+        userid: value.userid,
+        nhanvienid: value.nhanvienid,
+        idnhanvien: value.idnhanvien,
+        nhanvienidstr: value.nhanvienidstr,
+        idphongban: value.idphongban,
+        idphongbanlist: value.idphongbanlist,
+
+        idloaihopdong: value.idloaihopdong,
+        idchucvu: value.idchucvu,
+        idttcp: value.idttcp,
+        manhanvien: value.manhanvien,
+        mahopdong: value.mahopdong,
+        manganhang: value.manganhang,
+        ngayhieuluc: value.ngayhieuluc,
+        ngayhethan: value.ngayhethan,
+        role: value.role,
+        tungay: value.tungay,
+        denngay: value.denngay,
+        tu: value.tu,
+        den: value.den,
+        kychamcong: value.kychamcong,
+        manv: value.manv,
+        mahd: value.mahd,
+        ngayketthuc: value.ngayketthuc,
+        ngaybatdau: value.ngaybatdau,
+        donvicongtac: value.donvicongtac,
+        donvicongtacstr: value.donvicongtacstr,
+      },
+      headers,
+    }); // Use params for GET request
   }
 
   // GetDichvu_Service(uri: string, value: any) {
@@ -120,9 +171,20 @@ export class DataService {
     const header = this.createrheader();
     return this._http.put(environment.apiUrl + uri, data, { headers: header });
   }
+
+
+  putUser(url: string, id: any, data: any) {
+    const header = this.createrheader();
+    return this._http.put(`${environment.apiUrl}${url}/${id}`, data, { headers: header })
+  }
   delete(uri: string) {
     const header = this.createrheader();
     return this._http.delete(environment.apiUrl + uri, { headers: header });
+  }
+
+  deleteId(url: string, id: any) {
+    const header = this.createrheader();
+    return this._http.delete(`${environment.apiUrl}${url}/${id}`, { headers: header })
   }
   // getById(uri: string, id: string) {
   //   const header = this.createrheader();

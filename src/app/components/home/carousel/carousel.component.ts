@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ImageModule } from 'primeng/image';
@@ -10,16 +10,21 @@ import { DataService } from '../../../core/services/data.service';
 import { FormComponent } from '../../../shared/components/form/form.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { FormCarouselComponent } from '../../../shared/components/form-carousel/form-carousel.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [ButtonModule, CommonModule, RouterModule, ImageModule, DynamicDialogModule, PaginatorModule],
+  imports: [ButtonModule, CommonModule, ToastModule,
+    RouterModule, ImageModule, DynamicDialogModule, PaginatorModule],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.scss',
-  providers: [DialogService]
+  providers: [DialogService, MessageService]
 })
 export class CarouselComponent {
+  loading: boolean = false;
+
   urlAPI = environment.apiUrl;
   item: any = {};
   const_data: any = [];
@@ -30,10 +35,18 @@ export class CarouselComponent {
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
+  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService,
+    private route: ActivatedRoute, private messageService: MessageService,
+  ) { }
 
   ngOnInit(): void {
     this.getItems(this.limit, this.rows);
+
+    this.route.queryParams.subscribe(params => {
+      if (params['welcome'] === 'true') {
+        this.messageService.add({ severity: 'success', summary: 'Chào mừng', detail: 'Chào mừng bạn tới với web quản lý' });
+      }
+    });
   }
   getItems(first: number, rows: number): void {
     this.item.limit = rows;

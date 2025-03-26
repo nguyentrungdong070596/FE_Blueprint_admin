@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutAdminComponent } from './shared/layout-admin/layout-admin.component';
 import { AuthGuard } from './auth.guard';
 import { LoginComponent } from './components/auth/login/login.component';
+import { LogonComponent } from './auth/logon/logon.component';
 
 export const routes: Routes = [
   {
@@ -21,7 +22,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login', component: LogonComponent
   },
   { path: '**', redirectTo: 'login' }
 ];

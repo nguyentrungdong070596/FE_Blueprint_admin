@@ -28,6 +28,10 @@ export class DraughtComponent {
   first: number = 0;
   limit: number = 0;
   stringUrl = environment.apiUrl + '/';
+  loading: boolean = false;
+
+  searchText: string = '';
+  private searchTimeout: any;
 
   ref: DynamicDialogRef | undefined;
 
@@ -54,6 +58,28 @@ export class DraughtComponent {
       }));
       this.totalRecords = values.totalRecords;
     }
+  }
+
+  search(query: string): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout); // Xoá timeout trước đó nếu có
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.loading = true;
+      this.searchText = query;
+      this.first = 0;
+      this.getItems(this.first, this.rows);
+    }, 300);
+  }
+
+  onInput(event: any): void {
+    const query = event.target.value;
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.search(query);
+    }, 500);
   }
   onPageChange(event: any) {
     this.first = event.first;

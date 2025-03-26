@@ -28,6 +28,11 @@ export class ReferencePostComponent {
   first: number = 0;
   limit: number = 0;
 
+  loading: boolean = false;
+
+  searchText: string = '';
+  private searchTimeout: any;
+
   ref: DynamicDialogRef | undefined;
 
   constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
@@ -39,6 +44,8 @@ export class ReferencePostComponent {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
     this.item.itemType = '11';
+    this.item.name = this.searchText ?? "undefined";
+
     this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe(res => {
       this.setItems(res || []);
     });
@@ -56,6 +63,29 @@ export class ReferencePostComponent {
       //consolethis.const_data);
       this.totalRecords = values.totalRecords;
     }
+  }
+
+
+  search(query: string): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout); // Xoá timeout trước đó nếu có
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.loading = true;
+      this.searchText = query;
+      this.first = 0;
+      this.getItems(this.first, this.rows);
+    }, 300);
+  }
+
+  onInput(event: any): void {
+    const query = event.target.value;
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.search(query);
+    }, 500);
   }
   onPageChange(event: any) {
     this.first = event.first;
@@ -84,7 +114,7 @@ export class ReferencePostComponent {
           { name: 'image', required: true },
           { name: 'title', required: true },
           { name: 'content', required: true },
-          { name: 'postdate', required: false},
+          { name: 'postdate', required: false },
           { name: 'status', required: true },
         ],
         item_type: 'thamkhao',

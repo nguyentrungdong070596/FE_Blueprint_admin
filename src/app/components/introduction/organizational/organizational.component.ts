@@ -27,7 +27,10 @@ export class OrganizationalComponent {
   first: number = 0;
   limit: number = 0;
   stringUrl = environment.apiUrl + '/';
+  loading: boolean = false;
 
+  searchText: string = '';
+  private searchTimeout: any;
   ref: DynamicDialogRef | undefined;
 
   constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
@@ -40,7 +43,7 @@ export class OrganizationalComponent {
     this.item.page = (first / rows) + 1;
     this.item.itemType = '6';
     this._dataService.GetItem(`${StringAPI.APIItems}`, this.item).subscribe((res: any) => {
-      console.log("res", res?.data[0].title)
+
       this.setItems(res || []);
     });
   }
@@ -61,6 +64,29 @@ export class OrganizationalComponent {
     this.getItems(this.first, this.rows);
   }
 
+
+
+  search(query: string): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout); // Xoá timeout trước đó nếu có
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.loading = true;
+      this.searchText = query;
+      this.first = 0;
+      this.getItems(this.first, this.rows);
+    }, 300);
+  }
+
+  onInput(event: any): void {
+    const query = event.target.value;
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.search(query);
+    }, 500);
+  }
   show(item: any) {
     const dialogConfig: any = {
       width: '80vw',

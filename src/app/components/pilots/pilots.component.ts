@@ -10,11 +10,15 @@ import { environment } from '../../../environment/environment';
 import { DataService } from '../../core/services/data.service';
 import { StringAPI } from '../../shared/stringAPI/string_api';
 import { AddPilotsComponent } from './add-pilots/add-pilots.component';
-
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-pilots',
   standalone: true,
-  imports: [DynamicDialogModule, CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule],
+  imports: [DynamicDialogModule, CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule,
+    InputIconModule, InputIconModule, ButtonModule
+  ],
   templateUrl: './pilots.component.html',
   styleUrl: './pilots.component.scss',
   providers: [DialogService]
@@ -28,6 +32,10 @@ export class PilotsComponent {
   rows: number = 5;
   first: number = 0;
   limit: number = 0;
+  loading: boolean = false;
+
+  searchText: string = '';
+  private searchTimeout: any;
 
   ref: DynamicDialogRef | undefined;
 
@@ -38,6 +46,7 @@ export class PilotsComponent {
   getPilotItems(first: number, rows: number): void {
     this.item.limit = rows;
     this.item.page = (first / rows) + 1;
+    this.item.name = this.searchText ?? "undefined";
     this._dataService.GetItem(`${StringAPI.APIHoaTieu}`, this.item).subscribe(res => {
       this.setPilotItems(res || []);
     });
@@ -56,6 +65,27 @@ export class PilotsComponent {
     }
   }
 
+  search(query: string): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout); // Xoá timeout trước đó nếu có
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.loading = true;
+      this.searchText = query;
+      this.first = 0;
+      this.getPilotItems(this.first, this.rows);
+    }, 300);
+  }
+
+  onInput(event: any): void {
+    const query = event.target.value;
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.search(query);
+    }, 500);
+  }
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;

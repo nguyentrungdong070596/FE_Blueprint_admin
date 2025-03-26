@@ -23,4 +23,8 @@ export const StringAPI = {
   //tide-calendar
   APITide: '/tide-calendar',
   APIItems: '/items',
+
+  ApiUser: "/user",
+  ApiSignUp: "/signup",
+  getUsername: '/user/username',
 };
