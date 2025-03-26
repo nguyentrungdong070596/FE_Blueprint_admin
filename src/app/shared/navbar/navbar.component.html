@@ -6,7 +6,9 @@
   </div>
   <div class="user-layout">
     <p-image [src]="'assets/images/logos/logopage.png'" alt="Image" width="48px" />
-    <h4>Xin chào, admin</h4>
-    <i (click)="logout()" class="pi pi-sign-out" style="padding-left: 5px; color: #0196da;" pTooltip="Đăng xuất" tooltipPosition="bottom"></i>
+    <h4>Xin chào, {{this.const_userdata?.username}}
+    </h4>
+    <i (click)="logout()" class="pi pi-sign-out" style="padding-left: 5px; color: #0196da;" pTooltip="Đăng xuất"
+      tooltipPosition="bottom"></i>
   </div>
 </div>

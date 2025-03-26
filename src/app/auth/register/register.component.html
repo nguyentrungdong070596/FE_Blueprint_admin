@@ -1,0 +1,87 @@
+<form [formGroup]="form">
+    <div class="container-fluid m-0 p-0">
+        <section class="row">
+            <div class="col-12 d-none d-md-block col-lg-5 image-container">
+                <div class="div-tamnhin">
+                    <img class="img-fluid  img-cover" src="../../../assets/images/image/background_tau.jpg" alt="imgTamnhin">
+                </div>
+            </div>
+            <div class="col-12 col-lg-7 logon-form d-flex align-items-center flex-column justify-content-center">
+                <div class="logo d-flex justify-content-center">
+                    <img class="w-25 img-fluid" src="../../../assets/images/image/logovts.png" alt="vts img">
+                </div>
+                <h4 class="fw-bold text-center">Human Resource Management</h4>
+                <!-- Username Input -->
+                <div class="input-group w-50 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 icon-div" style="display: flex; align-items: center;">
+                            <i class="fa fa-phone fa-fw" style="font-size: 25px;"></i>
+                        </span>
+                    </div>
+                    <input type="number" formControlName="phone" class="form-control no-border-input form-control-lg"
+                        placeholder="Phone">
+                </div>
+                <!-- email Input -->
+                <div class="input-group w-50 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 icon-div" style="display: flex; align-items: center;">
+                            <i class="fa fa-envelope fa-fw" style="font-size: 25px;"></i>
+                        </span>
+                    </div>
+                    <input type="email" formControlName="email" class="form-control no-border-input form-control-lg"
+                        placeholder="email">
+                </div>
+
+
+                <!-- Username Input -->
+                <div class="input-group w-50 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 icon-div" style="display: flex; align-items: center;">
+                            <i class="fa fa-user fa-fw" style="font-size: 25px;"></i>
+                        </span>
+                    </div>
+                    <input type="text" formControlName="username" class="form-control no-border-input form-control-lg"
+                        placeholder="Tài khoản">
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-group w-50 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 icon-div" style="display: flex; align-items: center;">
+                            <i class="fa fa-key fa-fw" style="font-size: 25px;"></i>
+                        </span>
+                    </div>
+                    <input type="password" formControlName="password"
+                        class="form-control no-border-input form-control-lg" placeholder="Mật khẩu">
+                </div>
+
+                <!-- Confirm Password Input -->
+                <div class="input-group w-50 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 icon-div" style="display: flex; align-items: center;">
+                            <i class="fa fa-lock fa-fw" style="font-size: 25px;"></i>
+                        </span>
+                    </div>
+                    <input type="password" formControlName="confirmPassword"
+                        class="form-control no-border-input form-control-lg" placeholder="Xác nhận mật khẩu">
+                </div>
+
+
+                <!-- Register Button -->
+                <div class="input-group w-50">
+                    <button (click)="register(form.value)" [style]="{'color': 'white'}" type="button"
+                        class="btn btn-primary btn-block">Đăng ký</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</form>
+
+<p-toast class="p-toast" [style]="{'top': '150px'}" />
+
+<!-- Loading Spinner -->
+<div *ngIf="loading" style="background-color: #000000; height: 100vh;">
+    <div id="loader-wrapper" class="d-flex justify-content-center align-items-center">
+        <div id="loader"></div>
+    </div>
+</div>

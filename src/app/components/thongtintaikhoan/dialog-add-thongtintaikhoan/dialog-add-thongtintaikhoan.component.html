@@ -1,0 +1,83 @@
+<form [formGroup]="form" class="form-container">
+  <div class="container-thietlaptaikhoan">
+    <!-- Avatar Upload Section -->
+    <div class="avatar-upload-container">
+      <div class="avatar-container">
+        <img class="profile-image avatar"
+          [src]="previewUrl ? previewUrl : (data_user?.image ? APIs + data_user?.image : '../../../../assets/images/image/user_default.jpg')"
+          alt="Default Image">
+        <input type="file" id="uploadFileAvt" style="display:none;" (change)="onFileSelected_ByBase64String($event)">
+        <label for="uploadFileAvt" class="upload-icon">
+          <img src="../../../../assets/images/image/upload.png" alt="upload-img">
+        </label>
+      </div>
+    </div>
+
+    <!-- User Information Fields -->
+    <div class="form-taikhoan">
+      <h2 class="form-title">Thông tin tài khoản</h2>
+
+      <!-- Username -->
+      <div class="form-field">
+        <label for="username">Tên đăng nhập:</label>
+        <input pInputText id="username" formControlName="username" placeholder="Nhập tên đăng nhập" />
+        <small *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+          Tên đăng nhập không được trống.
+        </small>
+      </div>
+
+
+      <!-- Personal Information -->
+      <div class="col-12 col-md-6">
+        <label for="lastName" class="form-label">Họ:</label>
+        <input pInputText id="lastName" formControlName="lastName" class="form-control">
+        <small *ngIf="form.get('lastName')?.invalid" class="text-danger">Họ không được trống.</small>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="firstName" class="form-label">Tên:</label>
+        <input pInputText id="firstName" formControlName="firstName" class="form-control">
+        <small *ngIf="form.get('firstName')?.invalid" class="text-danger">Tên không được trống.</small>
+      </div>
+
+      <!-- Password Group -->
+      <div class="form-field password-group">
+        <label for="password">Mật khẩu:</label>
+        <input type="password" pInputText id="password" formControlName="password" placeholder="Nhập mật khẩu" />
+        <label for="confirm-password">Xác nhận mật khẩu:</label>
+        <input type="password" pInputText id="confirm-password" formControlName="confirmPassword"
+          placeholder="Xác nhận mật khẩu" />
+        <small *ngIf="form.hasError('mismatch')">Mật khẩu và xác nhận mật khẩu không khớp.</small>
+      </div>
+
+      <!-- Other Fields -->
+      <div class="form-field">
+        <label for="email">Email cá nhân:</label>
+        <input pInputText id="email" formControlName="email" placeholder="Nhập email" />
+        <small *ngIf="form.get('email')?.invalid && form.get('email')?.touched">Email không được trống.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="phone">Số điện thoại:</label>
+        <input pInputText id="phone" formControlName="phone" placeholder="Nhập số điện thoại" />
+        <small *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">Số điện thoại không được trống.</small>
+      </div>
+
+      <!-- Role Dropdown -->
+      <div class="form-field">
+        <label for="role">Vai trò:</label>
+        <p-dropdown formControlName="role" [options]="Role" optionLabel="name" placeholder="Chọn vai trò" />
+      </div>
+
+      <!-- Buttons -->
+      <div class="form-actions">
+        <p-button type="button" label="Xác nhận" icon="pi pi-save" (click)="onSubmit(form.value)" severity="success" />
+        <p-button type="button" label="Thoát" icon="pi pi-times" (click)="closeDialog()" severity="danger" />
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-toast [style]="{'top': '60px'}"></p-toast>
+<div class="loading-overlay" *ngIf="loading">
+  <div class="loader"></div>
+</div>

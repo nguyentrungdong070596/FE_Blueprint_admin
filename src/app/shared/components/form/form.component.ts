@@ -206,16 +206,16 @@ export class FormComponent {
     }
 
 
-    console.log("this.uploadVideo", this.uploadVideo)
+
 
     if (this.uploadVideo) {
       const videoData = await this._uploadService.postFileVideo(this.uploadVideo);
       if (videoData.video_url) {
-        console.log("VideoData", videoData)
+
         this.form.controls['videourl'].clearValidators();
         this.form.controls['videourl'].updateValueAndValidity();
         this.item.videourl = videoData.video_url;
-        console.log(" this.item.videourl", this.item.videourl)
+
       }
     } else if (this.EditData.videourl) {
       this.form.controls['videourl'].clearValidators();

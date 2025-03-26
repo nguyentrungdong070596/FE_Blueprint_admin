@@ -120,7 +120,7 @@ export class FormServicesComponent {
   createForm() {
     const formGroupConfig: { [key: string]: any } = {};
     this.config.data.fields.forEach((field: any) => {
-      console.log("field", field)
+
       if (field.name == 'status') {
         formGroupConfig['status'] = [true, Validators.required];
       }
@@ -218,7 +218,7 @@ export class FormServicesComponent {
     const item_type = this.type_item.find((i: any) => i.name === this.config.data.item_type);
     if (item_type) {
       this.item.itemtype = item_type.id.toString();
-      console.log("this.item", item_type.id.toString())
+
 
       Object.keys(values).forEach(key => {
         if (key !== 'image' && key !== 'pdfurl') {

@@ -1,0 +1,42 @@
+<div class="login-page">
+    <div class="login-container">
+        <img src="assets/images/logos/logopage.png" alt="Logo" />
+        <h1 style="text-align: center;">CÔNG TY CỔ PHẦN DỊCH VỤ VÀ VẬN TẢI BIỂN VŨNG TÀU</h1>
+        <h2 class="sub-title" style="color: red; text-align: center;">XÍ NGHIỆP HOA TIÊU VŨNG TÀU</h2>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" formControlName="username" placeholder="Tài khoản" />
+                <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+                    <small class="error-text" style="color: red;">Tên đăng nhập là bắt buộc</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <div class="password-container">
+                    <input type="password" id="password" formControlName="password" placeholder="Mật khẩu"
+                        (input)="checkPasswordStrength()" />
+                    <span class="toggle-password" (click)="togglePasswordVisibility()">
+                        <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                    </span>
+                </div>
+                <!-- <div class="password-strength" *ngIf="passwordStrengthMessage">
+                    <div [ngClass]="passwordStrengthClass">{{ passwordStrengthMessage }}</div>
+                </div> -->
+                <!-- <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                    <small class="error-text" style="color: red;">Mật khẩu phải có ít nhất 8 ký tự</small>
+                </div> -->
+            </div>
+
+            <button (click)="login(form.value)" class="login-btn">Đăng
+                nhập</button>
+
+
+        </form>
+    </div>
+
+    <p-toast class="p-toast" [style]="{'top': '60px'}"></p-toast>
+    <div *ngIf="loading" class="loading-overlay">
+        <div class="spinner-border text-light" role="status"></div>
+    </div>
+</div>

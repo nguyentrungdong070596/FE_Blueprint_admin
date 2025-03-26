@@ -1,7 +1,20 @@
 <div class="content">
     <h2 style="text-transform: uppercase;">QUẢN LÝ HỆ THỐNG CẢNG BIỂN</h2>
     <div class="controls">
-        <button (click)="show(null)" class="btn btn-primary">Thêm mới</button>
+        <p-button label="Thêm mới" icon="pi pi-plus" (onClick)="show(null)" styleClass="p-button-primary" />
+
+        <div class="search-group">
+            <span class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-search"></i>
+                </span>
+                <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..."
+                    (input)="onInput($event)" />
+                <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
+                    <i class="pi pi-arrow-right"></i>
+                </span>
+            </span>
+        </div>
     </div>
     <table class="table table-bordered">
         <thead>

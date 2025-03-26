@@ -11,6 +11,9 @@
 npm-debug.log
 yarn-error.log
 
+upload/files/videos/
+
+
 # IDEs and editors
 .idea/
 .project

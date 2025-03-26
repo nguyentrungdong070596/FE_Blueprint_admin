@@ -1,0 +1,97 @@
+<div class="container-thietlaptaikhoan p-4">
+  <form [formGroup]="formCredential" class="row g-4">
+    <!-- Avatar Upload -->
+    <div class="col-12 col-md-4 text-center">
+      <div class="avatar-container">
+        <img class="profile-image"
+          [src]="previewUrl ? previewUrl : (data_user?.image ? APIs + data_user?.image : '../../../../assets/images/image/user_default.jpg')"
+          alt="Avatar">
+
+        <input type="file" id="uploadFileAvt" style="display: none;" (change)="onFileSelected_ByBase64String($event)">
+
+        <label for="uploadFileAvt" class="upload-icon">
+          <img src="../../../../assets/images/image/upload.png" alt="Upload">
+        </label>
+      </div>
+
+    </div>
+
+    <!-- Account Information -->
+    <div class="col-12 col-md-8">
+      <div class="mb-3">
+        <label for="username" class="form-label">Tên đăng nhập:</label>
+        <input pInputText id="username" formControlName="username" class="form-control" readonly>
+        <small *ngIf="formCredential.get('username')?.invalid" class="text-danger">Tên đăng nhập không được
+          trống.</small>
+      </div>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <label for="password" class="form-label">Mật khẩu:</label>
+          <input type="password" pInputText id="password" formControlName="password" class="form-control">
+        </div>
+        <div class="col-12 col-md-6">
+          <label for="confirm-password" class="form-label">Xác nhận mật khẩu:</label>
+          <input type="password" pInputText id="confirm-password" formControlName="confirmPassword"
+            class="form-control">
+          <small *ngIf="formCredential.hasError('mismatch')" class="text-danger">Mật khẩu không khớp.</small>
+        </div>
+      </div>
+      <div class="text-end mt-3">
+        <button class="btn btn-primary" [style]="{'top': '60px'}" (click)="onSubmitCredential(formCredential.value)">Đổi
+          mật khẩu</button>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="form" class="row g-4 mt-4">
+    <!-- Personal Information -->
+    <div class="col-12 col-md-6">
+      <label for="lastName" class="form-label">Họ:</label>
+      <input pInputText id="lastName" formControlName="lastName" class="form-control">
+      <small *ngIf="form.get('lastName')?.invalid" class="text-danger">Họ không được trống.</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="firstName" class="form-label">Tên:</label>
+      <input pInputText id="firstName" formControlName="firstName" class="form-control">
+      <small *ngIf="form.get('firstName')?.invalid" class="text-danger">Tên không được trống.</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="email" class="form-label">Email cá nhân:</label>
+      <input pInputText id="email" formControlName="email" class="form-control">
+      <small *ngIf="form.get('email')?.invalid" class="text-danger">Email không được trống.</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="phone" class="form-label">Số điện thoại:</label>
+      <input pInputText id="phone" formControlName="phone" class="form-control">
+      <small *ngIf="form.get('phone')?.invalid" class="text-danger">Số điện thoại không được trống.</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="city" class="form-label">Thành phố:</label>
+      <input pInputText id="city" formControlName="city" class="form-control">
+      <small *ngIf="form.get('city')?.invalid" class="text-danger">Thành phố không được trống.</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="address" class="form-label">Địa chỉ:</label>
+      <input pInputText id="address" formControlName="address" class="form-control">
+      <small *ngIf="form.get('address')?.invalid" class="text-danger">Địa chỉ không được trống.</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="role" class="form-label">Vai trò:</label>
+      <p-dropdown formControlName="role" [options]="Role" optionLabel="name" class="form-control"></p-dropdown>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="status" class="form-label">Trạng thái:</label>
+      <p-dropdown formControlName="status" [options]="trangThai" optionLabel="name" class="form-control"></p-dropdown>
+    </div>
+    <div class="col-12 text-end" style="padding-top: 20px ;">
+      <button type="button" style="margin-right:10px ;" class="btn btn-success me-2" (click)="onSubmit(form.value)">Xác
+        nhận</button>
+      <button type="button" class="btn btn-danger" style="backgroundColor: red;" (click)="closeDialog()">Thoát</button>
+    </div>
+  </form>
+
+  <p-toast class="p-toast" [style]="{'top': '60px'}"></p-toast>
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner-border text-light" role="status"></div>
+  </div>
+</div>
