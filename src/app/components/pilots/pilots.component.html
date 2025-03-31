@@ -8,7 +8,8 @@
         <span class="p-inputgroup-addon">
           <i class="pi pi-search"></i>
         </span>
-        <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..." (input)="onInput($event)" />
+        <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..."
+          (input)="onInput($event)" />
         <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
           <i class="pi pi-arrow-right"></i>
         </span>

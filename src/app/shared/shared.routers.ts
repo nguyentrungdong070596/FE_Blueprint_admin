@@ -5,6 +5,7 @@ import { DraughtComponent } from '../components/draught/draught.component';
 import { TideTableComponent } from '../components/specification/tide-table/tide-table.component';
 import { PortWaterAreaComponent } from '../components/specification/port-water-area/port-water-area.component';
 import { ThongTinTaiKhoanComponent } from '../components/thongtintaikhoan/thongtintaikhoan.component';
+import { KehoachdantauComponent } from '../components/kehoachdantau/kehoachdantau.component';
 
 export const SHARED_ROUTERS: Routes = [
   {
@@ -64,4 +65,10 @@ export const SHARED_ROUTERS: Routes = [
     path: 'specification',
     loadChildren: () => import('../components/specification/specification.routers').then(m => m.SPECIFICATION_ROUTERS),
   },
+
+
+  {
+    path: 'kehoachdantau', component: KehoachdantauComponent
+  },
+
 ];

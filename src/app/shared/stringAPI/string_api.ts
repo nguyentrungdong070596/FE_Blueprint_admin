@@ -5,6 +5,8 @@ export const StringAPI = {
   APIIntroduction: '/home/introduction',
   APIDichvu: '/home/servicelist',
   APINews: '/home/news',
+  APIKehoachdantau: '/kehoachdantau',
+  APIToggleKehoachdantau: '/switch',
 
   //Navigator
   APIHoaTieu: '/hoatieu',

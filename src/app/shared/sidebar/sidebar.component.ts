@@ -82,7 +82,7 @@ export class SidebarComponent implements OnInit {
 
       { routerLink: '/specification/hethongcangbien', icon: 'pi pi-id-card', text: 'Hệ thống cảng biển' },
       { routerLink: '/user', icon: 'pi pi-id-card', text: 'Quản lý User' },
-
+      { routerLink: '/kehoachdantau', icon: 'pi pi-id-card', text: 'Quản lý Kế hoạch dẫn tàu' },
       // { routerLink: '/specification/tuyenluong', icon: 'pi pi-users', text: 'Tuyến luồng' },
     ];
   }

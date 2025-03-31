@@ -1,0 +1,199 @@
+<div class="content">
+  <div class="add-container">
+    <h2 *ngIf="!isEditMode">Thêm Mới</h2>
+    <h2 *ngIf="isEditMode">Chỉnh Sửa</h2>
+    <form [formGroup]="form">
+      <!-- Tên tàu -->
+      <div class="form-group" *ngIf="showField('name')">
+        <label for="name"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched) }">
+          Tên tàu</label>
+        <input type="text" id="name" formControlName="name" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('name')?.invalid }">
+          Vui lòng nhập tên tàu
+        </small>
+      </div>
+
+      <!-- Quốc gia -->
+      <div class="form-group" *ngIf="showField('country')">
+        <label for="country"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('country')?.invalid && (form.get('country')?.dirty || form.get('country')?.touched) }">
+          Quốc gia</label>
+        <input type="text" id="country" formControlName="country" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('country')?.invalid && (form.get('country')?.dirty || form.get('country')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('country')?.invalid }">
+          Vui lòng nhập quốc gia
+        </small>
+      </div>
+
+      <!-- Đại lý -->
+      <div class="form-group" *ngIf="showField('agency')">
+        <label for="agency"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('agency')?.invalid && (form.get('agency')?.dirty || form.get('agency')?.touched) }">
+          Đại lý</label>
+        <input type="text" id="agency" formControlName="agency" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('agency')?.invalid && (form.get('agency')?.dirty || form.get('agency')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('agency')?.invalid }">
+          Vui lòng nhập đại lý
+        </small>
+      </div>
+
+      <!-- Trọng tải toàn phần (Dwt) -->
+      <div class="form-group" *ngIf="showField('dwt')">
+        <label for="dwt"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('dwt')?.invalid && (form.get('dwt')?.dirty || form.get('dwt')?.touched) }">
+          Trọng tải toàn phần (DWT)</label>
+        <input type="text" id="dwt" formControlName="dwt" class="form-control" />
+        <small *ngIf="!isEditMode && form.get('dwt')?.invalid && (form.get('dwt')?.dirty || form.get('dwt')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('dwt')?.invalid }">
+          Vui lòng nhập trọng tải toàn phần
+        </small>
+      </div>
+
+      <!-- Dung tích toàn phần (Grt) -->
+      <div class="form-group" *ngIf="showField('grt')">
+        <label for="grt"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('grt')?.invalid && (form.get('grt')?.dirty || form.get('grt')?.touched) }">
+          Dung tích toàn phần (GRT)</label>
+        <input type="text" id="grt" formControlName="grt" class="form-control" />
+        <small *ngIf="!isEditMode && form.get('grt')?.invalid && (form.get('grt')?.dirty || form.get('grt')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('grt')?.invalid }">
+          Vui lòng nhập dung tích toàn phần
+        </small>
+      </div>
+
+      <!-- Chiều dài tổng (Loa) -->
+      <div class="form-group" *ngIf="showField('loa')">
+        <label for="loa"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('loa')?.invalid && (form.get('loa')?.dirty || form.get('loa')?.touched) }">
+          Chiều dài tổng (LOA)</label>
+        <input type="text" id="loa" formControlName="loa" class="form-control" />
+        <small *ngIf="!isEditMode && form.get('loa')?.invalid && (form.get('loa')?.dirty || form.get('loa')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('loa')?.invalid }">
+          Vui lòng nhập chiều dài tổng
+        </small>
+      </div>
+
+      <!-- Mớn nước (Draft) -->
+      <div class="form-group" *ngIf="showField('draft')">
+        <label for="draft"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('draft')?.invalid && (form.get('draft')?.dirty || form.get('draft')?.touched) }">
+          Mớn nước (Draft)</label>
+        <input type="text" id="draft" formControlName="draft" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('draft')?.invalid && (form.get('draft')?.dirty || form.get('draft')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('draft')?.invalid }">
+          Vui lòng nhập mớn nước
+        </small>
+      </div>
+
+      <!-- Từ cảng (Fromkh) -->
+      <div class="form-group" *ngIf="showField('fromkh')">
+        <label for="fromkh"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('fromkh')?.invalid && (form.get('fromkh')?.dirty || form.get('fromkh')?.touched) }">
+          Từ cảng</label>
+        <input type="text" id="fromkh" formControlName="fromkh" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('fromkh')?.invalid && (form.get('fromkh')?.dirty || form.get('fromkh')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('fromkh')?.invalid }">
+          Vui lòng nhập cảng khởi hành
+        </small>
+      </div>
+
+      <!-- Đến cảng (Tokh) -->
+      <div class="form-group" *ngIf="showField('tokh')">
+        <label for="tokh"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('tokh')?.invalid && (form.get('tokh')?.dirty || form.get('tokh')?.touched) }">
+          Đến cảng</label>
+        <input type="text" id="tokh" formControlName="tokh" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('tokh')?.invalid && (form.get('tokh')?.dirty || form.get('tokh')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('tokh')?.invalid }">
+          Vui lòng nhập cảng đến
+        </small>
+      </div>
+
+      <!-- Số người trên tàu (Pob) -->
+      <div class="form-group" *ngIf="showField('pob')">
+        <label for="pob"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('pob')?.invalid && (form.get('pob')?.dirty || form.get('pob')?.touched) }">
+          Số người trên tàu (POB)</label>
+        <input type="text" id="pob" formControlName="pob" class="form-control" />
+        <small *ngIf="!isEditMode && form.get('pob')?.invalid && (form.get('pob')?.dirty || form.get('pob')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('pob')?.invalid }">
+          Vui lòng nhập số người trên tàu
+        </small>
+      </div>
+
+      <!-- Tên hoa tiêu (NameHT) -->
+      <div class="form-group" *ngIf="showField('nameHT')">
+        <label for="nameHT"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('nameHT')?.invalid && (form.get('nameHT')?.dirty || form.get('nameHT')?.touched) }">
+          Tên Hoa tiêu</label>
+        <input type="text" id="nameHT" formControlName="nameHT" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('nameHT')?.invalid && (form.get('nameHT')?.dirty || form.get('nameHT')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('nameHT')?.invalid }">
+          Vui lòng nhập tên hoa tiêu
+        </small>
+      </div>
+
+      <!-- Tầm hoạt động hệ thống (RangeHT) -->
+      <div class="form-group" *ngIf="showField('rangeHT')">
+        <label for="rangeHT"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('rangeHT')?.invalid && (form.get('rangeHT')?.dirty || form.get('rangeHT')?.touched) }">
+          Hạng</label>
+        <input type="text" id="rangeHT" formControlName="rangeHT" class="form-control" />
+        <small
+          *ngIf="!isEditMode && form.get('rangeHT')?.invalid && (form.get('rangeHT')?.dirty || form.get('rangeHT')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('rangeHT')?.invalid }">
+          Vui lòng nhập Hạng
+        </small>
+      </div>
+
+
+
+
+      <!-- Loại tàu -->
+      <div>
+        <label for="itemtype" [ngClass]="{
+    'color-form-red': !isEditMode && form.get('itemtype')?.invalid && (form.get('itemtype')?.dirty || form.get('itemtype')?.touched)
+  }">Loại tàu:</label>
+        <select id="itemtype" formControlName="itemtype">
+          <option *ngFor="let type of type_item" [value]="type.value">
+            {{ type.name }}
+          </option>
+        </select>
+        <small
+          *ngIf="!isEditMode && form.get('itemtype')?.invalid && (form.get('itemtype')?.dirty || form.get('itemtype')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('itemtype')?.invalid }">
+          Vui lòng chọn loại tàu
+        </small>
+      </div>
+
+      <!-- Thời gian -->
+      <div class="form-group" *ngIf="showField('postdate')">
+        <label for="postdate" [ngClass]="{
+    'color-form-red': !isEditMode && form.get('postdate')?.invalid && (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+  }">Thời gian:</label>
+        <input type="date" id="postdate" class="form-control" formControlName="postdate" />
+        <small
+          *ngIf="!isEditMode && form.get('postdate')?.invalid && (form.get('postdate')?.dirty || form.get('postdate')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('postdate')?.invalid }">
+          Vui lòng chọn thời gian.
+        </small>
+      </div>
+
+      <!-- Nút hành động -->
+      <div class="bt-actions">
+        <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
+          class="p-button-success">
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
