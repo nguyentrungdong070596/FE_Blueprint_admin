@@ -5,11 +5,11 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { LogonComponent } from './auth/logon/logon.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '',
+  //   redirectTo: '/',
+  //   pathMatch: 'full'
+  // },
   {
     path: '',
     component: LayoutAdminComponent,
@@ -25,4 +25,5 @@ export const routes: Routes = [
     path: 'login', component: LogonComponent
   },
   { path: '**', redirectTo: 'login' }
+
 ];

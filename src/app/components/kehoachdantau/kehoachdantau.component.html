@@ -1,0 +1,201 @@
+<div class="content">
+    <h2 style="text-transform: uppercase;">Quản lý KẾ HOẠCH DẪN TÀU</h2>
+
+    <!-- Thêm nút toggle -->
+    <div class="toggle-container">
+        <p-inputSwitch [(ngModel)]="toggleStatus" (onChange)="toggleApiCall()" styleClass="ml-3"></p-inputSwitch>
+        <span class="ml-2"> <span style="margin-left: 10px;color:red">{{ toggleStatus ? 'Sử dụng Dữ liệu này' :
+                'Không sử dụng dữ liệu này' }}</span>
+        </span>
+    </div>
+    <div class="controls">
+        <p-button label="Thêm mới" icon="pi pi-plus" (onClick)="show(null)" styleClass="p-button-primary" />
+
+
+        <div class="search-group" style="border:none">
+            <!-- <span class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-search"></i>
+                </span>
+                <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..."
+                    (input)="onInput($event)" />
+                <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
+                    <i class="pi pi-arrow-right"></i>
+                </span>
+            </span> -->
+            <span class="p-inputgroup" style="margin-left: 10px;">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-calendar"></i>
+                </span>
+                <input pInputText type="text" [(ngModel)]="selectedDate" placeholder="dd/MM/yyyy"
+                    (change)="filterByDate()" />
+            </span>
+        </div>
+    </div>
+
+    <p-tabView (onChange)="onTabChange($event)">
+        <p-tabPanel header="Tàu Đến">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên tàu</th>
+                        <th>Quốc gia</th>
+                        <th>Đại lý</th>
+                        <th>DWT</th>
+                        <th>GRT</th>
+                        <th>LOA</th>
+                        <th>Mớn nước</th>
+                        <th>Từ cảng</th>
+                        <th>Đến cảng</th>
+                        <th>POB</th>
+                        <th>Tên hoa tiêu</th>
+                        <th>Hạng</th>
+                        <th>Loại tàu</th>
+                        <th>Ngày</th>
+                        <th style="width: 50px;">Điều chỉnh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of const_data; index as i">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.country }}</td>
+                        <td>{{ item.agency }}</td>
+                        <td>{{ item.dwt }}</td>
+                        <td>{{ item.grt }}</td>
+                        <td>{{ item.loa }}</td>
+                        <td>{{ item.draft }}</td>
+                        <td>{{ item.fromkh }}</td>
+                        <td>{{ item.tokh }}</td>
+                        <td>{{ item.pob }}</td>
+                        <td>{{ item.nameHT }}</td>
+                        <td>{{ item.rangeHT }}</td>
+                        <td>{{ getItemTypeLabel(item.itemtype) }}</td>
+                        <td>{{ item.postdate }}</td> <!-- Định dạng ngày -->
+                        <td>
+                            <button (click)="show(item)" class="btn-edit">
+                                <i class="fa-solid fa-edit"></i>
+                            </button>
+                            <button (click)="deleteItem(item)" class="btn-delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </p-tabPanel>
+        <!-- Table tương tự -->
+        <p-tabPanel header="Tàu Rời">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên tàu</th>
+                        <th>Quốc gia</th>
+                        <th>Đại lý</th>
+                        <th>DWT</th>
+                        <th>GRT</th>
+                        <th>LOA</th>
+                        <th>Mớn nước</th>
+                        <th>Từ cảng</th>
+                        <th>Đến cảng</th>
+                        <th>POB</th>
+                        <th>Tên hoa tiêu</th>
+                        <th>Hạng</th>
+                        <th>Loại tàu</th>
+                        <th>Ngày</th>
+                        <th style="width: 50px;">Điều chỉnh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of const_data; index as i">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.country }}</td>
+                        <td>{{ item.agency }}</td>
+                        <td>{{ item.dwt }}</td>
+                        <td>{{ item.grt }}</td>
+                        <td>{{ item.loa }}</td>
+                        <td>{{ item.draft }}</td>
+                        <td>{{ item.fromkh }}</td>
+                        <td>{{ item.tokh }}</td>
+                        <td>{{ item.pob }}</td>
+                        <td>{{ item.nameHT }}</td>
+                        <td>{{ item.rangeHT }}</td>
+                        <td>{{ getItemTypeLabel(item.itemtype) }}</td>
+                        <td>{{ item.postdate }}</td> <!-- Định dạng ngày -->
+                        <td>
+                            <button (click)="show(item)" class="btn-edit">
+                                <i class="fa-solid fa-edit"></i>
+                            </button>
+                            <button (click)="deleteItem(item)" class="btn-delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </p-tabPanel>
+        <p-tabPanel header="Tàu Dịch chuyển">
+            <!-- Table tương tự -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên tàu</th>
+                        <th>Quốc gia</th>
+                        <th>Đại lý</th>
+                        <th>DWT</th>
+                        <th>GRT</th>
+                        <th>LOA</th>
+                        <th>Mớn nước</th>
+                        <th>Từ cảng</th>
+                        <th>Đến cảng</th>
+                        <th>POB</th>
+                        <th>Tên hoa tiêu</th>
+                        <th>Hạng</th>
+                        <th>Loại tàu</th>
+                        <th>Ngày</th>
+                        <th style="width: 50px;">Điều chỉnh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of const_data; index as i">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.country }}</td>
+                        <td>{{ item.agency }}</td>
+                        <td>{{ item.dwt }}</td>
+                        <td>{{ item.grt }}</td>
+                        <td>{{ item.loa }}</td>
+                        <td>{{ item.draft }}</td>
+                        <td>{{ item.fromkh }}</td>
+                        <td>{{ item.tokh }}</td>
+                        <td>{{ item.pob }}</td>
+                        <td>{{ item.nameHT }}</td>
+                        <td>{{ item.rangeHT }}</td>
+                        <td>{{ getItemTypeLabel(item.itemtype) }}</td>
+                        <td>{{ item.postdate }}</td> <!-- Định dạng ngày -->
+                        <td>
+                            <button (click)="show(item)" class="btn-edit">
+                                <i class="fa-solid fa-edit"></i>
+                            </button>
+                            <button (click)="deleteItem(item)" class="btn-delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </p-tabPanel>
+    </p-tabView>
+
+    <br />
+
+
+    <div class="flex-auto">
+        <p-paginator *ngIf="totalRecords" [rows]="rows" [totalRecords]="totalRecords" [first]="first"
+            [showFirstLastIcon]="false" (onPageChange)="onPageChange($event)"></p-paginator>
+    </div>
+</div>

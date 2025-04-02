@@ -49,11 +49,10 @@ export class LogonComponent {
   login(value: any) {
     this.loading = true;
     this._authService.login(value).subscribe((res: any) => {
-
       this._router.navigateByUrl('/home');
       this.loading = false;
       // Điều hướng sang trang Home và truyền query param "welcome"
-      this._router.navigate(['/home'], { queryParams: { welcome: 'true' } });
+      // this._router.navigate(['/home'], { queryParams: { welcome: 'true' } });
     }, (error) => {
 
       this.messageService.add({ severity: 'error', summary: 'Thông báo', detail: "Thông tin đăng nhập và mật khẩu không chính xác" });

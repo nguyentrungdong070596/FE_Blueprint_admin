@@ -1,0 +1,102 @@
+/* Định dạng chung cho p-inputgroup */
+.p-inputgroup {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng nhẹ */
+    background: #fff;
+    /* Nền trắng */
+    margin-left: 10px;
+    /* Giữ margin-left như trong HTML */
+    max-width: 200px;
+    /* Giới hạn chiều rộng cho gọn gàng */
+}
+
+
+
+/* Định dạng cho nhóm input và addon */
+
+/* Định dạng cho addon (icon lịch) */
+.p-inputgroup-addon {
+    background: #f4f4f4;
+    /* Màu nền xám nhạt */
+    border: 1px solid #dcdcdc;
+    /* Viền nhẹ */
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i.pi.pi-calendar {
+        color: #333;
+        /* Màu icon tối */
+        font-size: 16px;
+        /* Kích thước icon */
+    }
+}
+
+/* Định dạng cho input */
+input[pInputText] {
+    border: 1px solid #dcdcdc;
+    /* Viền nhẹ */
+    border-left: none;
+    /* Bỏ viền trái để nối liền với addon */
+    padding: 8px 12px;
+    /* Khoảng cách bên trong */
+    font-size: 14px;
+    /* Cỡ chữ */
+    color: #333;
+    /* Màu chữ */
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng còn lại */
+    outline: none;
+    /* Bỏ viền focus mặc định */
+    transition: border-color 0.3s ease;
+    /* Hiệu ứng chuyển màu viền */
+
+    &::placeholder {
+        color: #999;
+        /* Màu placeholder nhạt */
+        font-style: italic;
+        /* Chữ nghiêng cho placeholder */
+    }
+
+    &:focus {
+        border-color: #007bff;
+        /* Màu viền khi focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        /* Hiệu ứng bóng khi focus */
+    }
+}
+
+/* Hover effect cho toàn bộ nhóm */
+.p-inputgroup:hover {
+    border-color: #b0b0b0;
+    /* Viền đậm hơn khi hover */
+
+    .p-inputgroup-addon {
+        background: #ececec;
+        /* Màu nền addon sáng hơn khi hover */
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .p-inputgroup {
+        max-width: 100%;
+        /* Chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+        margin-left: 0;
+        /* Bỏ margin-left */
+        margin-top: 10px;
+        /* Thêm khoảng cách phía trên */
+    }
+}
+
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}

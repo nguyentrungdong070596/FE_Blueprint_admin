@@ -41,10 +41,13 @@ export class DataService {
   }
 
 
+  
+
+
   GetItem(uri: string, value: any) {
     const headers = this.createrheader();
     return this._http.get(environment.apiUrl + uri, {
-      params: { limit: value.limit, page: value.page, showHiddenItem: true, itemType: value.itemType, name: value.name },
+      params: { limit: value.limit, page: value.page, showHiddenItem: true, itemType: value.itemType, name: value.name, dendoi: value.dendoi, ngay: value.ngay },
       headers,
     });
   }

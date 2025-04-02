@@ -9,15 +9,19 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CommonModule } from '@angular/common';
 import { QuillModule } from 'ngx-quill';
 import { ButtonModule } from 'primeng/button';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
-  selector: 'app-form',
+  selector: 'app-form-kehoachdantau',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule, ButtonModule],
-  templateUrl: './form-tide.component.html',
-  styleUrl: './form-tide.component.scss'
+  templateUrl: './form-kehoachdantau.component.html',
+  styleUrl: './form-kehoachdantau.component.scss',
+  providers: [DatePipe] // Thêm DatePipe vào providers
+
 })
-export class FormTideComponent {
+export class FormKeHoachDanTauComponent {
   form!: FormGroup;
   isEditMode = true;
   EditData: any;
@@ -28,73 +32,18 @@ export class FormTideComponent {
   selectedPdfFile: any;
   type_item: any = [
     {
-      id: 0,
-      name: "banner",
+      name: "Tàu đến",
+      value: "v",
     },
     {
-      id: 1,
-      name: "news"
+      name: "Tàu rời",
+      value: "r"
     },
     {
-      id: 2,
-      name: "dichvu"
+      name: "Tàu dịch chuyển",
+      value: "dc"
     },
-    {
-      id: 3,
-      name: "thungo"
-    },
-    {
-      id: 4,
-      name: "nhiemvu"
-    },
-    {
-      id: 5,
-      name: "lanhdao"
-    },
-    {
-      id: 6,
-      name: "tochuc"
-    },
-    {
-      id: 7,
-      name: "luocsu"
-    },
-    {
-      id: 8,
-      name: "tintuc"
-    },
-    {
-      id: 9,
-      name: "thongbao"
-    },
-    {
-      id: 10,
-      name: "vanban"
-    },
-    {
-      id: 11,
-      name: "thamkhao"
-    },
-    {
-      id: 12,
-      name: "monnuoc"
-    },
-    {
-      id: 13,
-      name: "giadichvu"
-    },
-    {
-      id: 14,
-      name: "hoatieu"
-    },
-    {
-      id: 15,
-      name: "vungnuoc"
-    },
-    {
-      id: 16,
-      name: "thuytrieu"
-    },
+
   ]
   constructor(
     private fb: FormBuilder,
@@ -103,6 +52,7 @@ export class FormTideComponent {
     private _uploadService: FileUploadService,
     public config: DynamicDialogConfig,
     public ref: DynamicDialogRef,
+    private datePipe: DatePipe
   ) {
     this.EditData = this.config.data.itemData;
     // //consolethis.EditData);
@@ -113,18 +63,44 @@ export class FormTideComponent {
     this.setValueFormEdit(this.EditData);
   }
 
+
   showField(fieldName: string): boolean {
     return this.config.data.fields.some((field: { name: string }) => field.name === fieldName);
   }
 
+  // createForm() {
+  //   const formGroupConfig: { [key: string]: any } = {};
+  //   this.config.data.fields.forEach((field: any) => {
+  //     if (field.name == 'status') {
+  //       formGroupConfig['status'] = [true, Validators.required];
+  //     }
+  //     else if (field.name === 'videourl') {
+  //       formGroupConfig['videourl'] = [null]; // hoặc thêm Validator nếu muốn
+  //     }
+  //     else {
+  //       formGroupConfig[field.name] = [null, Validators.required];
+  //     }
+
+
+  //   });
+  //   this.form = this.fb.group(formGroupConfig);
+  // }
+
   createForm() {
     const formGroupConfig: { [key: string]: any } = {};
     this.config.data.fields.forEach((field: any) => {
-      if (field.name == 'status') {
-        formGroupConfig['status'] = [true, Validators.required];
-      }
-      else {
+      if (field.name === 'itemtype' || field.name === 'postdate') {
+        // Chỉ validate trường itemtype và postdate
         formGroupConfig[field.name] = [null, Validators.required];
+      } else if (field.name === 'status') {
+        // Trường status giữ nguyên logic cũ
+        formGroupConfig['status'] = [true, Validators.required];
+      } else if (field.name === 'videourl') {
+        // Trường videourl không bắt buộc
+        formGroupConfig['videourl'] = [null];
+      } else {
+        // Các trường khác không bắt buộc
+        formGroupConfig[field.name] = [null];
       }
     });
     this.form = this.fb.group(formGroupConfig);
@@ -133,11 +109,22 @@ export class FormTideComponent {
   setValueFormEdit(data: any) {
     if (data && data.id) {
       const formData: any = {};
+      // this.config.data.fields.forEach((field: any) => {
+      //   formData[field.name] = data[field.name];
+      // });
       this.config.data.fields.forEach((field: any) => {
-        formData[field.name] = data[field.name];
+        if (field.name === 'postdate' && data[field.name]) {
+          // Chuyển đổi định dạng từ dd/mm/yyyy sang yyyy-MM-dd
+          const [day, month, year] = data[field.name].split('/');
+          formData[field.name] = `${year}-${month}-${day}`;
+        } else {
+          formData[field.name] = data[field.name];
+        }
       });
       this.form.patchValue(formData);
       this.preview_upload = this.stringurl + '/' + data.image;
+      this.preview_video = this.stringurl + '/' + data.videourl;
+
     } else {
       this.isEditMode = false;
     }
@@ -196,7 +183,61 @@ export class FormTideComponent {
       this.form.controls['image'].updateValueAndValidity();
       this.item.image = this.EditData.image;
     }
+
+
+    if (this.uploadVideo) {
+      const videoData = await this._uploadService.postFileVideo(this.uploadVideo);
+      if (videoData.video_url) {
+
+        this.form.controls['videourl'].clearValidators();
+        this.form.controls['videourl'].updateValueAndValidity();
+        this.item.videourl = videoData.video_url;
+
+      }
+    } else if (this.EditData.videourl) {
+      this.form.controls['videourl'].clearValidators();
+      this.form.controls['videourl'].updateValueAndValidity();
+      this.item.videourl = this.EditData.videourl;
+    }
   }
+
+
+  //video----------------
+
+  uploadVideo: any;
+  preview_video: any;
+  ngOnDestroy(): void {
+    if (this.preview_video) {
+      URL.revokeObjectURL(this.preview_video);
+    }
+  }
+
+  onFileVideoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadVideo = input.files[0];
+
+      // Cập nhật form với tên file (nếu cần)
+      this.form.controls['videourl'].setValue(this.uploadVideo.name);
+
+      // Hủy URL cũ nếu có để tránh memory leak
+      if (this.preview_video) {
+        URL.revokeObjectURL(this.preview_video);
+      }
+
+      // Tạo URL preview mượt hơn
+      this.preview_video = URL.createObjectURL(this.uploadVideo);
+
+      // Reset input để có thể chọn lại file trùng sau này
+      input.value = '';
+    }
+  }
+
+
+
+
+
+  //end video ---------
 
   async onSubmit(values: any) {
     await this.handleFileInput();
@@ -213,36 +254,50 @@ export class FormTideComponent {
   }
 
   onInsert(values: any) {
+
     this.item.status = true;
-    const item_type = this.type_item.find((i: any) => i.name === this.config.data.item_type);
-    if (item_type) {
-      this.item.itemtype = item_type.id.toString();
-      Object.keys(values).forEach(key => {
-        if (key !== 'image' && key !== 'pdfurl') {
-          this.item[key] = values[key];
+    // const item_type = this.type_item.find((i: any) => i.value === this.config.data.itemtype);
+    // if (item_type) {
+    // this.item.itemtype = itemtype.value.toString();
+    Object.keys(values).forEach(key => {
+      if (key !== 'image' && key !== 'pdfurl' && key != 'videourl') {
+        this.item[key] = values[key];
+
+        this.item[key] = key === 'postdate' ? this.formatPostDate(values[key]) : values[key];
+
+      }
+
+    });
+    this._dataService.post(StringAPI.APIKehoachdantau, this.item)
+      .subscribe(
+        (res) => {
+          this.ref.close(res || []);
+        },
+        (error) => {
         }
-      });
+      );
 
-      this._dataService.post(StringAPI.APITide, this.item)
-        .subscribe(
-          (res) => {
-            this.ref.close(res || []);
-          },
-          (error) => {
-          }
-        );
-
-    }
+    // }
   }
-
+  formatPostDate(date: any): string {
+    return this.datePipe.transform(date, 'dd/MM/yyyy') || '';
+  }
   onEdit(values: any) {
     if (this.EditData && this.EditData.id && values) {
       Object.keys(values).forEach(key => {
-        if (key !== 'image' && key !== 'pdfurl') {
+        if (key !== 'image' && key !== 'pdfurl' && key != 'videourl') {
           this.item[key] = values[key];
+          this.item[key] = key === 'postdate' ? this.formatPostDate(values[key]) : values[key];
+
+          if (key === "itemtype") {
+            // console.log("itemtype", values[key])
+            this.item[key] = values[key];
+          }
+
         }
-      });
-      this._dataService.put(StringAPI.APITide + "/" + this.EditData.id, this.item)
+      }
+      );
+      this._dataService.put(StringAPI.APIKehoachdantau + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
             this.ref.close(res || []);
