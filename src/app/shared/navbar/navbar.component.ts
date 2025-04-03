@@ -45,6 +45,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.router.navigate(['/login']); // Điều hướng đến trang đăng nhập
+    this._authService.logout(); // Gọi hàm logout từ AuthService}
   }
 
 
