@@ -1,0 +1,58 @@
+<div class="content">
+    <h2 style="text-transform: uppercase;">QUẢN LÝ THÔNG TIN HEADER</h2>
+
+    <div class="controls">
+        <p-button label="Thêm mới" icon="pi pi-plus" (onClick)="show(null)" styleClass="p-button-primary" />
+
+        <div class="search-group">
+            <span class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-search"></i>
+                </span>
+                <input class="search-input" pInputText type="text" #searchInput
+                    placeholder="Tìm kiếm theo tên công ty..." (input)="onInput($event)" />
+                <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
+                    <i class="pi pi-arrow-right"></i>
+                </span>
+            </span>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên công ty</th>
+                <th>Địa chỉ</th>
+                <th>Fax</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Tên chi nhánh</th>
+                <th style="width: 50px;">Điều chỉnh</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of const_data; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.company_name }}</td>
+                <td>{{ item.address }}</td>
+                <td>{{ item.fax }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.number_phone }}</td>
+                <td>{{ item.branch_name }}</td>
+                <td>
+                    <button (click)="show(item)" class="btn-edit">
+                        <i class="fa-solid fa-edit"></i>
+                    </button>
+                    <button (click)="deleteItem(item)" class="btn-delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div class="flex-auto">
+        <p-paginator *ngIf="totalRecords" [rows]="rows" [totalRecords]="totalRecords" [first]="first"
+            [showFirstLastIcon]="false" (onPageChange)="onPageChange($event)"></p-paginator>
+    </div>
+</div>
