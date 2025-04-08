@@ -10,7 +10,7 @@ import { DataService } from '../../../core/services/data.service';
 import { FormComponent } from '../../../shared/components/form/form.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { FormCarouselComponent } from '../../../shared/components/form-carousel/form-carousel.component';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -20,7 +20,7 @@ import { ToastModule } from 'primeng/toast';
     RouterModule, ImageModule, DynamicDialogModule, PaginatorModule],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.scss',
-  providers: [DialogService, MessageService]
+  providers: [DialogService, MessageService, ConfirmationService]
 })
 export class CarouselComponent {
   loading: boolean = false;
@@ -36,15 +36,25 @@ export class CarouselComponent {
   ref: DynamicDialogRef | undefined;
 
   constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService,
-    private route: ActivatedRoute, private messageService: MessageService,
+    private route: ActivatedRoute, private messageService: MessageService, private service: MessageService
+
   ) { }
 
   ngOnInit(): void {
     this.getItems(this.limit, this.rows);
 
     this.route.queryParams.subscribe(params => {
+      console.log("Query Params nhận được:", params); // Kiểm tra log
       if (params['welcome'] === 'true') {
-        this.messageService.add({ severity: 'success', summary: 'Chào mừng', detail: 'Chào mừng bạn tới với web quản lý' });
+        setTimeout(() => {
+          // this.messageService.add({
+          //   severity: 'success',
+          //   summary: 'Welcome Admin',
+          //   detail: 'Đăng nhập thành công!',
+          //   life: 3000
+          // });
+          this.messageService.add({ severity: 'success', summary: 'ĐĂNG NHẬP THÀNH CÔNG', detail: 'NGÀY MỚI VUI VẺ !' });
+        }, 500);
       }
     });
   }

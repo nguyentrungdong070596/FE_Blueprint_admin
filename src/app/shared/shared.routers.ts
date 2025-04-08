@@ -6,6 +6,8 @@ import { TideTableComponent } from '../components/specification/tide-table/tide-
 import { PortWaterAreaComponent } from '../components/specification/port-water-area/port-water-area.component';
 import { ThongTinTaiKhoanComponent } from '../components/thongtintaikhoan/thongtintaikhoan.component';
 import { KehoachdantauComponent } from '../components/kehoachdantau/kehoachdantau.component';
+import { HeaderComponent } from '../components/header/header.component';
+import { FooterComponent } from '../components/footer/footer.component';
 
 export const SHARED_ROUTERS: Routes = [
   {
@@ -56,6 +58,15 @@ export const SHARED_ROUTERS: Routes = [
   {
     path: 'user', component: ThongTinTaiKhoanComponent
   },
+
+  // {
+  //   path: 'header', component: HeaderComponent
+  // },
+
+  {
+    path: 'footer', component: FooterComponent
+  },
+
 
 
 

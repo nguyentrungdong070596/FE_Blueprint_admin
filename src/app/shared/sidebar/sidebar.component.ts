@@ -34,8 +34,12 @@ export class SidebarComponent implements OnInit {
 
   createLinks(): void {
     this.links = [
+      // { routerLink: '/header', icon: 'pi pi-id-card', text: 'Quản lý Header' },
+      { routerLink: '/footer', icon: 'pi pi-id-card', text: 'Quản lý Footer' },
+
       {
         routerLink: '/home/banner',
+
         icon: 'pi pi-id-card',
         text: 'Trang chủ',
         items: [

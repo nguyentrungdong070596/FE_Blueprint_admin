@@ -7,7 +7,6 @@ import { DecodeToken } from "../model/decode-token.model";
 import { JWTProfile } from "../model/jwt-profile.model";
 import { MemberLogin, UserRegister } from "../model/member.model";
 import { environment } from "../../environment/environment";
-
 @Injectable({
   providedIn: 'root',
 })
@@ -25,11 +24,9 @@ export class AuthService {
       this.member = this.memberSubject.asObservable();
     }
   }
-
   public get currentMemberValue(): JWTProfile {
     return this.memberSubject.value;
   }
-
   /**
    * login
    *

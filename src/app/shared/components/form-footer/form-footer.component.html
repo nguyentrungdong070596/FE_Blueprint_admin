@@ -1,0 +1,83 @@
+<div class="content">
+  <div class="add-container">
+    <h2 *ngIf="!isEditMode">Thêm Mới Footer</h2>
+    <h2 *ngIf="isEditMode">Chỉnh Sửa Footer</h2>
+    <form [formGroup]="form">
+      <!-- Tên công ty -->
+      <div class="form-group" *ngIf="showField('company_name')">
+        <label for="company_name"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('company_name')?.invalid && (form.get('company_name')?.dirty || form.get('company_name')?.touched) }">
+          Tên công ty</label>
+        <input type="text" id="company_name" formControlName="company_name" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('company_name')?.invalid && (form.get('company_name')?.dirty || form.get('company_name')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('company_name')?.invalid }">
+          Vui lòng nhập tên công ty
+        </small>
+      </div>
+
+      <!-- Địa chỉ -->
+      <div class="form-group" *ngIf="showField('address')">
+        <label for="address"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('address')?.invalid && (form.get('address')?.dirty || form.get('address')?.touched) }">
+          Địa chỉ</label>
+        <input type="text" id="address" formControlName="address" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('address')?.invalid && (form.get('address')?.dirty || form.get('address')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('address')?.invalid }">
+          Vui lòng nhập địa chỉ
+        </small>
+      </div>
+
+      <!-- Fax -->
+      <div class="form-group" *ngIf="showField('fax')">
+        <label for="fax">Fax</label>
+        <input type="text" id="fax" formControlName="fax" class="form-control" />
+      </div>
+      <!-- mst -->
+      <div class="form-group" *ngIf="showField('mst')">
+        <label for="mst">mst</label>
+        <input type="text" id="mst" formControlName="mst" class="form-control" />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group" *ngIf="showField('email')">
+        <label for="email"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched) }">
+          Email</label>
+        <input type="email" id="email" formControlName="email" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('email')?.invalid }">
+          Vui lòng nhập email hợp lệ
+        </small>
+      </div>
+
+      <!-- Số điện thoại -->
+      <div class="form-group" *ngIf="showField('number_phone')">
+        <label for="number_phone"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('number_phone')?.invalid && (form.get('number_phone')?.dirty || form.get('number_phone')?.touched) }">
+          Số điện thoại</label>
+        <input type="text" id="number_phone" formControlName="number_phone" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('number_phone')?.invalid && (form.get('number_phone')?.dirty || form.get('number_phone')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('number_phone')?.invalid }">
+          Vui lòng nhập số điện thoại
+        </small>
+      </div>
+
+      <!-- Tên chi nhánh -->
+      <div class="form-group" *ngIf="showField('branch_name')">
+        <label for="branch_name">Tên chi nhánh</label>
+        <input type="text" id="branch_name" formControlName="branch_name" class="form-control" />
+      </div>
+
+      <!-- Nút hành động -->
+      <div class="bt-actions">
+        <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
+          class="p-button-success">
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

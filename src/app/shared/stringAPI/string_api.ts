@@ -2,6 +2,8 @@ export const StringAPI = {
 
   //Home
   APICarousel: '/home/carousel',
+  APIHeader: '/header',
+  APIFooter: '/footer',
   APIIntroduction: '/home/introduction',
   APIDichvu: '/home/servicelist',
   APINews: '/home/news',
