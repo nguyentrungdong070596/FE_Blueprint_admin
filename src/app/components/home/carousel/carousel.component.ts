@@ -44,7 +44,7 @@ export class CarouselComponent {
     this.getItems(this.limit, this.rows);
 
     this.route.queryParams.subscribe(params => {
-      console.log("Query Params nhận được:", params); // Kiểm tra log
+ // Kiểm tra log
       if (params['welcome'] === 'true') {
         setTimeout(() => {
           // this.messageService.add({
