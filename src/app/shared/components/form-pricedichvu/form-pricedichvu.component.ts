@@ -200,10 +200,10 @@ export class FormPriceDichvuComponent {
 
   async onSubmit(values: any) {
     await this.handleFileInput();
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
     if (this.isEditMode) {
       this.onEdit(values);
     } else {

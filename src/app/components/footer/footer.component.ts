@@ -76,13 +76,14 @@ export class FooterComponent { // Đổi tên class từ HeaderComponent thành 
     if (values.success && values.data) {
       this.const_data = values.data.map((item: any) => ({
         id: item?.id,
-        company_name: item?.company_name,
+        // company_name: item?.company_name,
         address: item?.address,
         fax: item?.fax,
         mst: item?.mst,
         email: item?.email,
         number_phone: item?.number_phone,
-        branch_name: item?.branch_name
+        branch_name: item?.branch_name,
+        linkfb: item?.linkfb
       }));
       this.totalRecords = values.totalRecords;
     }
@@ -105,22 +106,25 @@ export class FooterComponent { // Đổi tên class từ HeaderComponent thành 
       data: {
         itemData: {
           id: item?.id,
-          company_name: item?.company_name,
+          // company_name: item?.company_name,
           address: item?.address,
           fax: item?.fax,
           mst: item?.mst,
           email: item?.email,
           number_phone: item?.number_phone,
-          branch_name: item?.branch_name
+          branch_name: item?.branch_name,
+          linkfb: item?.linkfb
+
         },
         fields: [
-          { name: 'company_name', required: true },
+          // { name: 'company_name', required: true },
           { name: 'address', required: true },
           { name: 'fax', required: false },
           { name: 'mst', required: false },
           { name: 'email', required: true },
           { name: 'number_phone', required: true },
-          { name: 'branch_name', required: false }
+          { name: 'branch_name', required: false },
+          { name: 'linkfb', required: false }
         ]
       }
     };

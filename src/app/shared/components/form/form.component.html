@@ -105,6 +105,44 @@
         </small>
       </div>
 
+
+      <!-- ENLISH -->
+      <div class="form-group" *ngIf="showField('title_en')">
+        <label for="title_en"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('title_en')?.invalid && (form.get('title_en')?.dirty || form.get('title_en')?.touched) }">Tiêu
+          đề (EN)</label>
+        <input type="text" id="title_en" formControlName="title_en" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('title_en')?.invalid && (form.get('title_en')?.dirty || form.get('title_en')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('title_en')?.invalid }">
+          Vui lòng nhập tên dịch vụ
+        </small>
+      </div>
+
+      <!-- Tên tiêu đề phụ -->
+      <div class="form-group" *ngIf="showField('subtitle')">
+        <label for="subtitle_en"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('subtitle_en')?.invalid && (form.get('subtitle_en')?.dirty || form.get('subtitle_en')?.touched) }">Tiêu
+          đề Phụ (EN)</label>
+        <input type="text" id="subtitle_en" formControlName="subtitle_en" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('subtitle_en')?.invalid && (form.get('subtitle_en')?.dirty || form.get('subtitle_en')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('subtitle_en')?.invalid }">
+          Vui lòng nhập tên tiêu đề phụ (subtitle_en)
+        </small>
+      </div>
+
+      <!-- Nội dung -->
+      <div class="form-group" *ngIf="showField('content_en')">
+        <label for="content_en">Nội dung (EN):</label>
+        <quill-editor formControlName="content_en"></quill-editor>
+        <small
+          *ngIf="!isEditMode && form.get('content_en')?.invalid && (form.get('content_en')?.dirty || form.get('content_en')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('content_en')?.invalid }">
+          Vui lòng nhập nội dung EN.
+        </small>
+      </div>
+
       <!-- Trạng thái -->
       <div *ngIf="isEditMode && showField('status')" class="form-group">
         <label for="status"

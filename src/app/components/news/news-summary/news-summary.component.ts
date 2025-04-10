@@ -80,6 +80,10 @@ export class NewsSummaryComponent {
         postdate: item?.postdate,
         status: item?.status,
         videourl: item?.videourl,
+
+        content_en: item?.content_en,
+        title_en: item?.title_en,
+        subtitle_en: item?.subtitle_en,
       }));
       this.totalRecords = values.totalRecords;
     }
@@ -108,6 +112,10 @@ export class NewsSummaryComponent {
           status: item?.status,
           videourl: item?.videourl,
 
+          content_en: item?.content_en,
+          title_en: item?.title_en,
+          subtitle_en: item?.subtitle_en,
+
         },
         fields: [
           { name: 'image', required: true },
@@ -116,6 +124,10 @@ export class NewsSummaryComponent {
           { name: 'postdate', required: false },
           { name: 'status', required: true },
           { name: 'videourl', required: true },
+
+          { name: 'title_en', required: false },
+          { name: 'subtitle_en', required: false },
+          { name: 'content_en', required: false },
         ],
         item_type: 'tintuc',
       }
