@@ -4,7 +4,7 @@
     <h2 *ngIf="isEditMode">Chỉnh Sửa Footer</h2>
     <form [formGroup]="form">
       <!-- Tên công ty -->
-      <div class="form-group" *ngIf="showField('company_name')">
+      <!-- <div class="form-group" *ngIf="showField('company_name')">
         <label for="company_name"
           [ngClass]="{ 'color-form-red': !isEditMode && form.get('company_name')?.invalid && (form.get('company_name')?.dirty || form.get('company_name')?.touched) }">
           Tên công ty</label>
@@ -14,7 +14,7 @@
           [ngClass]="{ 'color-form-red': form.get('company_name')?.invalid }">
           Vui lòng nhập tên công ty
         </small>
-      </div>
+      </div> -->
 
       <!-- Địa chỉ -->
       <div class="form-group" *ngIf="showField('address')">
@@ -70,6 +70,18 @@
       <div class="form-group" *ngIf="showField('branch_name')">
         <label for="branch_name">Tên chi nhánh</label>
         <input type="text" id="branch_name" formControlName="branch_name" class="form-control" />
+      </div>
+
+      <div class="form-group" *ngIf="showField('linkfb')">
+        <label for="linkfb"
+          [ngClass]="{ 'color-form-red': !isEditMode && form.get('linkfb')?.invalid && (form.get('linkfb')?.dirty || form.get('linkfb')?.touched) }">
+          Link facebook</label>
+        <input type="text" id="linkfb" formControlName="linkfb" class="form-control" required />
+        <small
+          *ngIf="!isEditMode && form.get('linkfb')?.invalid && (form.get('linkfb')?.dirty || form.get('linkfb')?.touched)"
+          [ngClass]="{ 'color-form-red': form.get('linkfb')?.invalid }">
+          Vui lòng nhập Link facebook
+        </small>
       </div>
 
       <!-- Nút hành động -->

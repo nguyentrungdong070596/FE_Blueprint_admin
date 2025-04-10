@@ -59,6 +59,11 @@ export class ReferencePostComponent {
         content: item?.content,
         postdate: item?.postdate,
         status: item?.status,
+
+        content_en: item?.content_en,
+        title_en: item?.title_en,
+        subtitle_en: item?.subtitle_en,
+        subtitle: item?.subtitle,
       }));
       //consolethis.const_data);
       this.totalRecords = values.totalRecords;
@@ -109,6 +114,11 @@ export class ReferencePostComponent {
           content: item?.content,
           postdate: item?.postdate,
           status: item?.status,
+
+          content_en: item?.content_en,
+          title_en: item?.title_en,
+          subtitle_en: item?.subtitle_en,
+          subtitle: item?.subtitle,
         },
         fields: [
           { name: 'image', required: true },
@@ -116,6 +126,13 @@ export class ReferencePostComponent {
           { name: 'content', required: true },
           { name: 'postdate', required: false },
           { name: 'status', required: true },
+
+          { name: 'title_en', required: false },
+          { name: 'content_en', required: false },
+          { name: 'subtitle_en', required: false },
+          { name: 'subtitle', required: false },
+
+
         ],
         item_type: 'thamkhao',
       }

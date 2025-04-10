@@ -60,6 +60,10 @@ export class ServicePriceComponent {
         content: item?.content,
         postdate: item?.postdate,
         status: item?.status,
+
+        content_en: item?.content_en,
+        title_en: item?.title_en,
+        subtitle_en: item?.subtitle_en,
       }));
       //consolethis.const_data);
       this.totalRecords = values.totalRecords;
@@ -111,6 +115,10 @@ export class ServicePriceComponent {
           content: item?.content,
           postdate: item?.postdate,
           status: item?.status,
+
+          content_en: item?.content_en,
+          title_en: item?.title_en,
+          subtitle_en: item?.subtitle_en,
         },
         fields: [
           { name: 'image', required: true },
@@ -119,6 +127,10 @@ export class ServicePriceComponent {
           { name: 'content', required: true },
           { name: 'postdate', required: false },
           { name: 'status', required: true },
+
+          { name: 'title_en', required: false },
+          { name: 'subtitle_en', required: false },
+          { name: 'content_en', required: false },
         ],
         item_type: 'giadichvu',
       }

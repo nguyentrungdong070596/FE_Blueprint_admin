@@ -129,7 +129,8 @@ export class FormComponent {
         formGroupConfig['videourl'] = [null]; // hoặc thêm Validator nếu muốn
       }
       else {
-        formGroupConfig[field.name] = [null, Validators.required];
+        // formGroupConfig[field.name] = [null, Validators.required];
+        formGroupConfig[field.name] = [null];
       }
 
 
@@ -266,10 +267,10 @@ export class FormComponent {
 
   async onSubmit(values: any) {
     await this.handleFileInput();
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
     if (this.isEditMode) {
       this.onEdit(values);
     } else {

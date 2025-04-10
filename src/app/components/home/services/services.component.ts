@@ -60,6 +60,10 @@ export class ServicesComponent {
         postdate: item?.postdate,
         content: item?.content,
         status: item?.status,
+
+        content_en: item?.content_en,
+        title_en: item?.title_en,
+        subtitle_en: item?.subtitle_en,
       }));
       //consolethis.const_data);
       this.totalRecords = values.totalRecords;
@@ -111,6 +115,10 @@ export class ServicesComponent {
           content: item?.content,
           postdate: item?.postdate,
           status: item?.status,
+
+          content_en: item?.content_en,
+          title_en: item?.title_en,
+          subtitle_en: item?.subtitle_en,
         },
         fields: [
           { name: 'pdfurl', required: true },
@@ -120,6 +128,12 @@ export class ServicesComponent {
           { name: 'postdate', required: true },
           { name: 'subtitle', required: true },
           { name: 'status', required: true },
+
+
+          { name: 'title_en', required: false },
+          { name: 'subtitle_en', required: false },
+          { name: 'content_en', required: false },
+
         ],
         item_type: 'dichvu',
       }

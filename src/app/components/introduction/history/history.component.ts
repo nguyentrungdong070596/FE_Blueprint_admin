@@ -52,6 +52,8 @@ export class HistoryComponent {
         id: service.id,
         content: service.content,
         status: service.status,
+        content_en: service?.content_en,
+
       }));
       this.totalRecords = values.totalRecords;
     }
@@ -98,10 +100,14 @@ export class HistoryComponent {
           id: item?.id,
           content: item?.content,
           status: item?.status,
+          content_en: item?.content_en,
+
         },
         fields: [
           { name: 'content', required: true },
           { name: 'status', required: true },
+          { name: 'content_en', required: false },
+
         ],
         item_type: 'luocsu',
       }

@@ -125,7 +125,7 @@ export class FormServicesComponent {
         formGroupConfig['status'] = [true, Validators.required];
       }
       else {
-        formGroupConfig[field.name] = [null, Validators.required];
+        formGroupConfig[field.name] = [null];
       }
     });
     this.form = this.fb.group(formGroupConfig);
@@ -201,10 +201,10 @@ export class FormServicesComponent {
 
   async onSubmit(values: any) {
     await this.handleFileInput();
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
     if (this.isEditMode) {
       this.onEdit(values);
     } else {
