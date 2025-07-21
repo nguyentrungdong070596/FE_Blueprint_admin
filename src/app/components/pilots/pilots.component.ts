@@ -1,28 +1,40 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { QuillModule } from 'ngx-quill';
-import { DynamicDialogModule, DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ImageModule } from 'primeng/image';
-import { PaginatorModule } from 'primeng/paginator';
-import { environment } from '../../../environment/environment';
-import { DataService } from '../../core/services/data.service';
-import { StringAPI } from '../../shared/stringAPI/string_api';
-import { AddPilotsComponent } from './add-pilots/add-pilots.component';
-import { InputIconModule } from 'primeng/inputicon';
-import { IconFieldModule } from 'primeng/iconfield';
-import { ButtonModule } from 'primeng/button';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { RouterModule, Router } from "@angular/router";
+import { QuillModule } from "ngx-quill";
+import {
+  DynamicDialogModule,
+  DialogService,
+  DynamicDialogRef,
+} from "primeng/dynamicdialog";
+import { ImageModule } from "primeng/image";
+import { PaginatorModule } from "primeng/paginator";
+import { environment } from "../../../environment/environment";
+import { DataService } from "../../core/services/data.service";
+import { StringAPI } from "../../shared/stringAPI/string_api";
+import { AddPilotsComponent } from "./add-pilots/add-pilots.component";
+import { InputIconModule } from "primeng/inputicon";
+import { IconFieldModule } from "primeng/iconfield";
+import { ButtonModule } from "primeng/button";
 @Component({
-  selector: 'app-pilots',
+  selector: "app-pilots",
   standalone: true,
-  imports: [DynamicDialogModule, CommonModule, RouterModule, FormsModule, QuillModule, PaginatorModule, ImageModule,
-    InputIconModule, InputIconModule, ButtonModule
+  imports: [
+    DynamicDialogModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    QuillModule,
+    PaginatorModule,
+    ImageModule,
+    InputIconModule,
+    InputIconModule,
+    ButtonModule,
   ],
-  templateUrl: './pilots.component.html',
-  styleUrl: './pilots.component.scss',
-  providers: [DialogService]
-
+  templateUrl: "./pilots.component.html",
+  styleUrl: "./pilots.component.scss",
+  providers: [DialogService],
 })
 export class PilotsComponent {
   urlAPI = environment.apiUrl;
@@ -34,22 +46,28 @@ export class PilotsComponent {
   limit: number = 0;
   loading: boolean = false;
 
-  searchText: string = '';
+  searchText: string = "";
   private searchTimeout: any;
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(public dialogService: DialogService, private router: Router, private _dataService: DataService) { }
+  constructor(
+    public dialogService: DialogService,
+    private router: Router,
+    private _dataService: DataService,
+  ) {}
   ngOnInit(): void {
     this.getPilotItems(this.limit, this.rows);
   }
   getPilotItems(first: number, rows: number): void {
     this.item.limit = rows;
-    this.item.page = (first / rows) + 1;
+    this.item.page = first / rows + 1;
     this.item.name = this.searchText ?? "undefined";
-    this._dataService.GetItem(`${StringAPI.APIHoaTieu}`, this.item).subscribe(res => {
-      this.setPilotItems(res || []);
-    });
+    this._dataService
+      .GetItem(`${StringAPI.APIHoaTieu}`, this.item)
+      .subscribe((res) => {
+        this.setPilotItems(res || []);
+      });
   }
   setPilotItems(values: any): void {
     if (values.success && values.data) {
@@ -58,8 +76,8 @@ export class PilotsComponent {
         name: pilot.name,
         rank: pilot.rank,
         image: pilot.image,
+        sort: pilot.sort,
         status: pilot.status,
-
       }));
       this.totalRecords = values.totalRecords;
     }
@@ -94,12 +112,12 @@ export class PilotsComponent {
 
   show(item: any) {
     const dialogConfig: any = {
-      width: '80vw',
+      width: "80vw",
       modal: true,
       breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-      }
+        "960px": "75vw",
+        "640px": "90vw",
+      },
     };
 
     // Kiểm tra nếu có item, thì thêm dữ liệu vào
@@ -109,6 +127,7 @@ export class PilotsComponent {
         name: item.name,
         rank: item.rank,
         image: item.image,
+        sort: item.sort,
         status: item.status,
       };
     }
@@ -123,14 +142,11 @@ export class PilotsComponent {
   }
 
   OnDelete(id: any) {
-    this._dataService.delete(StringAPI.APIHoaTieu + "/" + id)
-      .subscribe(
-        (res) => {
-          this.getPilotItems(this.first, this.rows);
-        },
-        (error) => {
-        }
-      );
+    this._dataService.delete(StringAPI.APIHoaTieu + "/" + id).subscribe(
+      (res) => {
+        this.getPilotItems(this.first, this.rows);
+      },
+      (error) => {},
+    );
   }
-
 }

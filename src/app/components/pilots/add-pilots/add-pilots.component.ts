@@ -1,22 +1,27 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { QuillModule } from 'ngx-quill';
-import { ButtonModule } from 'primeng/button';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { environment } from '../../../../environment/environment';
-import { DataService } from '../../../core/services/data.service';
-import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
-import { StringAPI } from '../../../shared/stringAPI/string_api';
+import { CommonModule, DatePipe } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from "@angular/forms";
+import { Router } from "@angular/router";
+import { QuillModule } from "ngx-quill";
+import { ButtonModule } from "primeng/button";
+import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
+import { environment } from "../../../../environment/environment";
+import { DataService } from "../../../core/services/data.service";
+import { FileUploadService } from "../../../core/services/uploadFiles/file-upload.service";
+import { StringAPI } from "../../../shared/stringAPI/string_api";
 
 @Component({
-  selector: 'app-add-pilots',
+  selector: "app-add-pilots",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, QuillModule, ButtonModule],
-  templateUrl: './add-pilots.component.html',
-  styleUrl: './add-pilots.component.scss',
-  providers: [DatePipe]
+  templateUrl: "./add-pilots.component.html",
+  styleUrl: "./add-pilots.component.scss",
+  providers: [DatePipe],
 })
 export class AddPilotsComponent implements OnInit {
   form!: FormGroup;
@@ -44,8 +49,8 @@ export class AddPilotsComponent implements OnInit {
     {
       name: "Hoa tiêu hạng ba",
       value: "Hoa tiêu hạng ba",
-    }
-  ]
+    },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -55,7 +60,7 @@ export class AddPilotsComponent implements OnInit {
     public config: DynamicDialogConfig,
     public ref: DynamicDialogRef,
   ) {
-    this.EditData = this.config.data
+    this.EditData = this.config.data;
   }
 
   ngOnInit(): void {
@@ -68,6 +73,7 @@ export class AddPilotsComponent implements OnInit {
       name: [null, Validators.required],
       image: [null, Validators.required],
       rank: [null, Validators.required],
+      sort: [null, Validators.required],
       status: [true, Validators.required],
     });
   }
@@ -78,25 +84,23 @@ export class AddPilotsComponent implements OnInit {
       this.form.patchValue({
         name: data?.name,
         rank: data?.rank,
+        sort: data?.sort,
         status: data?.status,
       });
 
       this.item.image = this.EditData.image;
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
-    }
-    else {
+      this.form.controls["image"].clearValidators();
+      this.form.controls["image"].updateValueAndValidity();
+    } else {
       this.isEditMode = false;
     }
   }
-
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files.length > 0) {
       this.uploadImage = input.files[0];
-
 
       // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
@@ -107,13 +111,13 @@ export class AddPilotsComponent implements OnInit {
     }
   }
 
-  async handleFileInput() { 
+  async handleFileInput() {
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
         // Loại bỏ validator của trường image nếu upload thành công
-        this.form.controls['image'].clearValidators();
-        this.form.controls['image'].updateValueAndValidity();
+        this.form.controls["image"].clearValidators();
+        this.form.controls["image"].updateValueAndValidity();
         this.item.image = imageData.file_save_url;
       }
     }
@@ -139,15 +143,14 @@ export class AddPilotsComponent implements OnInit {
     this.item.status = true;
     this.item.rank = values.rank;
     this.item.name = values.name;
-    this._dataService.post(StringAPI.APIHoaTieu, this.item)
-      .subscribe(
-        (res) => {
-          this.ref.close(res || []);
-        },
-        (error) => {
-        }
-      );
+    this.item.sort = values.sort;
 
+    this._dataService.post(StringAPI.APIHoaTieu, this.item).subscribe(
+      (res) => {
+        this.ref.close(res || []);
+      },
+      (error) => {},
+    );
   }
 
   onEdit(values: any) {
@@ -155,15 +158,15 @@ export class AddPilotsComponent implements OnInit {
       this.item.status = values.status;
       this.item.rank = values.rank;
       this.item.name = values.name;
-      this._dataService.put(StringAPI.APIHoaTieu + "/" + this.EditData.id, this.item)
+      this.item.sort = values.sort;
+      this._dataService
+        .put(StringAPI.APIHoaTieu + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
             this.ref.close(res || []);
           },
-          (error) => {
-          }
+          (error) => {},
         );
     }
   }
-
 }

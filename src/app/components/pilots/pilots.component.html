@@ -1,24 +1,35 @@
 <div class="content">
-  <h2 style="text-transform: uppercase;">Quản lý danh sách hoa tiêu</h2>
+  <h2 style="text-transform: uppercase">Quản lý danh sách hoa tiêu</h2>
   <div class="controls">
-    <p-button label="Thêm mới" icon="pi pi-plus" (onClick)="show(null)" styleClass="p-button-primary" />
+    <p-button
+      label="Thêm mới"
+      icon="pi pi-plus"
+      (onClick)="show(null)"
+      styleClass="p-button-primary"
+    />
 
     <div class="search-group">
       <span class="p-inputgroup">
         <span class="p-inputgroup-addon">
           <i class="pi pi-search"></i>
         </span>
-        <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..."
-          (input)="onInput($event)" />
-        <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
+        <input
+          class="search-input"
+          pInputText
+          type="text"
+          #searchInput
+          placeholder="Tìm kiếm..."
+          (input)="onInput($event)"
+        />
+        <span
+          class="p-inputgroup-addon search-btn"
+          (click)="search(searchInput.value)"
+        >
           <i class="pi pi-arrow-right"></i>
         </span>
       </span>
     </div>
   </div>
-
-
-
 
   <table class="table table-bordered">
     <thead>
@@ -29,16 +40,20 @@
         <th>Hạng hoa tiêu</th>
         <th>Trạng thái</th>
 
-        <th style="width: 50px;">Điều chỉnh</th>
-
+        <th style="width: 50px">Điều chỉnh</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let pilot of const_data; index as i">
-        <td>{{ i + 1 }}</td>
+        <td>{{ pilot.sort }}</td>
         <td>{{ pilot.name }}</td>
         <td>
-          <p-image [src]="urlAPI + '/' + pilot.image" alt="Image" width="250" [preview]="true" />
+          <p-image
+            [src]="urlAPI + '/' + pilot.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
         </td>
         <td>{{ pilot.rank }}</td>
         <td>{{ pilot.status ? "Hiển thị" : "Ẩn" }}</td>
@@ -55,7 +70,13 @@
   </table>
   <br />
   <div class="flex-auto">
-    <p-paginator *ngIf="totalRecords" [rows]="rows" [totalRecords]="totalRecords" [first]="first"
-      [showFirstLastIcon]="false" (onPageChange)="onPageChange($event)"></p-paginator>
+    <p-paginator
+      *ngIf="totalRecords"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showFirstLastIcon]="false"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
   </div>
 </div>
