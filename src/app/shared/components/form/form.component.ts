@@ -1,22 +1,33 @@
-import { Component } from '@angular/core';
-import { StringAPI } from '../../stringAPI/string_api';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { environment } from '../../../../environment/environment';
-import { Router } from '@angular/router';
-import { DataService } from '../../../core/services/data.service';
-import { FileUploadService } from '../../../core/services/uploadFiles/file-upload.service';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { CommonModule } from '@angular/common';
-import { QuillModule } from 'ngx-quill';
-import { ButtonModule } from 'primeng/button';
-
+import { Component } from "@angular/core";
+import { StringAPI } from "../../stringAPI/string_api";
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { environment } from "../../../../environment/environment";
+import { Router } from "@angular/router";
+import { DataService } from "../../../core/services/data.service";
+import { FileUploadService } from "../../../core/services/uploadFiles/file-upload.service";
+import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
+import { CommonModule } from "@angular/common";
+import { QuillModule } from "ngx-quill";
+import { ButtonModule } from "primeng/button";
 
 @Component({
-  selector: 'app-form',
+  selector: "app-form",
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, QuillModule, ButtonModule],
-  templateUrl: './form.component.html',
-  styleUrl: './form.component.scss'
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    QuillModule,
+    ButtonModule,
+  ],
+  templateUrl: "./form.component.html",
+  styleUrl: "./form.component.scss",
 })
 export class FormComponent {
   form!: FormGroup;
@@ -34,69 +45,69 @@ export class FormComponent {
     },
     {
       id: 1,
-      name: "news"
+      name: "news",
     },
     {
       id: 2,
-      name: "dichvu"
+      name: "dichvu",
     },
     {
       id: 3,
-      name: "thungo"
+      name: "thungo",
     },
     {
       id: 4,
-      name: "nhiemvu"
+      name: "nhiemvu",
     },
     {
       id: 5,
-      name: "lanhdao"
+      name: "lanhdao",
     },
     {
       id: 6,
-      name: "tochuc"
+      name: "tochuc",
     },
     {
       id: 7,
-      name: "luocsu"
+      name: "luocsu",
     },
     {
       id: 8,
-      name: "tintuc"
+      name: "tintuc",
     },
     {
       id: 9,
-      name: "thongbao"
+      name: "thongbao",
     },
     {
       id: 10,
-      name: "link-dathangdichvu"
+      name: "link-dathangdichvu",
     },
     {
       id: 11,
-      name: "thamkhao"
+      name: "thamkhao",
     },
     {
       id: 12,
-      name: "monnuoc"
+      name: "monnuoc",
     },
     {
       id: 13,
-      name: "giadichvu"
+      name: "giadichvu",
     },
     {
       id: 14,
-      name: "hoatieu"
+      name: "hoatieu",
     },
     {
       id: 15,
-      name: "vungnuoc"
+      name: "vungnuoc",
     },
     {
       id: 16,
-      name: "thuytrieu"
+      name: "thuytrieu",
     },
-  ]
+  ];
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -114,26 +125,23 @@ export class FormComponent {
     this.setValueFormEdit(this.EditData);
   }
 
-
   showField(fieldName: string): boolean {
-    return this.config.data.fields.some((field: { name: string }) => field.name === fieldName);
+    return this.config.data.fields.some(
+      (field: { name: string }) => field.name === fieldName,
+    );
   }
 
   createForm() {
     const formGroupConfig: { [key: string]: any } = {};
     this.config.data.fields.forEach((field: any) => {
-      if (field.name == 'status') {
-        formGroupConfig['status'] = [true, Validators.required];
-      }
-      else if (field.name === 'videourl') {
-        formGroupConfig['videourl'] = [null]; // hoặc thêm Validator nếu muốn
-      }
-      else {
+      if (field.name == "status") {
+        formGroupConfig["status"] = [true, Validators.required];
+      } else if (field.name === "videourl") {
+        formGroupConfig["videourl"] = [null]; // hoặc thêm Validator nếu muốn
+      } else {
         // formGroupConfig[field.name] = [null, Validators.required];
         formGroupConfig[field.name] = [null];
       }
-
-
     });
     this.form = this.fb.group(formGroupConfig);
   }
@@ -145,9 +153,8 @@ export class FormComponent {
         formData[field.name] = data[field.name];
       });
       this.form.patchValue(formData);
-      this.preview_upload = this.stringurl + '/' + data.image;
-      this.preview_video = this.stringurl + '/' + data.videourl;
-
+      this.preview_upload = this.stringurl + "/" + data.image;
+      this.preview_video = this.stringurl + "/" + data.videourl;
     } else {
       this.isEditMode = false;
     }
@@ -157,7 +164,7 @@ export class FormComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedPdfFile = input.files[0];
-      input.value = '';
+      input.value = "";
     }
   }
 
@@ -171,11 +178,11 @@ export class FormComponent {
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.preview_upload = e.target?.result;
         // Optionally set a different form control if you want to track the image URL
-        this.form.controls['image'].setValue(this.uploadImage.name); // or whatever value you want to store
+        this.form.controls["image"].setValue(this.uploadImage.name); // or whatever value you want to store
       };
       reader.readAsDataURL(this.uploadImage);
 
-      input.value = '';
+      input.value = "";
     }
   }
 
@@ -183,50 +190,43 @@ export class FormComponent {
     if (this.selectedPdfFile) {
       const pdfurl = await this._uploadService.postFile(this.selectedPdfFile);
       if (pdfurl) {
-        this.form.controls['pdfurl'].clearValidators();
-        this.form.controls['pdfurl'].updateValueAndValidity();
+        this.form.controls["pdfurl"].clearValidators();
+        this.form.controls["pdfurl"].updateValueAndValidity();
         this.item.pdfurl = pdfurl.file_save_url;
       }
-    }
-    else if (this.EditData.pdfurl) {
-      this.form.controls['pdfurl'].clearValidators();
-      this.form.controls['pdfurl'].updateValueAndValidity();
+    } else if (this.EditData.pdfurl) {
+      this.form.controls["pdfurl"].clearValidators();
+      this.form.controls["pdfurl"].updateValueAndValidity();
       this.item.pdfurl = this.EditData.pdfurl;
     }
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
-        this.form.controls['image'].clearValidators();
-        this.form.controls['image'].updateValueAndValidity();
+        this.form.controls["image"].clearValidators();
+        this.form.controls["image"].updateValueAndValidity();
         this.item.image = imageData.file_save_url;
       }
-    }
-    else if (this.EditData.image) {
-      this.form.controls['image'].clearValidators();
-      this.form.controls['image'].updateValueAndValidity();
+    } else if (this.EditData.image) {
+      this.form.controls["image"].clearValidators();
+      this.form.controls["image"].updateValueAndValidity();
       this.item.image = this.EditData.image;
     }
 
-
-
-
     if (this.uploadVideo) {
-      const videoData = await this._uploadService.postFileVideo(this.uploadVideo);
+      const videoData = await this._uploadService.postFileVideo(
+        this.uploadVideo,
+      );
       if (videoData.video_url) {
-
-        this.form.controls['videourl'].clearValidators();
-        this.form.controls['videourl'].updateValueAndValidity();
+        this.form.controls["videourl"].clearValidators();
+        this.form.controls["videourl"].updateValueAndValidity();
         this.item.videourl = videoData.video_url;
-
       }
     } else if (this.EditData.videourl) {
-      this.form.controls['videourl'].clearValidators();
-      this.form.controls['videourl'].updateValueAndValidity();
+      this.form.controls["videourl"].clearValidators();
+      this.form.controls["videourl"].updateValueAndValidity();
       this.item.videourl = this.EditData.videourl;
     }
-
   }
-
 
   //video----------------
 
@@ -244,7 +244,7 @@ export class FormComponent {
       this.uploadVideo = input.files[0];
 
       // Cập nhật form với tên file (nếu cần)
-      this.form.controls['videourl'].setValue(this.uploadVideo.name);
+      this.form.controls["videourl"].setValue(this.uploadVideo.name);
 
       // Hủy URL cũ nếu có để tránh memory leak
       if (this.preview_video) {
@@ -255,13 +255,9 @@ export class FormComponent {
       this.preview_video = URL.createObjectURL(this.uploadVideo);
 
       // Reset input để có thể chọn lại file trùng sau này
-      input.value = '';
+      input.value = "";
     }
   }
-
-
-
-
 
   //end video ---------
 
@@ -276,50 +272,44 @@ export class FormComponent {
     } else {
       this.onInsert(values);
     }
-
   }
 
   onInsert(values: any) {
     this.item.status = true;
-    const item_type = this.type_item.find((i: any) => i.name === this.config.data.item_type);
+    const item_type = this.type_item.find(
+      (i: any) => i.name === this.config.data.item_type,
+    );
     if (item_type) {
       this.item.itemtype = item_type.id.toString();
-      Object.keys(values).forEach(key => {
-        if (key !== 'image' && key !== 'pdfurl' && key != 'videourl') {
+      Object.keys(values).forEach((key) => {
+        if (key !== "image" && key !== "pdfurl" && key != "videourl") {
           this.item[key] = values[key];
         }
-
       });
-      this._dataService.post(StringAPI.APIItems, this.item)
-        .subscribe(
-          (res) => {
-            this.ref.close(res || []);
-          },
-          (error) => {
-          }
-        );
-
+      this._dataService.post(StringAPI.APIItems, this.item).subscribe(
+        (res) => {
+          this.ref.close(res || []);
+        },
+        (error) => {},
+      );
     }
   }
 
   onEdit(values: any) {
     if (this.EditData && this.EditData.id && values) {
-      Object.keys(values).forEach(key => {
-        if (key !== 'image' && key !== 'pdfurl' && key != 'videourl') {
+      Object.keys(values).forEach((key) => {
+        if (key !== "image" && key !== "pdfurl" && key != "videourl") {
           this.item[key] = values[key];
         }
-
       });
-      this._dataService.put(StringAPI.APIItems + "/" + this.EditData.id, this.item)
+      this._dataService
+        .put(StringAPI.APIItems + "/" + this.EditData.id, this.item)
         .subscribe(
           (res) => {
             this.ref.close(res || []);
           },
-          (error) => {
-          }
+          (error) => {},
         );
-
     }
   }
-
 }
