@@ -152,6 +152,13 @@
       <div class="form-group" *ngIf="showField('content')">
         <label for="content">Nội dung:</label>
         <quill-editor formControlName="content"></quill-editor>
+        <!-- <quill-editor
+          formControlName="content"
+          [modules]="quillModules"
+          [style]="{ height: '400px' }"
+        >
+        </quill-editor> -->
+
         <small
           *ngIf="
             !isEditMode &&
