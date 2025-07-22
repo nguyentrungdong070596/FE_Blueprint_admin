@@ -1,0 +1,53 @@
+/* Style for Quill Editor */
+:host ::ng-deep .ql-container .ql-float-left {
+  float: left;
+  margin: 0 15px 15px 0;
+  max-width: 50%;
+  height: auto;
+}
+
+/* Style for rendered content (preview in Angular) */
+:host ::ng-deep .ql-float-left {
+  float: left;
+  margin: 0 15px 15px 0;
+  max-width: 50%;
+  height: auto;
+}
+
+:host ::ng-deep p {
+  overflow: hidden; /* Ensure text wraps around the image */
+}
+
+/* Tùy chỉnh style cho TinyMCE */
+:host ::ng-deep .tox-tinymce {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+:host ::ng-deep .tox .tox-editor-container {
+  background: #fff;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  :host ::ng-deep .ql-float-left {
+    float: none;
+    display: block;
+    margin: 0 auto 15px;
+    max-width: 100%;
+  }
+  :host ::ng-deep p {
+    overflow: visible;
+  }
+}
+
+/* Style for float-left button in toolbar */
+:host ::ng-deep .ql-float-left {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: #ccc;
+  text-align: center;
+  line-height: 24px;
+  content: "FL"; /* Placeholder icon */
+}

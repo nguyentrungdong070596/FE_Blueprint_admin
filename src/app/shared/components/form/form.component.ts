@@ -1,5 +1,10 @@
-import { Component } from "@angular/core";
-import { StringAPI } from "../../stringAPI/string_api";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -13,8 +18,9 @@ import { DataService } from "../../../core/services/data.service";
 import { FileUploadService } from "../../../core/services/uploadFiles/file-upload.service";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { CommonModule } from "@angular/common";
-import { QuillModule } from "ngx-quill";
+import { EditorModule, TINYMCE_SCRIPT_SRC } from "@tinymce/tinymce-angular"; // Import EditorInit đúng cách
 import { ButtonModule } from "primeng/button";
+import { StringAPI } from "../../stringAPI/string_api";
 
 @Component({
   selector: "app-form",
@@ -23,13 +29,20 @@ import { ButtonModule } from "primeng/button";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    QuillModule,
+    EditorModule,
     ButtonModule,
+  ],
+  providers: [
+    {
+      provide: TINYMCE_SCRIPT_SRC,
+      useValue:
+        "https://cdn.tiny.cloud/1/fduwokd9rqzj9wcg8p65autmcmqk1csjn1fwc9xb3keiezbd/tinymce/5/tinymce.min.js",
+    }, // Sử dụng CDN với API key
   ],
   templateUrl: "./form.component.html",
   styleUrl: "./form.component.scss",
 })
-export class FormComponent {
+export class FormComponent implements OnInit, OnDestroy {
   form!: FormGroup;
   isEditMode = true;
   EditData: any;
@@ -39,75 +52,67 @@ export class FormComponent {
   uploadImage: any;
   selectedPdfFile: any;
   type_item: any = [
-    {
-      id: 0,
-      name: "banner",
-    },
-    {
-      id: 1,
-      name: "news",
-    },
-    {
-      id: 2,
-      name: "dichvu",
-    },
-    {
-      id: 3,
-      name: "thungo",
-    },
-    {
-      id: 4,
-      name: "nhiemvu",
-    },
-    {
-      id: 5,
-      name: "lanhdao",
-    },
-    {
-      id: 6,
-      name: "tochuc",
-    },
-    {
-      id: 7,
-      name: "luocsu",
-    },
-    {
-      id: 8,
-      name: "tintuc",
-    },
-    {
-      id: 9,
-      name: "thongbao",
-    },
-    {
-      id: 10,
-      name: "link-dathangdichvu",
-    },
-    {
-      id: 11,
-      name: "thamkhao",
-    },
-    {
-      id: 12,
-      name: "monnuoc",
-    },
-    {
-      id: 13,
-      name: "giadichvu",
-    },
-    {
-      id: 14,
-      name: "hoatieu",
-    },
-    {
-      id: 15,
-      name: "vungnuoc",
-    },
-    {
-      id: 16,
-      name: "thuytrieu",
-    },
+    { id: 0, name: "banner" },
+    { id: 1, name: "news" },
+    { id: 2, name: "dichvu" },
+    { id: 3, name: "thungo" },
+    { id: 4, name: "nhiemvu" },
+    { id: 5, name: "lanhdao" },
+    { id: 6, name: "tochuc" },
+    { id: 7, name: "luocsu" },
+    { id: 8, name: "tintuc" },
+    { id: 9, name: "thongbao" },
+    { id: 10, name: "link-dathangdichvu" },
+    { id: 11, name: "thamkhao" },
+    { id: 12, name: "monnuoc" },
+    { id: 13, name: "giadichvu" },
+    { id: 14, name: "hoatieu" },
+    { id: 15, name: "vungnuoc" },
+    { id: 16, name: "thuytrieu" },
   ];
+
+  @ViewChild("editorContent", { static: false }) editorContent!: ElementRef;
+  @ViewChild("editorContentEn", { static: false }) editorContentEn!: ElementRef;
+
+  // Cấu hình TinyMCE với kiểu EditorInit
+  // Cấu hình TinyMCE
+  tinyConfig: any = {
+    height: 400,
+    menubar: true,
+    plugins: [
+      "advlist autolink lists link image charmap print preview anchor",
+      "searchreplace visualblocks code fullscreen",
+      "insertdatetime media table paste code help wordcount",
+    ],
+    toolbar:
+      "undo redo | formatselect | bold italic backcolor | \
+             alignleft aligncenter alignright alignjustify | \
+             bullist numlist outdent indent | link image | table | removeformat | help",
+    images_upload_handler: (
+      blobInfo: any,
+      success: (url: string) => void,
+      failure: (message: string) => void,
+      progress: (percent: number) => void,
+      abort: () => void, // Thêm abort để khớp kiểu
+    ) => {
+      const file = blobInfo.blob();
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        success(reader.result as string); // Trả về URL khi hoàn thành
+        progress(100); // Đặt progress 100% khi xong
+      };
+      reader.onerror = () => failure("Failed to read file");
+      reader.readAsDataURL(file);
+    },
+    content_style: "img { max-width: none; }", // Giữ nguyên kích thước hình ảnh
+    // Thêm setup để giảm thông báo không cần thiết (tùy chọn)
+    setup: (editor: any) => {
+      editor.on("init", () => {
+        // Tùy chỉnh để giảm log (nếu cần)
+        console.warn = () => {}; // Tắt warning (không khuyến khích lâu dài)
+      });
+    },
+  };
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -117,7 +122,6 @@ export class FormComponent {
     public ref: DynamicDialogRef,
   ) {
     this.EditData = this.config.data.itemData;
-    // //consolethis.EditData);
   }
 
   ngOnInit(): void {
@@ -131,42 +135,14 @@ export class FormComponent {
     );
   }
 
-  quillModules = {
-    toolbar: [
-      ["bold", "italic", "underline", "strike"], // in đậm, nghiêng, gạch chân, gạch ngang
-      ["blockquote", "code-block"], // blockquote, mã nguồn
-
-      [{ header: 1 }, { header: 2 }], // header cấp 1, 2
-      [{ list: "ordered" }, { list: "bullet" }], // danh sách có thứ tự, không thứ tự
-      [{ script: "sub" }, { script: "super" }], // subscript/superscript
-      [{ indent: "-1" }, { indent: "+1" }], // thụt đầu dòng
-      [{ direction: "rtl" }], // viết từ phải qua trái
-
-      [{ size: ["small", false, "large", "huge"] }], // cỡ chữ
-      [{ header: [1, 2, 3, 4, 5, 6, false] }], // các cấp tiêu đề
-
-      [{ color: [] }, { background: [] }], // màu chữ, màu nền
-      [{ font: [] }], // font chữ
-      [{ align: [] }], // căn lề
-
-      ["link", "image", "video"], // chèn liên kết, ảnh, video
-
-      ["clean"], // xóa định dạng
-    ],
-    clipboard: {
-      matchVisual: false,
-    },
-  };
-
   createForm() {
     const formGroupConfig: { [key: string]: any } = {};
     this.config.data.fields.forEach((field: any) => {
-      if (field.name == "status") {
+      if (field.name === "status") {
         formGroupConfig["status"] = [true, Validators.required];
       } else if (field.name === "videourl") {
-        formGroupConfig["videourl"] = [null]; // hoặc thêm Validator nếu muốn
+        formGroupConfig["videourl"] = [null];
       } else {
-        // formGroupConfig[field.name] = [null, Validators.required];
         formGroupConfig[field.name] = [null];
       }
     });
@@ -197,18 +173,14 @@ export class FormComponent {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (input.files && input.files.length > 0) {
       this.uploadImage = input.files[0];
-
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.preview_upload = e.target?.result;
-        // Optionally set a different form control if you want to track the image URL
-        this.form.controls["image"].setValue(this.uploadImage.name); // or whatever value you want to store
+        this.form.controls["image"].setValue(this.uploadImage.name);
       };
       reader.readAsDataURL(this.uploadImage);
-
       input.value = "";
     }
   }
@@ -238,7 +210,6 @@ export class FormComponent {
       this.form.controls["image"].updateValueAndValidity();
       this.item.image = this.EditData.image;
     }
-
     if (this.uploadVideo) {
       const videoData = await this._uploadService.postFileVideo(
         this.uploadVideo,
@@ -255,8 +226,6 @@ export class FormComponent {
     }
   }
 
-  //video----------------
-
   uploadVideo: any;
   preview_video: any;
   ngOnDestroy(): void {
@@ -269,31 +238,17 @@ export class FormComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.uploadVideo = input.files[0];
-
-      // Cập nhật form với tên file (nếu cần)
       this.form.controls["videourl"].setValue(this.uploadVideo.name);
-
-      // Hủy URL cũ nếu có để tránh memory leak
       if (this.preview_video) {
         URL.revokeObjectURL(this.preview_video);
       }
-
-      // Tạo URL preview mượt hơn
       this.preview_video = URL.createObjectURL(this.uploadVideo);
-
-      // Reset input để có thể chọn lại file trùng sau này
       input.value = "";
     }
   }
 
-  //end video ---------
-
   async onSubmit(values: any) {
     await this.handleFileInput();
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
     if (this.isEditMode) {
       this.onEdit(values);
     } else {
@@ -309,14 +264,12 @@ export class FormComponent {
     if (item_type) {
       this.item.itemtype = item_type.id.toString();
       Object.keys(values).forEach((key) => {
-        if (key !== "image" && key !== "pdfurl" && key != "videourl") {
+        if (key !== "image" && key !== "pdfurl" && key !== "videourl") {
           this.item[key] = values[key];
         }
       });
       this._dataService.post(StringAPI.APIItems, this.item).subscribe(
-        (res) => {
-          this.ref.close(res || []);
-        },
+        (res) => this.ref.close(res || []),
         (error) => {},
       );
     }
@@ -325,16 +278,14 @@ export class FormComponent {
   onEdit(values: any) {
     if (this.EditData && this.EditData.id && values) {
       Object.keys(values).forEach((key) => {
-        if (key !== "image" && key !== "pdfurl" && key != "videourl") {
+        if (key !== "image" && key !== "pdfurl" && key !== "videourl") {
           this.item[key] = values[key];
         }
       });
       this._dataService
         .put(StringAPI.APIItems + "/" + this.EditData.id, this.item)
         .subscribe(
-          (res) => {
-            this.ref.close(res || []);
-          },
+          (res) => this.ref.close(res || []),
           (error) => {},
         );
     }

@@ -151,14 +151,13 @@
       <!-- Nội dung -->
       <div class="form-group" *ngIf="showField('content')">
         <label for="content">Nội dung:</label>
-        <quill-editor formControlName="content"></quill-editor>
-        <!-- <quill-editor
+        <!-- <quill-editor formControlName="content"></quill-editor> -->
+        <editor
+          #editorContent
           formControlName="content"
-          [modules]="quillModules"
+          [init]="tinyConfig"
           [style]="{ height: '400px' }"
-        >
-        </quill-editor> -->
-
+        ></editor>
         <small
           *ngIf="
             !isEditMode &&
@@ -298,7 +297,13 @@
       <!-- Nội dung -->
       <div class="form-group" *ngIf="showField('content_en')">
         <label for="content_en">Nội dung (EN):</label>
-        <quill-editor formControlName="content_en"></quill-editor>
+        <!-- <quill-editor formControlName="content_en"></quill-editor> -->
+        <editor
+          #editorContentEn
+          formControlName="content_en"
+          [init]="tinyConfig"
+          [style]="{ height: '400px' }"
+        ></editor>
         <small
           *ngIf="
             !isEditMode &&

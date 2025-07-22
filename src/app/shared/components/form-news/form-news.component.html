@@ -5,39 +5,92 @@
     <form [formGroup]="form">
       <!-- Tên dịch vụ -->
       <div class="form-group" *ngIf="showField('title')">
-        <label for="title"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('title')?.invalid && (form.get('title')?.dirty || form.get('title')?.touched) }">Tiêu
-          đề</label>
-        <input type="text" id="title" formControlName="title" class="form-control" required />
+        <label
+          for="title"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('title')?.invalid &&
+              (form.get('title')?.dirty || form.get('title')?.touched)
+          }"
+          >Tiêu đề</label
+        >
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          class="form-control"
+          required
+        />
         <small
-          *ngIf="!isEditMode && form.get('title')?.invalid && (form.get('title')?.dirty || form.get('title')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('title')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('title')?.invalid &&
+            (form.get('title')?.dirty || form.get('title')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('title')?.invalid }"
+        >
           Vui lòng nhập tên dịch vụ
         </small>
       </div>
 
       <!-- Tên tiêu đề phụ -->
       <div class="form-group" *ngIf="showField('subtitle')">
-        <label for="subtitle"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('subtitle')?.invalid && (form.get('subtitle')?.dirty || form.get('subtitle')?.touched) }">Tiêu
-          đề Phụ</label>
-        <input type="text" id="subtitle" formControlName="subtitle" class="form-control" required />
+        <label
+          for="subtitle"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('subtitle')?.invalid &&
+              (form.get('subtitle')?.dirty || form.get('subtitle')?.touched)
+          }"
+          >Tiêu đề Phụ</label
+        >
+        <input
+          type="text"
+          id="subtitle"
+          formControlName="subtitle"
+          class="form-control"
+          required
+        />
         <small
-          *ngIf="!isEditMode && form.get('subtitle')?.invalid && (form.get('subtitle')?.dirty || form.get('subtitle')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('subtitle')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('subtitle')?.invalid &&
+            (form.get('subtitle')?.dirty || form.get('subtitle')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('subtitle')?.invalid }"
+        >
           Vui lòng nhập tên tiêu đề phụ (subtitle)
         </small>
       </div>
 
       <!-- Hình ảnh -->
       <div class="form-group" *ngIf="showField('image')">
-        <label for="file"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('image')?.invalid && (form.get('image')?.dirty || form.get('image')?.touched) }">Hình
-          ảnh:</label>
-        <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('image')?.invalid &&
+              (form.get('image')?.dirty || form.get('image')?.touched)
+          }"
+          >Hình ảnh:</label
+        >
+        <input
+          type="file"
+          id="image"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
         <small
-          *ngIf="!isEditMode && form.get('image')?.invalid && (form.get('image')?.dirty || form.get('image')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('image')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('image')?.invalid &&
+            (form.get('image')?.dirty || form.get('image')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('image')?.invalid }"
+        >
           Vui lòng tải hình ảnh.
         </small>
       </div>
@@ -50,91 +103,176 @@
       <!-- Nội dung -->
       <div class="form-group" *ngIf="showField('content')">
         <label for="content">Nội dung:</label>
-        <quill-editor formControlName="content"></quill-editor>
+        <!-- <quill-editor formControlName="content"></quill-editor> -->
+        <editor
+          #editorContent
+          formControlName="content"
+          [init]="tinyConfig"
+          [style]="{ height: '400px' }"
+        ></editor>
         <small
-          *ngIf="!isEditMode && form.get('content')?.invalid && (form.get('content')?.dirty || form.get('content')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('content')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('content')?.invalid &&
+            (form.get('content')?.dirty || form.get('content')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('content')?.invalid }"
+        >
           Vui lòng nhập nội dung.
         </small>
       </div>
 
-
-
-
-
       <!-- Tải lên dữ liệu -->
       <div class="form-group" *ngIf="showField('pdfurl')">
-        <label for="pdfurl"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('pdfurl')?.invalid && (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched) }">Tải
-          lên dữ liệu:</label>
-        <input type="file" id="pdfurl" (change)="onFilePDFSelected($event)" accept=".pdf" class="form-control" />
+        <label
+          for="pdfurl"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('pdfurl')?.invalid &&
+              (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)
+          }"
+          >Tải lên dữ liệu:</label
+        >
+        <input
+          type="file"
+          id="pdfurl"
+          (change)="onFilePDFSelected($event)"
+          accept=".pdf"
+          class="form-control"
+        />
         <small
-          *ngIf="!isEditMode && form.get('pdfurl')?.invalid && (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('pdfurl')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('pdfurl')?.invalid &&
+            (form.get('pdfurl')?.dirty || form.get('pdfurl')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('pdfurl')?.invalid }"
+        >
           Vui lòng tải dữ liệu.
         </small>
       </div>
 
-
       <!-- Ngày đăng -->
       <div class="form-group" *ngIf="showField('postdate')">
-        <label for="postdate"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('postdate')?.invalid && (form.get('postdate')?.dirty || form.get('postdate')?.touched) }">Ngày
-          đăng:</label>
-        <input type="date" id="postdate" class="form-control" formControlName="postdate" />
+        <label
+          for="postdate"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('postdate')?.invalid &&
+              (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+          }"
+          >Ngày đăng:</label
+        >
+        <input
+          type="date"
+          id="postdate"
+          class="form-control"
+          formControlName="postdate"
+        />
         <small
-          *ngIf="!isEditMode && form.get('postdate')?.invalid && (form.get('postdate')?.dirty || form.get('postdate')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('postdate')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('postdate')?.invalid &&
+            (form.get('postdate')?.dirty || form.get('postdate')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('postdate')?.invalid }"
+        >
           Vui lòng chọn ngày đăng.
         </small>
       </div>
 
       <!-- Trạng thái -->
       <div *ngIf="isEditMode && showField('status')" class="form-group">
-        <label for="status"
-          [ngClass]="{ 'color-form-red': form.get('status')?.invalid && (form.get('status')?.dirty || form.get('status')?.touched) }">Trạng
-          thái</label>
-        <select id="status" formControlName="status" class="form-control" required>
+        <label
+          for="status"
+          [ngClass]="{
+            'color-form-red':
+              form.get('status')?.invalid &&
+              (form.get('status')?.dirty || form.get('status')?.touched)
+          }"
+          >Trạng thái</label
+        >
+        <select
+          id="status"
+          formControlName="status"
+          class="form-control"
+          required
+        >
           <option [ngValue]="true">Hiển thị</option>
           <option [ngValue]="false">Ẩn</option>
         </select>
-        <small *ngIf="form.get('status')?.invalid && (form.get('status')?.dirty || form.get('status')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }">
+        <small
+          *ngIf="
+            form.get('status')?.invalid &&
+            (form.get('status')?.dirty || form.get('status')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('status')?.invalid }"
+        >
           Vui lòng chọn trạng thái.
         </small>
       </div>
 
-
-
-
-
-
-
-
-
-
       <!-- ENLISH -->
       <div class="form-group" *ngIf="showField('title_en')">
-        <label for="title_en"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('title_en')?.invalid && (form.get('title_en')?.dirty || form.get('title_en')?.touched) }">Tiêu
-          đề (EN)</label>
-        <input type="text" id="title_en" formControlName="title_en" class="form-control" required />
+        <label
+          for="title_en"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('title_en')?.invalid &&
+              (form.get('title_en')?.dirty || form.get('title_en')?.touched)
+          }"
+          >Tiêu đề (EN)</label
+        >
+        <input
+          type="text"
+          id="title_en"
+          formControlName="title_en"
+          class="form-control"
+          required
+        />
         <small
-          *ngIf="!isEditMode && form.get('title_en')?.invalid && (form.get('title_en')?.dirty || form.get('title_en')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('title_en')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('title_en')?.invalid &&
+            (form.get('title_en')?.dirty || form.get('title_en')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('title_en')?.invalid }"
+        >
           Vui lòng nhập tên dịch vụ
         </small>
       </div>
 
       <!-- Tên tiêu đề phụ -->
       <div class="form-group" *ngIf="showField('subtitle')">
-        <label for="subtitle_en"
-          [ngClass]="{ 'color-form-red': !isEditMode && form.get('subtitle_en')?.invalid && (form.get('subtitle_en')?.dirty || form.get('subtitle_en')?.touched) }">Tiêu
-          đề Phụ (EN)</label>
-        <input type="text" id="subtitle_en" formControlName="subtitle_en" class="form-control" required />
+        <label
+          for="subtitle_en"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('subtitle_en')?.invalid &&
+              (form.get('subtitle_en')?.dirty ||
+                form.get('subtitle_en')?.touched)
+          }"
+          >Tiêu đề Phụ (EN)</label
+        >
+        <input
+          type="text"
+          id="subtitle_en"
+          formControlName="subtitle_en"
+          class="form-control"
+          required
+        />
         <small
-          *ngIf="!isEditMode && form.get('subtitle_en')?.invalid && (form.get('subtitle_en')?.dirty || form.get('subtitle_en')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('subtitle_en')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('subtitle_en')?.invalid &&
+            (form.get('subtitle_en')?.dirty || form.get('subtitle_en')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('subtitle_en')?.invalid }"
+        >
           Vui lòng nhập tên tiêu đề phụ (subtitle_en)
         </small>
       </div>
@@ -142,19 +280,34 @@
       <!-- Nội dung -->
       <div class="form-group" *ngIf="showField('content_en')">
         <label for="content_en">Nội dung (EN):</label>
-        <quill-editor formControlName="content_en"></quill-editor>
+        <!-- <quill-editor formControlName="content_en"></quill-editor> -->
+        <editor
+          #editorContentEn
+          formControlName="content_en"
+          [init]="tinyConfig"
+          [style]="{ height: '400px' }"
+        ></editor>
         <small
-          *ngIf="!isEditMode && form.get('content_en')?.invalid && (form.get('content_en')?.dirty || form.get('content_en')?.touched)"
-          [ngClass]="{ 'color-form-red': form.get('content_en')?.invalid }">
+          *ngIf="
+            !isEditMode &&
+            form.get('content_en')?.invalid &&
+            (form.get('content_en')?.dirty || form.get('content_en')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('content_en')?.invalid }"
+        >
           Vui lòng nhập nội dung EN.
         </small>
       </div>
 
       <!-- Nút hành động -->
       <div class="bt-actions">
-        <button pButton pRipple [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'" (click)="onSubmit(form.value)"
-          class="p-button-success">
-        </button>
+        <button
+          pButton
+          pRipple
+          [label]="isEditMode ? 'Cập nhật' : 'Thêm mới'"
+          (click)="onSubmit(form.value)"
+          class="p-button-success"
+        ></button>
       </div>
     </form>
   </div>
