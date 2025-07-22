@@ -131,6 +131,33 @@ export class FormComponent {
     );
   }
 
+  quillModules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"], // in đậm, nghiêng, gạch chân, gạch ngang
+      ["blockquote", "code-block"], // blockquote, mã nguồn
+
+      [{ header: 1 }, { header: 2 }], // header cấp 1, 2
+      [{ list: "ordered" }, { list: "bullet" }], // danh sách có thứ tự, không thứ tự
+      [{ script: "sub" }, { script: "super" }], // subscript/superscript
+      [{ indent: "-1" }, { indent: "+1" }], // thụt đầu dòng
+      [{ direction: "rtl" }], // viết từ phải qua trái
+
+      [{ size: ["small", false, "large", "huge"] }], // cỡ chữ
+      [{ header: [1, 2, 3, 4, 5, 6, false] }], // các cấp tiêu đề
+
+      [{ color: [] }, { background: [] }], // màu chữ, màu nền
+      [{ font: [] }], // font chữ
+      [{ align: [] }], // căn lề
+
+      ["link", "image", "video"], // chèn liên kết, ảnh, video
+
+      ["clean"], // xóa định dạng
+    ],
+    clipboard: {
+      matchVisual: false,
+    },
+  };
+
   createForm() {
     const formGroupConfig: { [key: string]: any } = {};
     this.config.data.fields.forEach((field: any) => {
