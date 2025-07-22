@@ -1,8 +1,8 @@
-import { Routes } from '@angular/router';
-import { LayoutAdminComponent } from './shared/layout-admin/layout-admin.component';
-import { AuthGuard } from './auth.guard';
-import { LoginComponent } from './components/auth/login/login.component';
-import { LogonComponent } from './auth/logon/logon.component';
+import { provideRouter, Routes } from "@angular/router";
+import { LayoutAdminComponent } from "./shared/layout-admin/layout-admin.component";
+import { AuthGuard } from "./auth.guard";
+import { LoginComponent } from "./components/auth/login/login.component";
+import { LogonComponent } from "./auth/logon/logon.component";
 
 export const routes: Routes = [
   // {
@@ -11,19 +11,24 @@ export const routes: Routes = [
   //   pathMatch: 'full'
   // },
   {
-    path: '',
+    path: "",
     component: LayoutAdminComponent,
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        loadChildren: () => import('./shared/shared.routers').then(m => m.SHARED_ROUTERS),
-      }
-    ]
+        path: "",
+        loadChildren: () =>
+          import("./shared/shared.routers").then((m) => m.SHARED_ROUTERS),
+      },
+    ],
   },
   {
-    path: 'login', component: LogonComponent
+    path: "login",
+    component: LogonComponent,
   },
-  { path: '**', redirectTo: 'login' }
-
+  { path: "**", redirectTo: "login" },
 ];
+
+export const appConfig = {
+  providers: [provideRouter(routes)],
+};
