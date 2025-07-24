@@ -236,7 +236,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   showField(fieldName: string): boolean {
-    console.log("fieldName", fieldName);
     return this.config.data.fields.some(
       (field: { name: string }) => field.name === fieldName,
     );
