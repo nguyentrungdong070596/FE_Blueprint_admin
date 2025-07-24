@@ -152,12 +152,28 @@
       <div class="form-group" *ngIf="showField('content')">
         <label for="content">Nội dung:</label>
         <!-- <quill-editor formControlName="content"></quill-editor> -->
-        <editor
-          #editorContent
-          formControlName="content"
-          [init]="tinyConfig"
-          [style]="{ height: '400px' }"
-        ></editor>
+
+        <div class="NgxEditor__Wrapper">
+          <ngx-editor-menu [editor]="editor" [toolbar]="customToolbar">
+          </ngx-editor-menu>
+
+          <!-- Nút upload ảnh -->
+          <button type="button" (click)="fileInput.click()">🖼 Chọn ảnh</button>
+          <input
+            type="file"
+            #fileInput
+            style="display: none"
+            accept="image/*"
+            (change)="onFileNGX_EDITORSelected($event)"
+          />
+
+          <ngx-editor
+            [editor]="editor"
+            formControlName="content"
+            [placeholder]="'Type here...'"
+          ></ngx-editor>
+        </div>
+
         <small
           *ngIf="
             !isEditMode &&
@@ -294,16 +310,32 @@
         </small>
       </div>
 
-      <!-- Nội dung -->
+      <!-- Nội dung en -->
       <div class="form-group" *ngIf="showField('content_en')">
         <label for="content_en">Nội dung (EN):</label>
         <!-- <quill-editor formControlName="content_en"></quill-editor> -->
-        <editor
-          #editorContentEn
-          formControlName="content_en"
-          [init]="tinyConfig"
-          [style]="{ height: '400px' }"
-        ></editor>
+        <div class="NgxEditor__Wrapper">
+          <ngx-editor-menu [editor]="editor_en" [toolbar]="customToolbar_en">
+          </ngx-editor-menu>
+
+          <!-- Nút upload ảnh -->
+          <button type="button" (click)="fileInput_en.click()">
+            🖼 Chọn ảnh
+          </button>
+          <input
+            type="file"
+            #fileInput_en
+            style="display: none"
+            accept="image/*"
+            (change)="onFileNGX_EDITORSelected_En($event)"
+          />
+
+          <ngx-editor
+            [editor]="editor_en"
+            formControlName="content_en"
+            [placeholder]="'Type here...'"
+          ></ngx-editor>
+        </div>
         <small
           *ngIf="
             !isEditMode &&

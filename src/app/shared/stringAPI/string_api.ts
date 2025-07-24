@@ -1,34 +1,33 @@
 export const StringAPI = {
-
   //Home
-  APICarousel: '/home/carousel',
-  APIHeader: '/header',
-  APIFooter: '/footer',
-  APIIntroduction: '/home/introduction',
-  APIDichvu: '/home/servicelist',
-  APINews: '/home/news',
-  APIKehoachdantau: '/kehoachdantau',
-  APIToggleKehoachdantau: '/switch',
+  APICarousel: "/home/carousel",
+  APIHeader: "/header",
+  APIFooter: "/footer",
+  APIIntroduction: "/home/introduction",
+  APIDichvu: "/home/servicelist",
+  APINews: "/home/news",
+  APIKehoachdantau: "/kehoachdantau",
+  APIToggleKehoachdantau: "/switch",
 
   //Navigator
-  APIHoaTieu: '/hoatieu',
+  APIHoaTieu: "/hoatieu",
 
   //Maneuvering Draft
-  APIManeuveringDraft: '/maneuvering-draft',
+  APIManeuveringDraft: "/maneuvering-draft",
 
   //Service price
-  APIServicePrice: '/product-price',
+  APIServicePrice: "/product-price",
 
   //Service price
-  APIShip: '/ship',
+  APIShip: "/ship",
 
   //Stream
-  APIStream: '/stream',
+  APIStream: "/stream",
   //tide-calendar
-  APITide: '/tide-calendar',
-  APIItems: '/items',
+  APITide: "/tide-calendar",
+  APIItems: "/items",
 
   ApiUser: "/user",
   ApiSignUp: "/signup",
-  getUsername: '/user/username',
+  getUsername: "/user/username",
 };

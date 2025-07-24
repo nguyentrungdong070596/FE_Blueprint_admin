@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { StringAPI } from "../../stringAPI/string_api";
 import {
   FormBuilder,
@@ -12,12 +12,16 @@ import { Router } from "@angular/router";
 import { DataService } from "../../../core/services/data.service";
 import { FileUploadService } from "../../../core/services/uploadFiles/file-upload.service";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { EditorModule, TINYMCE_SCRIPT_SRC } from "@tinymce/tinymce-angular"; // Import EditorInit đúng cách
-
 import { CommonModule } from "@angular/common";
 import { QuillModule } from "ngx-quill";
 import { ButtonModule } from "primeng/button";
-
+import {
+  NgxEditorComponent,
+  NgxEditorMenuComponent,
+  Editor,
+  Toolbar,
+  NgxEditorService,
+} from "ngx-editor";
 @Component({
   selector: "app-form",
   standalone: true,
@@ -27,14 +31,8 @@ import { ButtonModule } from "primeng/button";
     ReactiveFormsModule,
     QuillModule,
     ButtonModule,
-    EditorModule,
-  ],
-  providers: [
-    {
-      provide: TINYMCE_SCRIPT_SRC,
-      useValue:
-        "https://cdn.tiny.cloud/1/fduwokd9rqzj9wcg8p65autmcmqk1csjn1fwc9xb3keiezbd/tinymce/5/tinymce.min.js",
-    }, // Sử dụng CDN với API key
+    NgxEditorComponent,
+    NgxEditorMenuComponent,
   ],
   templateUrl: "./form-services.component.html",
   styleUrl: "./form-services.component.scss",
@@ -48,6 +46,14 @@ export class FormServicesComponent {
   preview_upload: any;
   uploadImage: any;
   selectedPdfFile: any;
+  imageAlign: "right" | "left" | "center" = "right"; // ✅ mặc định chèn bên phải
+
+  html = "";
+  html_en = "";
+  editor!: Editor;
+  editor_en!: Editor;
+  customToolbar: Toolbar;
+  customToolbar_en: Toolbar;
   type_item: any = [
     {
       id: 0,
@@ -118,48 +124,6 @@ export class FormServicesComponent {
       name: "thuytrieu",
     },
   ];
-
-  @ViewChild("editorContent", { static: false }) editorContent!: ElementRef;
-  @ViewChild("editorContentEn", { static: false }) editorContentEn!: ElementRef;
-  // Cấu hình TinyMCE với kiểu EditorInit
-  // Cấu hình TinyMCE
-  tinyConfig: any = {
-    height: 400,
-    menubar: true,
-    plugins: [
-      "advlist autolink lists link image charmap print preview anchor",
-      "searchreplace visualblocks code fullscreen",
-      "insertdatetime media table paste code help wordcount",
-    ],
-    toolbar:
-      "undo redo | formatselect | bold italic backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | link image | table | removeformat | help",
-    images_upload_handler: (
-      blobInfo: any,
-      success: (url: string) => void,
-      failure: (message: string) => void,
-      progress: (percent: number) => void,
-      abort: () => void, // Thêm abort để khớp kiểu
-    ) => {
-      const file = blobInfo.blob();
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        success(reader.result as string); // Trả về URL khi hoàn thành
-        progress(100); // Đặt progress 100% khi xong
-      };
-      reader.onerror = () => failure("Failed to read file");
-      reader.readAsDataURL(file);
-    },
-    content_style: "img { max-width: none; }", // Giữ nguyên kích thước hình ảnh
-    // Thêm setup để giảm thông báo không cần thiết (tùy chọn)
-    setup: (editor: any) => {
-      editor.on("init", () => {
-        // Tùy chỉnh để giảm log (nếu cần)
-        console.warn = () => {}; // Tắt warning (không khuyến khích lâu dài)
-      });
-    },
-  };
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -170,13 +134,98 @@ export class FormServicesComponent {
   ) {
     this.EditData = this.config.data.itemData;
     // //consolethis.EditData);
+    this.customToolbar = [
+      // ["heading", "font_family", "font_size"],
+      ["bold", "italic", "underline", "strike"],
+      ["subscript", "superscript"],
+      ["text_color", "background_color"],
+      ["align_left", "align_center", "align_right", "align_justify"],
+      ["ordered_list", "bullet_list", "indent", "outdent"],
+      ["blockquote", "code"],
+      ["link", "image", "horizontal_rule"],
+      ["undo", "redo"],
+    ];
+    this.customToolbar_en = [
+      // ["heading", "font_family", "font_size"],
+      ["bold", "italic", "underline", "strike"],
+      ["subscript", "superscript"],
+      ["text_color", "background_color"],
+      ["align_left", "align_center", "align_right", "align_justify"],
+      ["ordered_list", "bullet_list", "indent", "outdent"],
+      ["blockquote", "code"],
+      ["link", "image", "horizontal_rule"],
+      ["undo", "redo"],
+    ];
   }
 
   ngOnInit(): void {
     this.createForm();
     this.setValueFormEdit(this.EditData);
+    this.editor = new Editor();
+    this.editor_en = new Editor();
   }
 
+  // ✅ Xử lý file ảnh
+  onFileNGX_EDITORSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageUrl = reader.result as string;
+
+        let imgHtml = "";
+
+        if (this.imageAlign === "center") {
+          imgHtml = `<p style="text-align:center;"><img src="${imageUrl}" style="max-width:100%; height:auto;"></p>`;
+        } else {
+          imgHtml = `<img src="${imageUrl}" style="float:${this.imageAlign}; margin:0 1em 1em 1em; max-width:200px; height:auto;">`;
+        }
+
+        const current = this.form.get("content")?.value || "";
+        this.form.get("content")?.setValue(current + imgHtml);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      this.uploadImage = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.preview_upload = e.target?.result;
+        // Optionally set a different form control if you want to track the image URL
+        this.form.controls["image"].setValue(this.uploadImage.name); // or whatever value you want to store
+      };
+      reader.readAsDataURL(this.uploadImage);
+
+      input.value = "";
+    }
+  }
+  // ✅ Xử lý file ảnh
+  onFileNGX_EDITORSelected_En(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageUrl = reader.result as string;
+
+        let imgHtml = "";
+
+        if (this.imageAlign === "center") {
+          imgHtml = `<p style="text-align:center;"><img src="${imageUrl}" style="max-width:100%; height:auto;"></p>`;
+        } else {
+          imgHtml = `<img src="${imageUrl}" style="float:${this.imageAlign}; margin:0 1em 1em 1em; max-width:200px; height:auto;">`;
+        }
+
+        const current = this.form.get("content")?.value || "";
+        this.form.get("content_en")?.setValue(current + imgHtml);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   showField(fieldName: string): boolean {
     return this.config.data.fields.some(
       (field: { name: string }) => field.name === fieldName,
@@ -212,24 +261,6 @@ export class FormServicesComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedPdfFile = input.files[0];
-      input.value = "";
-    }
-  }
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    if (input.files && input.files.length > 0) {
-      this.uploadImage = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        this.preview_upload = e.target?.result;
-        // Optionally set a different form control if you want to track the image URL
-        this.form.controls["image"].setValue(this.uploadImage.name); // or whatever value you want to store
-      };
-      reader.readAsDataURL(this.uploadImage);
-
       input.value = "";
     }
   }

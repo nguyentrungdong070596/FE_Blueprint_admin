@@ -28,11 +28,14 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "node_modules/@kolkov/angular-editor/assets/icons",
+                "output": "assets/ae-icons/"
               }
             ],
             "styles": [
               "src/styles.scss",
+              "node_modules/@kolkov/angular-editor/themes/default.scss",
+
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
