@@ -151,13 +151,12 @@
       <!-- Nội dung -->
       <div class="form-group" *ngIf="showField('content')">
         <label for="content">Nội dung:</label>
-        <!-- <quill-editor formControlName="content"></quill-editor> -->
+        <quill-editor formControlName="content"></quill-editor>
 
-        <div class="NgxEditor__Wrapper">
+        <!-- <div class="NgxEditor__Wrapper">
           <ngx-editor-menu [editor]="editor" [toolbar]="customToolbar">
           </ngx-editor-menu>
 
-          <!-- Nút upload ảnh -->
           <button type="button" (click)="fileInput.click()">🖼 Chọn ảnh</button>
           <input
             type="file"
@@ -172,7 +171,7 @@
             formControlName="content"
             [placeholder]="'Type here...'"
           ></ngx-editor>
-        </div>
+        </div> -->
 
         <small
           *ngIf="
