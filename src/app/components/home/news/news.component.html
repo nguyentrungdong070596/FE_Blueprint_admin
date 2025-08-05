@@ -1,60 +1,98 @@
 <div class="content">
-    <h2 style="text-transform: uppercase;">Quản lý tin tức và sự kiện</h2>
-    <div class="controls">
-        <p-button label="Thêm mới" icon="pi pi-plus" (onClick)="show(null)" styleClass="p-button-primary" />
+  <h2 style="text-transform: uppercase">Quản lý tin tức và sự kiện</h2>
+  <div class="controls">
+    <p-button
+      label="Thêm mới"
+      icon="pi pi-plus"
+      (onClick)="show(null)"
+      styleClass="p-button-primary"
+    />
 
-        <div class="search-group">
-            <span class="p-inputgroup">
-                <span class="p-inputgroup-addon">
-                    <i class="pi pi-search"></i>
-                </span>
-                <input class="search-input" pInputText type="text" #searchInput placeholder="Tìm kiếm..."
-                    (input)="onInput($event)" />
-                <span class="p-inputgroup-addon search-btn" (click)="search(searchInput.value)">
-                    <i class="pi pi-arrow-right"></i>
-                </span>
-            </span>
-        </div>
+    <div class="search-group">
+      <span class="p-inputgroup">
+        <span class="p-inputgroup-addon">
+          <i class="pi pi-search"></i>
+        </span>
+        <input
+          class="search-input"
+          pInputText
+          type="text"
+          #searchInput
+          placeholder="Tìm kiếm..."
+          (input)="onInput($event)"
+        />
+        <span
+          class="p-inputgroup-addon search-btn"
+          (click)="search(searchInput.value)"
+        >
+          <i class="pi pi-arrow-right"></i>
+        </span>
+      </span>
     </div>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tiêu đề</th>
-                <th>Nội dung chi tiết</th>
-                <th>Hình ảnh</th>
-                <th>Trạng thái</th>
-                <th>Ngày đăng</th>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tiêu đề</th>
+        <th>Nội dung chi tiết</th>
+        <th>Hình ảnh</th>
+        <th>Files</th>
+        <th>Trạng thái</th>
+        <th>Ngày đăng</th>
 
-                <th style="width: 50px;">Điều chỉnh</th>
+        <th style="width: 50px">Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of const_data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.title }}</td>
+        <td class="block-content" [innerHTML]="item.content"></td>
+        <td>
+          <!-- <img [src]="urlAPI +'/'+ new.image" alt="" class="image-user" /> -->
+          <p-image
+            [src]="urlAPI + '/' + item.image"
+            alt="Image"
+            width="250"
+            [preview]="true"
+          />
+        </td>
+        <td>
+          <ng-container *ngFor="let pdf of item.pdfArray; let i = index">
+            <a
+              [href]="urlAPI + '/' + pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Xem PDF {{ i + 1 }}
+            </a>
+            <span *ngIf="i < item.pdfArray.length - 1"> | </span>
+          </ng-container>
+        </td>
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of const_data; index as i">
-                <td>{{ i + 1 }}</td>
-                <td>{{ item.title }}</td>
-                <td class="block-content" [innerHTML]="item.content"></td>
-                <td>
-                    <!-- <img [src]="urlAPI +'/'+ new.image" alt="" class="image-user" /> -->
-                    <p-image [src]="urlAPI + '/' + item.image" alt="Image" width="250" [preview]="true" />
-                </td>
-                <td>{{ item.status ? 'Đang hiển thị' : 'Ẩn' }}</td>
-                <td>{{ item.postdate }}</td>
-                <td>
-                    <button (click)="show(item)" class="btn-edit">
-                        <i class="fa-solid fa-edit"></i>
-                    </button>
-                    <button (click)="deleteItem(item)" class="btn-delete">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br />
-    <div class="flex-auto">
-        <p-paginator *ngIf="totalRecords" [rows]="rows" [totalRecords]="totalRecords" [first]="first"
-            [showFirstLastIcon]="false" (onPageChange)="onPageChange($event)"></p-paginator>
-    </div>
+        <td>{{ item.status ? "Đang hiển thị" : "Ẩn" }}</td>
+        <td>{{ item.postdate }}</td>
+        <td>
+          <button (click)="show(item)" class="btn-edit">
+            <i class="fa-solid fa-edit"></i>
+          </button>
+          <button (click)="deleteItem(item)" class="btn-delete">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="flex-auto">
+    <p-paginator
+      *ngIf="totalRecords"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showFirstLastIcon]="false"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+  </div>
 </div>

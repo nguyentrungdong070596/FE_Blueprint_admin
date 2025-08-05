@@ -138,6 +138,7 @@
       </div>
 
       <!-- Tải lên dữ liệu -->
+      <!-- Upload nhiều file PDF -->
       <div class="form-group" *ngIf="showField('pdfurl')">
         <label
           for="pdfurl"
@@ -152,8 +153,9 @@
         <input
           type="file"
           id="pdfurl"
-          (change)="onFilePDFSelected($event)"
+          (change)="onMultiplePDFSelected($event)"
           accept=".pdf"
+          multiple
           class="form-control"
         />
         <small
@@ -167,6 +169,9 @@
           Vui lòng tải dữ liệu.
         </small>
       </div>
+      <ul *ngIf="selectedPdfFiles.length > 0">
+        <li *ngFor="let file of selectedPdfFiles">{{ file.name }}</li>
+      </ul>
 
       <!-- Ngày đăng -->
       <div class="form-group" *ngIf="showField('postdate')">

@@ -54,6 +54,8 @@ export class FormNewsComponent {
   editor_en!: Editor;
   customToolbar: Toolbar;
   customToolbar_en: Toolbar;
+  selectedPdfFiles: File[] = [];
+
   imageAlign: "right" | "left" | "center" = "right"; // ✅ mặc định chèn bên phải
 
   type_item: any = [
@@ -166,6 +168,14 @@ export class FormNewsComponent {
     this.editor_en = new Editor();
   }
 
+  onMultiplePDFSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedPdfFiles = Array.from(input.files); // Lưu nhiều file
+      input.value = ""; // reset input
+    }
+  }
+
   // ✅ Xử lý file ảnh
   onFileNGX_EDITORSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -267,18 +277,30 @@ export class FormNewsComponent {
   }
 
   async handleFileInput() {
-    if (this.selectedPdfFile) {
-      const pdfurl = await this._uploadService.postFile(this.selectedPdfFile);
-      if (pdfurl) {
-        this.form.controls["pdfurl"].clearValidators();
-        this.form.controls["pdfurl"].updateValueAndValidity();
-        this.item.pdfurl = pdfurl.file_save_url;
+    // ✅ Upload nhiều file PDF
+    if (this.selectedPdfFiles.length > 0) {
+      const uploadedPDFs: string[] = [];
+
+      for (const pdf of this.selectedPdfFiles) {
+        const res = await this._uploadService.postFile(pdf);
+        if (res && res.file_save_url) {
+          uploadedPDFs.push(res.file_save_url);
+          this.item.pdfurl = uploadedPDFs; // lưu mảng link
+        }
       }
+      console.log("Uploaded PDF URLs:", uploadedPDFs);
+
+      this.form.controls["pdfurl"].clearValidators();
+      this.form.controls["pdfurl"].updateValueAndValidity();
+      this.item.pdfurl = uploadedPDFs.join(",");
     } else if (this.EditData.pdfurl) {
       this.form.controls["pdfurl"].clearValidators();
       this.form.controls["pdfurl"].updateValueAndValidity();
-      this.item.pdfurl = this.EditData.pdfurl;
+      this.item.pdfurl = this.EditData.pdfurl.join(","); // lưu mảng link
     }
+    console.log("PDF URLs:", this.item.pdfurl);
+
+    // ✅ Upload ảnh như cũ
     if (this.uploadImage) {
       const imageData = await this._uploadService.postFile(this.uploadImage);
       if (imageData.file_save_url) {
@@ -299,6 +321,7 @@ export class FormNewsComponent {
     //   this.form.markAllAsTouched();
     //   return;
     // }
+    console.log("Form values:", values);
     if (this.isEditMode) {
       this.onEdit(values);
     } else {
@@ -318,6 +341,7 @@ export class FormNewsComponent {
           this.item[key] = values[key];
         }
       });
+      values.pdfurl = this.item.pdfurl;
       this._dataService.post(StringAPI.APINews, this.item).subscribe(
         (res) => {
           this.ref.close(res || []);
@@ -334,6 +358,8 @@ export class FormNewsComponent {
           this.item[key] = values[key];
         }
       });
+      values.pdfurl = this.item.pdfurl;
+
       this._dataService
         .put(StringAPI.APINews + "/" + this.EditData.id, this.item)
         .subscribe(
