@@ -65,6 +65,7 @@ export class NewsComponent {
       });
   }
   setItems(values: any): void {
+    const pdfArray: any = [];
     if (values.success && values.data) {
       this.const_data = values.data.map((item: any) => ({
         id: item?.id,
@@ -74,11 +75,13 @@ export class NewsComponent {
         content: item?.content,
         postdate: item?.postdate,
         status: item?.status,
-
+        // pdfurl: item?.pdfurl,
+        pdfArray: item?.pdfurl ? item.pdfurl.split(",") : [],
         content_en: item?.content_en,
         title_en: item?.title_en,
         subtitle_en: item?.subtitle_en,
       }));
+
       //consolethis.const_data);
       this.totalRecords = values.totalRecords;
     }
@@ -128,6 +131,7 @@ export class NewsComponent {
           content: item?.content,
           postdate: item?.postdate,
           status: item?.status,
+          pdfurl: item?.pdfurl,
           content_en: item?.content_en,
           title_en: item?.title_en,
           subtitle_en: item?.subtitle_en,
@@ -139,6 +143,7 @@ export class NewsComponent {
           { name: "content", required: true },
           { name: "postdate", required: false },
           { name: "status", required: true },
+          { name: "pdfurl", required: false },
 
           { name: "title_en", required: false },
           { name: "subtitle_en", required: false },

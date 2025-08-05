@@ -16,7 +16,6 @@ import { CommonModule } from "@angular/common";
 import { QuillModule } from "ngx-quill";
 import { ButtonModule } from "primeng/button";
 import { EditorModule } from "@tinymce/tinymce-angular";
-import { DocumentEditorAllModule } from "@syncfusion/ej2-angular-documenteditor";
 import {
   NgxEditorComponent,
   NgxEditorMenuComponent,
@@ -35,7 +34,6 @@ import {
     QuillModule,
     ButtonModule,
     EditorModule,
-    DocumentEditorAllModule,
     NgxEditorComponent,
     NgxEditorMenuComponent,
     FormsModule,
