@@ -31,7 +31,9 @@ export class AddPilotsComponent implements OnInit {
   stringurl = environment.apiUrl;
 
   preview_upload: any;
+  preview_upload2: any;
   uploadImage: any;
+  uploadImage2: any;
 
   ranks = [
     {
@@ -72,6 +74,7 @@ export class AddPilotsComponent implements OnInit {
     this.form = this.fb.group({
       name: [null, Validators.required],
       image: [null, Validators.required],
+      image2: [null, Validators.required],
       rank: [null, Validators.required],
       sort: [null, Validators.required],
       content: [null, Validators.required],
@@ -83,35 +86,52 @@ export class AddPilotsComponent implements OnInit {
   setValueFormEdit(data: any) {
     if (data) {
       this.preview_upload = this.stringurl + "/" + data.image;
+      this.preview_upload2 = this.stringurl + "/" + data.image2; // ✅ THÊM DÒNG NÀY
+
       this.form.patchValue({
         name: data?.name,
         rank: data?.rank,
         sort: data?.sort,
+
         content: data?.content,
         content_en: data?.content_en,
         status: data?.status,
       });
 
       this.item.image = this.EditData.image;
+      this.item.image2 = this.EditData.image2;
       this.form.controls["image"].clearValidators();
       this.form.controls["image"].updateValueAndValidity();
+      this.form.controls["image2"].clearValidators();
+      this.form.controls["image2"].updateValueAndValidity();
     } else {
       this.isEditMode = false;
     }
   }
 
-  onFileSelected(event: Event): void {
+  onFileSelectedImage1(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (input.files && input.files.length > 0) {
       this.uploadImage = input.files[0];
 
-      // Đọc file hình ảnh để tạo preview
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.preview_upload = e.target?.result;
       };
       reader.readAsDataURL(this.uploadImage);
+    }
+  }
+
+  onFileSelectedImage2(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadImage2 = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.preview_upload2 = e.target?.result;
+      };
+      reader.readAsDataURL(this.uploadImage2);
     }
   }
 
@@ -127,8 +147,21 @@ export class AddPilotsComponent implements OnInit {
     }
   }
 
+  async handleFileInput2() {
+    if (this.uploadImage2) {
+      const imageData = await this._uploadService.postFile(this.uploadImage2);
+      if (imageData.file_save_url) {
+        // Loại bỏ validator của trường image nếu upload thành công
+        this.form.controls["image2"].clearValidators();
+        this.form.controls["image2"].updateValueAndValidity();
+        this.item.image2 = imageData.file_save_url;
+      }
+    }
+  }
+
   async onSubmit(values: any) {
     await this.handleFileInput();
+    await this.handleFileInput2();
 
     // Kiểm tra lại form sau khi xử lý file
     if (this.form.invalid) {
@@ -147,6 +180,7 @@ export class AddPilotsComponent implements OnInit {
     this.item.status = true;
     this.item.rank = values.rank;
     this.item.name = values.name;
+
     this.item.content = values.content;
     this.item.content_en = values.content_en;
     this.item.sort = values.sort;

@@ -124,14 +124,16 @@
           }"
           >Hình ảnh:</label
         >
+        <!-- Upload ảnh 1 -->
         <input
           type="file"
           id="image"
-          (change)="onFileSelected($event)"
+          (change)="onFileSelectedImage1($event)"
           accept="image/*"
           class="form-control"
           formControlName="image"
         />
+
         <small
           *ngIf="
             !isEditMode &&
@@ -143,9 +145,47 @@
           Vui lòng tải hình ảnh.
         </small>
       </div>
+
       <!-- Preview Hình Ảnh -->
       <div *ngIf="preview_upload">
         <img [src]="preview_upload" alt="Selected Image" width="300" />
+      </div>
+      <!---Hình ảnh 2-->
+      <div class="form-group">
+        <label
+          for="file"
+          [ngClass]="{
+            'color-form-red':
+              !isEditMode &&
+              form.get('image2')?.invalid &&
+              (form.get('image2')?.dirty || form.get('image2')?.touched)
+          }"
+          >Hình ảnh:</label
+        >
+        <!-- Upload ảnh 2 -->
+        <input
+          type="file"
+          id="image2"
+          (change)="onFileSelectedImage2($event)"
+          accept="image/*"
+          class="form-control"
+          formControlName="image2"
+        />
+        <small
+          *ngIf="
+            !isEditMode &&
+            form.get('image2')?.invalid &&
+            (form.get('image2')?.dirty || form.get('image2')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('image2')?.invalid }"
+        >
+          Vui lòng tải hình ảnh.
+        </small>
+      </div>
+
+      <!-- Preview Hình Ảnh 2 -->
+      <div *ngIf="preview_upload2">
+        <img [src]="preview_upload2" alt="Selected Image" width="300" />
       </div>
 
       <div class="form-group">
