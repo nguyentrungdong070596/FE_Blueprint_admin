@@ -6,7 +6,7 @@ import { environment } from "../../../../environment/environment";
   providedIn: 'root'
 })
 export class FileUploadService {
-  private readonly MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+  private readonly MAX_FILE_SIZE = 500 * 1024 * 1024; // 5MB in bytes
   private readonly MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 5MB in bytes
 
   constructor(private httpClient: HttpClient) { }
