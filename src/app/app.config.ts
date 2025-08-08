@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([BrowserAnimationsModule]),
     provideHttpClient(withInterceptors([]), withFetch()),
     provideClientHydration(),
-    
+
   ]
 };

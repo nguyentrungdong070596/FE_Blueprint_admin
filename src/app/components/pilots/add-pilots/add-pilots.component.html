@@ -167,7 +167,7 @@
           type="file"
           id="image2"
           (change)="onFileSelectedImage2($event)"
-          accept="image/*"
+          accept="*"
           class="form-control"
           formControlName="image2"
         />
@@ -179,13 +179,15 @@
           "
           [ngClass]="{ 'color-form-red': form.get('image2')?.invalid }"
         >
-          Vui lòng tải hình ảnh.
+          Vui lòng tải.
         </small>
       </div>
 
       <!-- Preview Hình Ảnh 2 -->
       <div *ngIf="preview_upload2">
-        <img [src]="preview_upload2" alt="Selected Image" width="300" />
+        <!-- <img [src]="preview_upload2" alt="Selected" width="300" /> -->
+         <app-file-viewer [fileUrl]="preview_upload2"></app-file-viewer>
+
       </div>
 
       <div class="form-group">

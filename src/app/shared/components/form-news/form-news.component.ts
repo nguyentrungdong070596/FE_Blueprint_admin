@@ -288,7 +288,6 @@ export class FormNewsComponent {
           this.item.pdfurl = uploadedPDFs; // lưu mảng link
         }
       }
-      console.log("Uploaded PDF URLs:", uploadedPDFs);
 
       this.form.controls["pdfurl"].clearValidators();
       this.form.controls["pdfurl"].updateValueAndValidity();
@@ -298,7 +297,6 @@ export class FormNewsComponent {
       this.form.controls["pdfurl"].updateValueAndValidity();
       this.item.pdfurl = this.EditData.pdfurl.join(","); // lưu mảng link
     }
-    console.log("PDF URLs:", this.item.pdfurl);
 
     // ✅ Upload ảnh như cũ
     if (this.uploadImage) {
@@ -321,7 +319,6 @@ export class FormNewsComponent {
     //   this.form.markAllAsTouched();
     //   return;
     // }
-    console.log("Form values:", values);
     if (this.isEditMode) {
       this.onEdit(values);
     } else {

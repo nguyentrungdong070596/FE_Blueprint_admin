@@ -1,0 +1,28 @@
+<ng-container [ngSwitch]="fileType">
+
+  <!-- PDF -->
+  <iframe *ngSwitchCase="'pdf'" [src]="safeUrl" width="100%" height="600px"></iframe>
+
+  <!-- Hình ảnh -->
+  <img *ngSwitchCase="'image'" [src]="safeUrl" class="w-full h-auto" alt="Image preview" />
+
+  <!-- Văn bản -->
+  <pre *ngSwitchCase="'text'" style="white-space: pre-wrap; background: #f6f6f6; padding: 1rem;">
+    {{ textContent }}
+  </pre>
+
+  <!-- Word / Excel / PowerPoint -->
+  <iframe *ngSwitchCase="'docs'" [src]="googleViewerUrl" width="100%" height="600px" frameborder="0"></iframe>
+
+  <!-- Không hỗ trợ -->
+  <div *ngSwitchCase="'unsupported'" class="text-red-600">
+    <p>Không thể xem trước loại file này.</p>
+    <a [href]="safeUrl" target="_blank" download>Tải xuống file</a>
+  </div>
+
+  <!-- Không xác định -->
+  <div *ngSwitchDefault>
+    <p>Không xác định định dạng file.</p>
+  </div>
+
+</ng-container>

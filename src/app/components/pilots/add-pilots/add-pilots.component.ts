@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -14,11 +14,13 @@ import { environment } from "../../../../environment/environment";
 import { DataService } from "../../../core/services/data.service";
 import { FileUploadService } from "../../../core/services/uploadFiles/file-upload.service";
 import { StringAPI } from "../../../shared/stringAPI/string_api";
+import { SafeResourceUrl } from "@angular/platform-browser";
+import { FileViewerComponent } from "./view-file/file-viewer.component";
 
 @Component({
   selector: "app-add-pilots",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, QuillModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, QuillModule, ButtonModule, FileViewerComponent],
   templateUrl: "./add-pilots.component.html",
   styleUrl: "./add-pilots.component.scss",
   providers: [DatePipe],
@@ -29,6 +31,12 @@ export class AddPilotsComponent implements OnInit {
   EditData: any;
   item: any = {};
   stringurl = environment.apiUrl;
+
+  @Input() fileUrl!: string;
+  safeUrl!: SafeResourceUrl;
+  fileType = '';
+  textContent = '';
+  googleViewerUrl = '';
 
   preview_upload: any;
   preview_upload2: any;
@@ -73,12 +81,12 @@ export class AddPilotsComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       name: [null, Validators.required],
-      image: [null, Validators.required],
-      image2: [null, Validators.required],
+      image: [null],
+      image2: [null],
       rank: [null, Validators.required],
       sort: [null, Validators.required],
-      content: [null, Validators.required],
-      content_en: [null, Validators.required],
+      content: [null],
+      content_en: [null],
       status: [true, Validators.required],
     });
   }
@@ -87,7 +95,6 @@ export class AddPilotsComponent implements OnInit {
     if (data) {
       this.preview_upload = this.stringurl + "/" + data.image;
       this.preview_upload2 = this.stringurl + "/" + data.image2; // ✅ THÊM DÒNG NÀY
-
       this.form.patchValue({
         name: data?.name,
         rank: data?.rank,
@@ -136,26 +143,44 @@ export class AddPilotsComponent implements OnInit {
   }
 
   async handleFileInput() {
-    if (this.uploadImage) {
-      const imageData = await this._uploadService.postFile(this.uploadImage);
-      if (imageData.file_save_url) {
-        // Loại bỏ validator của trường image nếu upload thành công
-        this.form.controls["image"].clearValidators();
-        this.form.controls["image"].updateValueAndValidity();
-        this.item.image = imageData.file_save_url;
+    if (!this.uploadImage) {
+      // Nếu không có hình, vẫn xóa validator (nếu cần)
+      this.form.controls["image"].clearValidators();
+      this.form.controls["image"].updateValueAndValidity();
+      return;
+    }
+    try {
+      if (this.uploadImage) {
+        const imageData = await this._uploadService.postFile(this.uploadImage);
+        if (imageData.file_save_url) {
+          // Loại bỏ validator của trường image nếu upload thành công
+          this.form.controls["image"].clearValidators();
+          this.form.controls["image"].updateValueAndValidity();
+          this.item.image = imageData.file_save_url;
+        }
       }
+    } catch (error) {
+      console.error("Upload thất bại:", error);
     }
   }
 
   async handleFileInput2() {
-    if (this.uploadImage2) {
+    if (!this.uploadImage2) {
+      // Nếu không có hình, vẫn xóa validator (nếu cần)
+      this.form.controls["image2"].clearValidators();
+      this.form.controls["image2"].updateValueAndValidity();
+      return;
+    }
+
+    try {
       const imageData = await this._uploadService.postFile(this.uploadImage2);
       if (imageData.file_save_url) {
-        // Loại bỏ validator của trường image nếu upload thành công
         this.form.controls["image2"].clearValidators();
         this.form.controls["image2"].updateValueAndValidity();
         this.item.image2 = imageData.file_save_url;
       }
+    } catch (error) {
+      console.error("Upload thất bại:", error);
     }
   }
 
@@ -189,7 +214,7 @@ export class AddPilotsComponent implements OnInit {
       (res) => {
         this.ref.close(res || []);
       },
-      (error) => {},
+      (error) => { },
     );
   }
 
@@ -207,7 +232,7 @@ export class AddPilotsComponent implements OnInit {
           (res) => {
             this.ref.close(res || []);
           },
-          (error) => {},
+          (error) => { },
         );
     }
   }
