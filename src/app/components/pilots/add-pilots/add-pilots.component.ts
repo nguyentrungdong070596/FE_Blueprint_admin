@@ -74,6 +74,8 @@ export class AddPilotsComponent implements OnInit {
       image: [null, Validators.required],
       rank: [null, Validators.required],
       sort: [null, Validators.required],
+      content: [null, Validators.required],
+      content_en: [null, Validators.required],
       status: [true, Validators.required],
     });
   }
@@ -85,6 +87,8 @@ export class AddPilotsComponent implements OnInit {
         name: data?.name,
         rank: data?.rank,
         sort: data?.sort,
+        content: data?.content,
+        content_en: data?.content_en,
         status: data?.status,
       });
 
@@ -143,6 +147,8 @@ export class AddPilotsComponent implements OnInit {
     this.item.status = true;
     this.item.rank = values.rank;
     this.item.name = values.name;
+    this.item.content = values.content;
+    this.item.content_en = values.content_en;
     this.item.sort = values.sort;
 
     this._dataService.post(StringAPI.APIHoaTieu, this.item).subscribe(
@@ -158,6 +164,8 @@ export class AddPilotsComponent implements OnInit {
       this.item.status = values.status;
       this.item.rank = values.rank;
       this.item.name = values.name;
+      this.item.content = values.content;
+      this.item.content_en = values.content_en;
       this.item.sort = values.sort;
       this._dataService
         .put(StringAPI.APIHoaTieu + "/" + this.EditData.id, this.item)
