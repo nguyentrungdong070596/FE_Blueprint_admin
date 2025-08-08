@@ -77,6 +77,8 @@ export class PilotsComponent {
         rank: pilot.rank,
         image: pilot.image,
         sort: pilot.sort,
+        content: pilot.content,
+        content_en: pilot.content_en,
         status: pilot.status,
       }));
       this.totalRecords = values.totalRecords;
@@ -128,6 +130,8 @@ export class PilotsComponent {
         rank: item.rank,
         image: item.image,
         sort: item.sort,
+        content: item.content,
+        content_en: item.content_en,
         status: item.status,
       };
     }

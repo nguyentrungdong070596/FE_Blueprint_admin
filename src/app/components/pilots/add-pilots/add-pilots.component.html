@@ -33,6 +33,58 @@
         </small>
       </div>
 
+      <div class="form-group">
+        <label for="content">Nội dung:</label>
+        <quill-editor formControlName="content"></quill-editor>
+
+        <!-- <div class="NgxEditor__Wrapper">
+          <ngx-editor-menu [editor]="editor" [toolbar]="customToolbar">
+          </ngx-editor-menu>
+
+          <button type="button" (click)="fileInput.click()">🖼 Chọn ảnh</button>
+          <input
+            type="file"
+            #fileInput
+            style="display: none"
+            accept="image/*"
+            (change)="onFileNGX_EDITORSelected($event)"
+          />
+
+          <ngx-editor
+            [editor]="editor"
+            formControlName="content"
+            [placeholder]="'Type here...'"
+          ></ngx-editor>
+        </div> -->
+
+        <small
+          *ngIf="
+            !isEditMode &&
+            form.get('content')?.invalid &&
+            (form.get('content')?.dirty || form.get('content')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('content')?.invalid }"
+        >
+          Vui lòng nhập nội dung.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="content_en">Nội dung (EN):</label>
+        <quill-editor formControlName="content_en"></quill-editor>
+
+        <small
+          *ngIf="
+            !isEditMode &&
+            form.get('content_en')?.invalid &&
+            (form.get('content_en')?.dirty || form.get('content_en')?.touched)
+          "
+          [ngClass]="{ 'color-form-red': form.get('content_en')?.invalid }"
+        >
+          Vui lòng nhập nội dung EN.
+        </small>
+      </div>
+
       <div>
         <label
           for="rank"
